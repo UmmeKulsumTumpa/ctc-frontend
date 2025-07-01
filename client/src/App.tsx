@@ -1,20 +1,20 @@
+import { BrowserRouter } from 'react-router-dom'
 import NavBar from './sections/Navbar'
-import { Header } from './sections/Header'
 import { Footer } from './sections/Footer'
+import AppRoutes from './routes/AppRoutes'
 import './App.css'
 
 function App() {
 
 	return (
 		<>
-			<div className="min-h-screen flex flex-col">
+			<BrowserRouter>
 				<NavBar />
-				<Header />
-				<div className="flex-1"></div>
+				<AppRoutes />
 				<Footer />
-			</div>
+			</BrowserRouter>
 		</>
-	)
+	);
 }
 
 export default App
