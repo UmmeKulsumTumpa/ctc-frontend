@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchPublicBlog } from "../services/blog.service";
 import type { BlogPost } from "../types/blog.type";
-import BlogCard from "../components/BlogCard";
+import BlogCard from "../components/cards/BlogCard";
 
 const Blogs = () => {
     const [blogs, setBlogs] = useState<BlogPost[]>([]);
