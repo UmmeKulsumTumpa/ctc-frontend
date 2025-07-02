@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 const NavBar = () => {
     const { isAuthenticated, user, accessToken } = useAuth();
-    
+
     return (
         <nav className="bg-gray-700 text-white">
             <div className="max-w-6xl mx-auto px-4">
@@ -15,7 +15,8 @@ const NavBar = () => {
 
                     <div className="hidden md:flex space-x-8">
                         <Link to="/">Home</Link>
-                        <Link to="/blogs">Travel Blogs</Link>
+                        <Link to={"/blogs"}>Travel Blogs</Link>
+                        <Link to={"/blogs/create"}>Create Blog</Link>
                     </div>
 
                     <div className="hidden md:flex space-x-4">

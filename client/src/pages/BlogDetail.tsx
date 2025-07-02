@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getBlogById, getBlogServices, getBlogImages } from "../services/blog.service";
+import { getBlogById, getBlogServices, getBlogImages, deleteBlog } from "../services/blog.service";
 import type { BlogPost } from "../types/blog.type";
 import type { BlogService } from "../types/blog.service.type";
 import type { BlogImage } from "../types/blog.image.type";
@@ -38,6 +38,18 @@ const BlogDetail = () => {
     if (loading) return <div className="text-center mt-10">Loading blog...</div>;
     if (error || !blog) return <div className="text-center mt-10 text-red-500">{error || "Blog not found."}</div>;
 
+    const handleDelete = async () => {
+        if (!blog) return;
+        if (window.confirm('Are you sure you want to delete this blog?')) {
+            try {
+                await deleteBlog(blog.post_id);
+                navigate('/blogs');
+            } catch (err: any) {
+                setError(err?.response?.data?.message || 'Failed to delete blog.');
+            }
+        }
+    };
+
     return (
         <div className="max-w-3xl mx-auto py-8 min-h-[80vh] px-4">
             <BlogDetailCard
@@ -46,8 +58,8 @@ const BlogDetail = () => {
                 images={images}
                 userId={userId}
                 onView={() => navigate(-1)}
-                onEdit={() => {}}
-                onDelete={() => {}}
+                onEdit={() => navigate(`/blogs/${blog.post_id}/edit`)}
+                onDelete={handleDelete}
                 viewLabel="Back"
             />
         </div>

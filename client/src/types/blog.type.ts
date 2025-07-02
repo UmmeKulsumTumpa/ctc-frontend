@@ -25,3 +25,14 @@ export interface BlogCreate {
     visibility?: Visibility;
     description?: string;
 }
+
+export interface BlogUpdate {
+    title?: string;
+    total_cost?: number;
+    total_duration?: number;
+    effort_level?: EffortLevel;
+    place_id?: string;
+    categories?: string[];
+    visibility?: Visibility;
+    description?: string;
+}

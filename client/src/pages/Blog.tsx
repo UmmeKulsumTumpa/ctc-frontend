@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllBlogs } from "../services/blog.service";
+import { getAllBlogs, deleteBlog } from "../services/blog.service";
 import type { BlogPost } from "../types/blog.type";
 import BlogList from "../components/cards/BlogList";
 import { useAuth } from "../contexts/AuthContext";
@@ -18,10 +18,17 @@ const Blog = () => {
         navigate(PATHS.BLOG_DETAIL.replace(':id', blog.post_id));
     };
     const handleEdit = (blog: BlogPost) => {
-        // navigate to blog edit page
+        navigate(PATHS.BLOG_EDIT.replace(':id', blog.post_id));
     };
-    const handleDelete = (blog: BlogPost) => {
-        // show delete confirmation
+    const handleDelete = async (blog: BlogPost) => {
+        if (window.confirm('Are you sure you want to delete this blog?')) {
+            try {
+                await deleteBlog(blog.post_id);
+                setBlogs((prev) => prev.filter((b) => b.post_id !== blog.post_id));
+            } catch (err: any) {
+                setError(err?.response?.data?.message || 'Failed to delete blog.');
+            }
+        }
     };
 
     useEffect(() => {
@@ -36,7 +43,15 @@ const Blog = () => {
 
     return (
         <div className="max-w-4xl mx-auto py-8 min-h-[80vh] px-4">
-            <h2 className="text-3xl font-bold mb-6 text-center">Travel Blogs</h2>
+            <div className="flex items-center justify-between mb-6">
+                <h2 className="text-3xl font-bold text-center flex-1">Travel Blogs</h2>
+                <button
+                    onClick={() => navigate(PATHS.BLOG_CREATE)}
+                    className="ml-4 px-4 py-2 rounded bg-green-600 text-white font-semibold shadow hover:bg-green-700 transition"
+                >
+                    + Create Blog
+                </button>
+            </div>
             <BlogList
                 blogs={blogs}
                 userId={userId}
