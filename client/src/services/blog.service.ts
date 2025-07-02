@@ -1,15 +1,25 @@
-import type { BlogPost } from "../types/blog.type";
-import type { ApiResponse } from "../types/api.response.type";
+import axios from '../utils/api';
+import type { BlogPost } from '../types/blog.type';
+import type { BlogService } from '../types/blog.service.type';
+import type { BlogImage } from '../types/blog.image.type';
+import { BLOG_API_BASE } from '../constants/blog.constants';
 
-export async function fetchPublicBlog(): Promise<BlogPost[]> {
-    const url = 'http://localhost:8080/api/v1/posts';
-    const res = await fetch(url);
+export const getAllBlogs = async (): Promise<BlogPost[]> => {
+    const res = await axios.get(BLOG_API_BASE);
+    return res.data.data;
+};
 
-    if(!res.ok) throw new Error('Failer to fetch blogs');
+export const getBlogById = async (id: string): Promise<BlogPost> => {
+    const res = await axios.get(`${BLOG_API_BASE}/${id}`);
+    return res.data.data;
+};
 
-    const body: ApiResponse<BlogPost[]> = await res.json();
+export const getBlogServices = async (postId: string): Promise<BlogService[]> => {
+    const res = await axios.get(`${BLOG_API_BASE}/${postId}/services`);
+    return res.data.data;
+};
 
-    if(!body.success) throw new Error(body.message || 'Unknown error')
-
-    return body.data;
-}
+export const getBlogImages = async (postId: string): Promise<BlogImage[]> => {
+    const res = await axios.get(`${BLOG_API_BASE}/${postId}/images`);
+    return res.data.data;
+};
