@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getBlogById, getBlogServices, getBlogImages, deleteBlog } from "../services/blog.service";
+import { getBlogById, deleteBlog } from "../services/blog.service";
+import { getPostServices } from "../services/blogPostService.service";
+import { getPostImages } from "../services/blogImage.service";
 import type { BlogPost } from "../types/blog.type";
 import type { BlogService } from "../types/blog.service.type";
 import type { BlogImage } from "../types/blog.image.type";
@@ -13,8 +15,8 @@ const BlogDetail = () => {
     const { user } = useAuth();
     const userId = user?.user_id?.toString() ?? null;
     const [blog, setBlog] = useState<BlogPost | null>(null);
-    const [services, setServices] = useState<BlogService[]>([]);
-    const [images, setImages] = useState<BlogImage[]>([]);
+    const [services, setServices] = useState<any[]>([]);
+    const [images, setImages] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -23,8 +25,8 @@ const BlogDetail = () => {
         setLoading(true);
         Promise.all([
             getBlogById(id),
-            getBlogServices(id),
-            getBlogImages(id)
+            getPostServices(id),
+            getPostImages(id)
         ])
             .then(([blog, services, images]) => {
                 setBlog(blog);
@@ -62,6 +64,16 @@ const BlogDetail = () => {
                 onDelete={handleDelete}
                 viewLabel="Back"
             />
+            {/* <div className="mt-8">
+                <h3 className="text-lg font-bold mb-2">Services</h3>
+                <div className="mb-6">
+                    {services.length === 0 ? <div className="text-gray-400">No services added.</div> : null}
+                </div>
+                <h3 className="text-lg font-bold mb-2">Images</h3>
+                <div>
+                    {images.length === 0 ? <div className="text-gray-400">No images added.</div> : null}
+                </div>
+            </div> */}
         </div>
     );
 };

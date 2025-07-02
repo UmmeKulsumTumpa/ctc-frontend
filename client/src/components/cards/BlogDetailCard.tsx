@@ -1,11 +1,12 @@
 import React from "react";
 import type { BlogPost } from "../../types/blog.type";
-import type { BlogService } from "../../types/blog.service.type";
+
+import type { BlogPostService } from "../../types/blog.postservice.type";
 import type { BlogImage } from "../../types/blog.image.type";
 
 interface BlogDetailCardProps {
     post: BlogPost;
-    services?: BlogService[];
+    services?: BlogPostService[];
     images?: BlogImage[];
     userId?: string | null;
     onView?: () => void;
@@ -39,9 +40,12 @@ const BlogDetailCard: React.FC<BlogDetailCardProps> = ({ post, services, images,
             {images && images.length > 0 && (
                 <div>
                     <h4 className="font-semibold mb-2 text-pink-700">Images</h4>
-                    <div className="flex gap-3 overflow-x-auto pb-2">
+                    <div className="flex flex-wrap gap-4">
                         {images.map((img) => (
-                            <img key={img.url} src={img.url} alt={img.caption || ''} className="h-40 rounded-lg object-cover border shadow" />
+                            <div key={img.url} className="relative flex flex-col items-center">
+                                <img src={img.url} alt={img.caption || ''} className="h-40 w-40 object-cover rounded-lg border shadow" />
+                                {img.caption && <div className="text-xs text-center mt-1 text-gray-700">{img.caption}</div>}
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -49,13 +53,20 @@ const BlogDetailCard: React.FC<BlogDetailCardProps> = ({ post, services, images,
             {services && services.length > 0 && (
                 <div>
                     <h4 className="font-semibold mb-2 text-blue-700">Services</h4>
-                    <ul className="list-disc pl-5 space-y-1">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {services.map((svc) => (
-                            <li key={svc.service_id} className="text-gray-700">
-                                <span className="font-medium text-blue-700">{svc.name}</span> - {svc.type} {svc.address && <span className="text-gray-500">@ {svc.address}</span>}
-                            </li>
+                            <div key={svc.post_service_id} className="bg-white rounded-lg shadow p-4 border flex flex-col gap-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                    <span className="font-bold text-blue-700 text-lg">{svc.service_id}</span>
+                                    {svc.recommended && <span className="ml-2 px-2 py-0.5 text-xs bg-green-100 text-green-700 rounded-full">Recommended</span>}
+                                </div>
+                                {svc.cost && <div className="text-sm text-gray-600">Cost: <span className="font-semibold">{svc.cost}</span></div>}
+                                {svc.rating && <div className="text-sm text-yellow-600">Rating: <span className="font-semibold">{svc.rating}</span></div>}
+                                {svc.visit_date && <div className="text-sm text-gray-500">Date: {svc.visit_date}</div>}
+                                {svc.notes && <div className="text-sm text-gray-500 italic">Notes: {svc.notes}</div>}
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
             )}
             <div className="flex gap-2 mt-4">

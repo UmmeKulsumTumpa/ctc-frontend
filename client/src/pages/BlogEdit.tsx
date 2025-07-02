@@ -2,21 +2,39 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import BlogForm from "../components/blog/BlogForm";
 import { getBlogById, updateBlog } from "../services/blog.service";
+import { getPostServices, deletePostService, addPostService } from "../services/blogPostService.service";
+import { getPostImages, deletePostImage, addPostImage } from "../services/blogImage.service";
+import BlogServiceList from "../components/blog/BlogServiceList";
+import BlogServiceForm from "../components/blog/BlogServiceForm";
+import BlogImageList from "../components/blog/BlogImageList";
+import BlogImageForm from "../components/blog/BlogImageForm";
 import type { BlogUpdate } from "../types/blog.type";
+import type { BlogPostService, BlogPostServiceCreate } from "../types/blog.postservice.type";
+import type { BlogImage, BlogImageCreate } from "../types/blog.image.type";
 
 const BlogEdit: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const [initialValues, setInitialValues] = useState<Partial<BlogUpdate>>();
+    const [services, setServices] = useState<BlogPostService[]>([]);
+    const [images, setImages] = useState<BlogImage[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [svcLoading, setSvcLoading] = useState(false);
+    const [imgLoading, setImgLoading] = useState(false);
 
     useEffect(() => {
         if (!id) return;
         setLoading(true);
-        getBlogById(id)
-            .then((res) => {
-                setInitialValues(res);
+        Promise.all([
+            getBlogById(id),
+            getPostServices(id),
+            getPostImages(id)
+        ])
+            .then(([blog, services, images]) => {
+                setInitialValues(blog);
+                setServices(services);
+                setImages(images);
                 setLoading(false);
             })
             .catch(() => {
@@ -35,19 +53,74 @@ const BlogEdit: React.FC = () => {
         }
     };
 
+    const handleAddService = async (data: BlogPostServiceCreate) => {
+        setSvcLoading(true);
+        try {
+            const svc = await addPostService(data);
+            setServices((prev) => [...prev, svc]);
+        } catch {
+            setError("Failed to add service.");
+        } finally {
+            setSvcLoading(false);
+        }
+    };
+
+    const handleDeleteService = async (postServiceId: string) => {
+        if (!id) return;
+        try {
+            await deletePostService(id, postServiceId);
+            setServices((prev) => prev.filter((s) => s.post_service_id !== postServiceId));
+        } catch {
+            setError("Failed to delete service.");
+        }
+    };
+
+    const handleAddImage = async (data: BlogImageCreate) => {
+        setImgLoading(true);
+        try {
+            const img = await addPostImage(data);
+            setImages((prev) => [...prev, img]);
+        } catch {
+            setError("Failed to add image.");
+        } finally {
+            setImgLoading(false);
+        }
+    };
+
+    const handleDeleteImage = async (imageId: string) => {
+        if (!id) return;
+        try {
+            await deletePostImage(id, imageId);
+            setImages((prev) => prev.filter((img) => img.image_id !== imageId));
+        } catch {
+            setError("Failed to delete image.");
+        }
+    };
+
     if (loading) return <div className="text-center py-8">Loading...</div>;
     if (error) return <div className="text-center text-red-500 py-8">{error}</div>;
     if (!initialValues) return null;
 
     return (
-        <div className="py-8">
+        <div className="py-8 max-w-3xl mx-auto">
             <h2 className="text-2xl font-bold mb-4 text-center">Edit Blog Post</h2>
             <BlogForm
                 initialValues={initialValues}
                 onSubmit={handleUpdate}
                 submitLabel="Update"
-                isEdit
             />
+            <div className="mt-8">
+                <h3 className="text-lg font-bold mb-2">Services</h3>
+                <BlogServiceForm postId={id!} onSubmit={handleAddService} loading={svcLoading} />
+                <div className="mt-4">
+                    <BlogServiceList services={services} onDelete={handleDeleteService} />
+                </div>
+                <h3 className="text-lg font-bold mb-2 mt-8">Images</h3>
+                <BlogImageForm postId={id!} onSubmit={handleAddImage} loading={imgLoading} />
+                <div className="mt-4">
+                    <BlogImageList images={images} onDelete={handleDeleteImage} />
+                </div>
+            </div>
         </div>
     );
 };
