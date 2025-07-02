@@ -12,10 +12,10 @@ interface BlogListProps {
 
 const BlogList: React.FC<BlogListProps> = ({ blogs, userId, onBlogClick, onEditBlog, onDeleteBlog }) => {
   if (!blogs.length) {
-    return <div className="text-center text-gray-400 py-8">No blogs found.</div>;
+    return <div className="text-center text-blue-400 py-12 text-lg font-semibold bg-gradient-to-r from-blue-50 to-green-50 rounded-xl shadow-inner">No blogs found. Start by creating your first post!</div>;
   }
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
       {blogs.map((blog) => (
         <div key={blog.post_id} className="flex flex-col h-full">
           <BlogCard

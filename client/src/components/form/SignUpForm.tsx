@@ -20,7 +20,7 @@ const SignUpForm = () => {
 
 	return (
 		<form onSubmit={handleSubmit} className="max-w-sm mx-auto p-4 bg-white rounded shadow space-y-4">
-			{/* <h2 className="text-xl font-bold">Sign Up</h2> */}
+
 			{error && <div className="text-red-500">{error}</div>}
 			<input
 				type="email"

@@ -97,25 +97,25 @@ const BlogEdit: React.FC = () => {
         }
     };
 
-    if (loading) return <div className="text-center py-8">Loading...</div>;
-    if (error) return <div className="text-center text-red-500 py-8">{error}</div>;
+    if (loading) return <div className="text-center py-16 text-blue-600 text-xl font-bold animate-pulse">Loading...</div>;
+    if (error) return <div className="text-center text-red-500 py-16 text-lg font-semibold">{error}</div>;
     if (!initialValues) return null;
 
     return (
-        <div className="py-8 max-w-3xl mx-auto">
-            <h2 className="text-2xl font-bold mb-4 text-center">Edit Blog Post</h2>
+        <div className="py-12 max-w-3xl mx-auto">
+            <h2 className="text-3xl font-extrabold mb-6 text-center text-blue-800 font-serif tracking-tight drop-shadow-lg">Edit Blog Post</h2>
             <BlogForm
                 initialValues={initialValues}
                 onSubmit={handleUpdate}
                 submitLabel="Update"
             />
-            <div className="mt-8">
-                <h3 className="text-lg font-bold mb-2">Services</h3>
+            <div className="mt-10">
+                <h3 className="text-xl font-bold mb-3 text-green-800">Services</h3>
                 <BlogServiceForm postId={id!} onSubmit={handleAddService} loading={svcLoading} />
                 <div className="mt-4">
                     <BlogServiceList services={services} onDelete={handleDeleteService} />
                 </div>
-                <h3 className="text-lg font-bold mb-2 mt-8">Images</h3>
+                <h3 className="text-xl font-bold mb-3 mt-10 text-blue-800">Images</h3>
                 <BlogImageForm postId={id!} onSubmit={handleAddImage} loading={imgLoading} />
                 <div className="mt-4">
                     <BlogImageList images={images} onDelete={handleDeleteImage} />

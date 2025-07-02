@@ -32,14 +32,14 @@ const BlogServiceForm = ({ postId, onSubmit, loading, initialData }: BlogService
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-            <label className="text-sm font-medium">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-4 border border-blue-100 shadow">
+            <label className="text-sm font-semibold text-blue-900">
                 Service ID <span className="text-red-500">*</span>
                 <input
                     type="text"
                     value={serviceId}
                     onChange={e => setServiceId(e.target.value)}
-                    className="border rounded px-3 py-2 w-full mt-1"
+                    className="border-2 border-blue-200 rounded px-3 py-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-blue-300"
                     required
                 />
             </label>
@@ -48,14 +48,14 @@ const BlogServiceForm = ({ postId, onSubmit, loading, initialData }: BlogService
                 placeholder="Cost"
                 value={cost ?? ""}
                 onChange={e => setCost(e.target.value ? Number(e.target.value) : undefined)}
-                className="border rounded px-3 py-2"
+                className="border-2 border-green-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-300"
             />
             <input
                 type="number"
                 placeholder="Rating"
                 value={rating ?? ""}
                 onChange={e => setRating(e.target.value ? Number(e.target.value) : undefined)}
-                className="border rounded px-3 py-2"
+                className="border-2 border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
             />
             <input
                 type="date"
@@ -70,7 +70,7 @@ const BlogServiceForm = ({ postId, onSubmit, loading, initialData }: BlogService
                 onChange={e => setNotes(e.target.value)}
                 className="border rounded px-3 py-2"
             />
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-green-800 font-semibold">
                 <input
                     type="checkbox"
                     checked={recommended}
@@ -78,7 +78,7 @@ const BlogServiceForm = ({ postId, onSubmit, loading, initialData }: BlogService
                 />
                 Recommended
             </label>
-            <button type="submit" className="bg-blue-600 text-white rounded px-4 py-2 mt-2" disabled={loading}>
+            <button type="submit" className="bg-blue-200 text-blue-900 rounded-lg px-5 py-2 mt-2 font-bold shadow hover:bg-blue-300 transition" disabled={loading}>
                 {loading ? "Adding..." : "Add Service"}
             </button>
         </form>

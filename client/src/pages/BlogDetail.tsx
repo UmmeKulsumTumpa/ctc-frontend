@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getBlogById, deleteBlog } from "../services/blog.service";
+import { getBlogById, deleteBlog, likeBlog } from "../services/blog.service";
 import { getPostServices } from "../services/blogPostService.service";
 import { getPostImages } from "../services/blogImage.service";
 import type { BlogPost } from "../types/blog.type";
@@ -15,6 +15,7 @@ const BlogDetail = () => {
     const { user } = useAuth();
     const userId = user?.user_id?.toString() ?? null;
     const [blog, setBlog] = useState<BlogPost | null>(null);
+    const [likeLoading, setLikeLoading] = useState(false);
     const [services, setServices] = useState<any[]>([]);
     const [images, setImages] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -52,6 +53,19 @@ const BlogDetail = () => {
         }
     };
 
+    const handleLike = async () => {
+        if (!blog) return;
+        setLikeLoading(true);
+        try {
+            await likeBlog(blog.post_id);
+            setBlog({ ...blog, likes: blog.likes + 1 });
+        } catch (err: any) {
+            setError(err?.response?.data?.message || "Failed to like blog.");
+        } finally {
+            setLikeLoading(false);
+        }
+    };
+
     return (
         <div className="max-w-3xl mx-auto py-8 min-h-[80vh] px-4">
             <BlogDetailCard
@@ -62,18 +76,9 @@ const BlogDetail = () => {
                 onView={() => navigate(-1)}
                 onEdit={() => navigate(`/blogs/${blog.post_id}/edit`)}
                 onDelete={handleDelete}
+                onLike={likeLoading ? undefined : handleLike}
                 viewLabel="Back"
             />
-            {/* <div className="mt-8">
-                <h3 className="text-lg font-bold mb-2">Services</h3>
-                <div className="mb-6">
-                    {services.length === 0 ? <div className="text-gray-400">No services added.</div> : null}
-                </div>
-                <h3 className="text-lg font-bold mb-2">Images</h3>
-                <div>
-                    {images.length === 0 ? <div className="text-gray-400">No images added.</div> : null}
-                </div>
-            </div> */}
         </div>
     );
 };

@@ -6,12 +6,13 @@ import { AuthProvider } from './contexts/AuthContext'
 import './App.css'
 
 function App() {
-
 	return (
 		<AuthProvider>
 			<BrowserRouter>
 				<NavBar />
-				<AppRoutes />
+				<div className="app-content">
+					<AppRoutes />
+				</div>
 				<Footer />
 			</BrowserRouter>
 		</AuthProvider>

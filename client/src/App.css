@@ -1,3 +1,30 @@
-.App {
-    text-align: center;
+
+html, body, #root {
+  height: 100%;
+  min-height: 100vh;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-content {
+  flex: 1 0 auto;
+  min-height: 80vh;
+}
+
+.footer-bottom {
+  margin-top: auto;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+@media (max-height: 700px) {
+  .footer-bottom {
+    position: static;
+    margin-top: 2rem;
+  }
 }

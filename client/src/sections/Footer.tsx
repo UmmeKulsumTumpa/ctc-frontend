@@ -1,9 +1,8 @@
 export function Footer() {
     const today = new Date();
-
     return (
-        <footer className="bg-gray-800 text-white py-8">
-            <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+        <footer className="bg-gray-900 text-white py-8 w-full footer-bottom">
+            <div className="text-center text-blue-100">
                 <p>
                     &copy; {today.getFullYear()} Cefalo Travel Connect. All rights reserved.
                 </p>

@@ -38,3 +38,7 @@ export const updateBlog = async (id: string, data: BlogUpdate): Promise<BlogPost
 export const deleteBlog = async (id: string): Promise<void> => {
     await axios.delete(`${BLOG_API_BASE}/${id}`);
 };
+
+export const likeBlog = async (id: string): Promise<void> => {
+    await axios.post(`${BLOG_API_BASE}/${id}/like`);
+};

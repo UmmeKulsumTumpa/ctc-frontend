@@ -38,16 +38,16 @@ const Blog = () => {
             .finally(() => setLoading(false));
     }, []);
 
-    if (loading) return <div className="text-center mt-10">Loading blogs...</div>;
-    if (error) return <div className="text-center mt-10 text-red-500">{error}</div>;
+    if (loading) return <div className="text-center mt-16 text-blue-600 text-xl font-bold animate-pulse">Loading blogs...</div>;
+    if (error) return <div className="text-center mt-16 text-red-500 text-lg font-semibold">{error}</div>;
 
     return (
-        <div className="max-w-4xl mx-auto py-8 min-h-[80vh] px-4">
-            <div className="flex items-center justify-between mb-6">
-                <h2 className="text-3xl font-bold text-center flex-1">Travel Blogs</h2>
+        <div className="max-w-5xl mx-auto py-12 min-h-[80vh] px-4">
+            <div className="flex items-center justify-between mb-8">
+                <h2 className="text-4xl font-extrabold text-blue-800 font-serif tracking-tight drop-shadow-sm">Travel Blogs</h2>
                 <button
                     onClick={() => navigate(PATHS.BLOG_CREATE)}
-                    className="ml-4 px-4 py-2 rounded bg-green-600 text-white font-semibold shadow hover:bg-green-700 transition"
+                    className="ml-4 px-6 py-2 rounded-lg bg-[#1a237e] text-white font-bold shadow-lg hover:bg-blue-900 transition-all text-base"
                 >
                     + Create Blog
                 </button>

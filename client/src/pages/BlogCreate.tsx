@@ -18,14 +18,12 @@ const BlogCreate: React.FC = () => {
     const navigate = useNavigate();
 
 
-    // For dynamic forms: allow user to add any number of service/image forms
     const [serviceForms, setServiceForms] = useState<Partial<BlogPostServiceCreate>[]>([]);
     const [imageForms, setImageForms] = useState<Partial<BlogImageCreate>[]>([]);
     const [formErrors, setFormErrors] = useState<{ services: boolean[], images: boolean[] }>({ services: [], images: [] });
 
 
 
-    // Validate forms
     const validateService = (svc: Partial<BlogPostServiceCreate>) => !!svc.service_id;
     const validateImage = (img: Partial<BlogImageCreate>) => !!img.url;
 
@@ -34,16 +32,13 @@ const BlogCreate: React.FC = () => {
         setError(null);
         setDetailedError(null);
 
-        // Validate forms
         const validServices = serviceForms.map(validateService);
         const validImages = imageForms.map(validateImage);
         setFormErrors({ services: validServices.map(v => !v), images: validImages.map(v => !v) });
 
-        // Only use valid forms
         const servicesToAdd = serviceForms.filter(validateService) as BlogPostServiceCreate[];
         const imagesToAdd = imageForms.filter(validateImage) as BlogImageCreate[];
 
-        // If all service/image forms are invalid, show error and do not proceed
         if (serviceForms.length > 0 && servicesToAdd.length === 0 && imageForms.length > 0 && imagesToAdd.length === 0) {
             setError("No valid services or images to add. Please fill required fields or remove empty forms.");
             setLoading(false);
@@ -54,7 +49,6 @@ const BlogCreate: React.FC = () => {
         try {
             created = await createBlog(data);
             const post_id = created.post_id;
-            // Add services sequentially
             for (let i = 0; i < servicesToAdd.length; i++) {
                 try {
                     await addPostService({ ...servicesToAdd[i], post_id });
@@ -66,7 +60,6 @@ const BlogCreate: React.FC = () => {
                     return;
                 }
             }
-            // Add images sequentially
             for (let i = 0; i < imagesToAdd.length; i++) {
                 try {
                     await addPostImage({ ...imagesToAdd[i], post_id });
@@ -87,7 +80,6 @@ const BlogCreate: React.FC = () => {
     };
 
 
-    // Add/remove service/image forms
     const handleAddServiceForm = () => setServiceForms([...serviceForms, {}]);
     const handleAddImageForm = () => setImageForms([...imageForms, {}]);
     const handleServiceFormChange = (idx: number, data: Partial<BlogPostServiceCreate>) => {
@@ -105,30 +97,30 @@ const BlogCreate: React.FC = () => {
 
 
     return (
-        <div className="max-w-2xl mx-auto py-8 px-4">
-            <h2 className="text-2xl font-bold mb-4 text-center">Create New Blog</h2>
-            {error && <div className="text-red-500 mb-2 text-center">{error}</div>}
-            {detailedError && <div className="text-red-400 mb-2 text-center text-xs">{detailedError}</div>}
+        <div className="max-w-3xl mx-auto py-12 px-4">
+            <h2 className="text-3xl font-extrabold mb-6 text-center text-blue-800 font-serif tracking-tight drop-shadow-lg">Create New Blog</h2>
+            {error && <div className="text-red-500 mb-3 text-center text-lg font-semibold">{error}</div>}
+            {detailedError && <div className="text-red-400 mb-3 text-center text-xs">{detailedError}</div>}
             <BlogForm onSubmit={handleSubmit} submitLabel={loading ? "Creating..." : "Create"} />
-            <div className="mt-8">
-                <h3 className="text-lg font-bold mb-2">Services (optional)</h3>
-                <button type="button" onClick={handleAddServiceForm} className="mb-2 px-3 py-1 bg-blue-500 text-white rounded">Add Service</button>
-                <ul className="space-y-2 mt-2">
+            <div className="mt-10">
+                <h3 className="text-xl font-bold mb-3 text-green-800">Services <span className="text-xs text-blue-600">(optional)</span></h3>
+                <button type="button" onClick={handleAddServiceForm} className="mb-3 px-4 py-2 bg-blue-200 text-blue-900 rounded-lg font-bold shadow hover:bg-blue-300 transition">Add Service</button>
+                <ul className="space-y-4 mt-2">
                     {serviceForms.map((svc, idx) => (
-                        <li key={idx} className="flex flex-col gap-2 border-b pb-2">
+                        <li key={idx} className="flex flex-col gap-2 border-b border-blue-100 pb-3">
                             <BlogServiceForm
                                 postId=""
                                 onSubmit={data => handleServiceFormChange(idx, data)}
                                 initialData={svc}
                             />
                             {formErrors.services[idx] && <span className="text-xs text-red-500">Required fields missing</span>}
-                            <button type="button" onClick={() => handleRemoveServiceForm(idx)} className="self-end px-2 py-1 text-xs bg-red-500 text-white rounded">Remove</button>
+                            <button type="button" onClick={() => handleRemoveServiceForm(idx)} className="self-end px-3 py-1 text-xs bg-red-400 text-white rounded-lg shadow hover:bg-red-500 transition">Remove</button>
                         </li>
                     ))}
                 </ul>
-                <h3 className="text-lg font-bold mb-2 mt-8">Images (optional)</h3>
-                <button type="button" onClick={handleAddImageForm} className="mb-2 px-3 py-1 bg-blue-500 text-white rounded">Add Image</button>
-                <div className="flex flex-wrap gap-4 mt-2">
+                <h3 className="text-xl font-bold mb-3 mt-10 text-blue-800">Images <span className="text-xs text-green-600">(optional)</span></h3>
+                <button type="button" onClick={handleAddImageForm} className="mb-3 px-4 py-2 bg-blue-200 text-blue-900 rounded-lg font-bold shadow hover:bg-blue-300 transition">Add Image</button>
+                <div className="flex flex-wrap gap-6 mt-2">
                     {imageForms.map((img, idx) => (
                         <div key={idx} className="relative flex flex-col items-center">
                             <BlogImageForm
@@ -137,7 +129,7 @@ const BlogCreate: React.FC = () => {
                                 initialData={img}
                             />
                             {formErrors.images[idx] && <span className="text-xs text-red-500">Required fields missing</span>}
-                            <button type="button" onClick={() => handleRemoveImageForm(idx)} className="absolute top-1 right-1 px-2 py-1 text-xs bg-red-500 text-white rounded">Remove</button>
+                            <button type="button" onClick={() => handleRemoveImageForm(idx)} className="absolute top-1 right-1 px-3 py-1 text-xs bg-red-400 text-white rounded-lg shadow hover:bg-red-500 transition">Remove</button>
                         </div>
                     ))}
                 </div>
