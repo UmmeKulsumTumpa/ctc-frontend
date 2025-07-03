@@ -10,7 +10,7 @@ const BlogServiceList = ({ services, onDelete }: BlogServiceListProps) => {
     return (
         <ul className="space-y-3">
             {services.map((svc) => (
-                <li key={svc.post_service_id} className="flex items-center gap-3 border-b border-blue-100 pb-2 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg px-3 py-2 shadow-sm">
+                <li key={svc.post_service_id} className="flex items-center gap-3 border-b border-blue-100 pb-2 bg-white rounded-lg px-3 py-2 shadow-sm">
                     <span className="font-semibold text-green-800">{svc.service_id}</span>
                     {svc.cost && <span className="text-green-700">Cost: <span className="font-bold">{svc.cost}</span></span>}
                     {svc.rating && <span className="text-blue-700">Rating: <span className="font-bold">{svc.rating}</span></span>}

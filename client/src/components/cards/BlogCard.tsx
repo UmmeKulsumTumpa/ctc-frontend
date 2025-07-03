@@ -11,7 +11,7 @@ interface BlogCardProps {
 const BlogCard: React.FC<BlogCardProps> = ({ post, userId, onView, onEdit, onDelete }) => {
     const isOwner = userId && userId === post.user_id;
     return (
-        <div className="bg-gradient-to-br from-blue-50 to-green-50 hover:from-blue-100 hover:to-green-100 rounded-2xl shadow-xl p-8 border border-blue-200 flex flex-col gap-3 transition-transform hover:scale-[1.03] cursor-pointer font-sans min-h-[260px] max-w-xl mx-auto h-full">
+        <div className="bg-white hover:bg-blue-50 rounded-2xl shadow-xl p-8 border border-blue-200 flex flex-col gap-3 transition-transform hover:scale-[1.03] cursor-pointer font-sans min-h-[260px] max-w-xl w-full h-full">
             <div className="flex items-center justify-between mb-2">
                 <h3 className="text-2xl font-extrabold text-blue-800 truncate font-serif drop-shadow-sm tracking-tight">{post.title}</h3>
                 <span className="text-xs font-semibold text-green-700 bg-green-100 px-2 py-0.5 rounded shadow font-mono ml-2 whitespace-nowrap">{new Date(post.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}</span>
@@ -30,11 +30,11 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, userId, onView, onEdit, onDel
                 </span>
             </div>
             <div className="flex gap-2 mt-4 mt-auto justify-end">
-                <button onClick={onView} className="px-4 py-2 rounded-lg bg-blue-600 text-white text-xs font-semibold shadow hover:bg-blue-700 transition">View</button>
+                <button onClick={onView} className="px-4 py-2 rounded-lg bg-blue-600 text-white text-xs font-semibold shadow hover:bg-blue-700 transition-colors">View</button>
                 {isOwner && (
                     <>
-                        <button onClick={onEdit} className="px-4 py-2 rounded-lg bg-green-600 text-white text-xs font-semibold shadow hover:bg-green-700 transition">Edit</button>
-                        <button onClick={onDelete} className="px-4 py-2 rounded-lg bg-red-400 text-white text-xs font-semibold shadow hover:bg-red-500 transition">Delete</button>
+                        <button onClick={onEdit} className="px-4 py-2 rounded-lg bg-green-600 text-white text-xs font-semibold shadow hover:bg-green-700 transition-colors">Edit</button>
+                        <button onClick={onDelete} className="px-4 py-2 rounded-lg bg-red-400 text-white text-xs font-semibold shadow hover:bg-red-500 transition-colors">Delete</button>
                     </>
                 )}
             </div>

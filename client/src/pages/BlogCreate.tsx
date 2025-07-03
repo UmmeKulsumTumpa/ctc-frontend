@@ -99,12 +99,20 @@ const BlogCreate: React.FC = () => {
     return (
         <div className="max-w-3xl mx-auto py-12 px-4">
             <h2 className="text-3xl font-extrabold mb-6 text-center text-blue-800 font-serif tracking-tight drop-shadow-lg">Create New Blog</h2>
+
             {error && <div className="text-red-500 mb-3 text-center text-lg font-semibold">{error}</div>}
             {detailedError && <div className="text-red-400 mb-3 text-center text-xs">{detailedError}</div>}
+
             <BlogForm onSubmit={handleSubmit} submitLabel={loading ? "Creating..." : "Create"} />
+
             <div className="mt-10">
-                <h3 className="text-xl font-bold mb-3 text-green-800">Services <span className="text-xs text-blue-600">(optional)</span></h3>
-                <button type="button" onClick={handleAddServiceForm} className="mb-3 px-4 py-2 bg-blue-200 text-blue-900 rounded-lg font-bold shadow hover:bg-blue-300 transition">Add Service</button>
+
+                <h3 className="text-xl font-bold mb-3 text-blue-800">Services 
+                    <span className="text-xs text-blue-400">(optional)</span>
+                </h3>
+
+                <button type="button" onClick={handleAddServiceForm} className="mb-3 px-4 py-2 bg-blue-50 text-blue-900 border border-blue-700 rounded-lg font-bold shadow hover:bg-blue-300 transition">Add Service</button>
+
                 <ul className="space-y-4 mt-2">
                     {serviceForms.map((svc, idx) => (
                         <li key={idx} className="flex flex-col gap-2 border-b border-blue-100 pb-3">
@@ -118,8 +126,13 @@ const BlogCreate: React.FC = () => {
                         </li>
                     ))}
                 </ul>
-                <h3 className="text-xl font-bold mb-3 mt-10 text-blue-800">Images <span className="text-xs text-green-600">(optional)</span></h3>
-                <button type="button" onClick={handleAddImageForm} className="mb-3 px-4 py-2 bg-blue-200 text-blue-900 rounded-lg font-bold shadow hover:bg-blue-300 transition">Add Image</button>
+
+                <h3 className="text-xl font-bold mb-3 mt-10 text-blue-800">Images 
+                    <span className="text-xs text-blue-400">(optional)</span>
+                </h3>
+
+                <button type="button" onClick={handleAddImageForm} className="mb-3 px-4 py-2 bg-blue-50 border border-blue-700 text-blue-900 rounded-lg font-bold shadow hover:bg-blue-300 transition">Add Image</button>
+
                 <div className="flex flex-wrap gap-6 mt-2">
                     {imageForms.map((img, idx) => (
                         <div key={idx} className="relative flex flex-col items-center">

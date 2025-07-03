@@ -22,7 +22,7 @@ const BlogImageForm = ({ postId, onSubmit, loading }: BlogImageFormProps) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-gradient-to-br from-blue-50 to-green-50 rounded-xl p-4 border border-blue-100 shadow">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white rounded-xl p-4 border border-blue-100 shadow">
             <label className="text-sm font-semibold text-blue-900">
                 Image URL <span className="text-red-500">*</span>
                 <input

@@ -84,7 +84,7 @@ const BlogForm = <T extends BlogCreate | BlogUpdate = BlogCreate | BlogUpdate>({
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-gradient-to-br from-blue-50 to-green-50 rounded-2xl shadow-xl p-8 flex flex-col gap-6 max-w-2xl mx-auto border border-blue-100">
+        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8 flex flex-col gap-6 max-w-2xl mx-auto border border-blue-100">
             {error && <div className="text-red-500 text-sm">{error}</div>}
             <div>
                 <label htmlFor="title" className="block font-bold mb-1 text-[#1a237e]">Title <span className="text-red-500">*</span></label>
@@ -184,7 +184,7 @@ const BlogForm = <T extends BlogCreate | BlogUpdate = BlogCreate | BlogUpdate>({
                 </div>
                 <div className="flex flex-wrap gap-2">
                     {(form.categories || []).map((cat) => (
-                        <span key={cat} className="bg-gradient-to-r from-green-100 to-blue-100 text-green-800 px-3 py-1 rounded-full flex items-center gap-1 border border-green-200">
+                        <span key={cat} className="bg-green-100 text-green-800 px-3 py-1 rounded-full flex items-center gap-1 border border-green-700">
                             {cat}
                             <button type="button" onClick={() => handleCategoryRemove(cat)} className="text-xs text-red-500 ml-1">&times;</button>
                         </span>

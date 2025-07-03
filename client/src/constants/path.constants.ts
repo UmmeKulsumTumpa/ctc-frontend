@@ -9,10 +9,16 @@ export const PATHS = {
     DASHBOARD: '/dashboard',
     PROFILE: '/profile',
     SETTINGS: '/settings',
+    SERVICES: '/services',
+    SERVICE_CREATE: '/services/create',
+    SERVICE_EDIT: '/services/:id/edit',
+    SERVICES_NEARBY: '/services/nearby',
 };
+
 
 export const API_ENDPOINTS = {
     BLOGS: '/posts',
     USERS: '/users',
+    SERVICES: '/services',
 };
 

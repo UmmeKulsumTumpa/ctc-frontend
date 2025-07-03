@@ -43,7 +43,7 @@ const Blog = () => {
 
     return (
         <div className="max-w-5xl mx-auto py-12 min-h-[80vh] px-4">
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-10 ml-50 mr-50">
                 <h2 className="text-4xl font-extrabold text-blue-800 font-serif tracking-tight drop-shadow-sm">Travel Blogs</h2>
                 <button
                     onClick={() => navigate(PATHS.BLOG_CREATE)}

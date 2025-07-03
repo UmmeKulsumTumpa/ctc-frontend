@@ -7,10 +7,11 @@ const NavBar = () => {
 
     const location = useLocation();
     const navLinks = [
-        { to: "/", label: "Home", exact: true },
+        { to: "/", label: "Home" },
         { to: "/blogs", label: "Travel Blogs" },
         { to: "/blogs/create", label: "Create Blog" },
         { to: "/dashboard", label: "Dashboard" },
+        { to: "/services", label: "Services" },
     ];
 
     return (
@@ -22,7 +23,12 @@ const NavBar = () => {
                     </div>
                     <div className="hidden md:flex space-x-8">
                         {navLinks.map((link) => {
-                            const isActive = location.pathname === link.to || (link.to !== '/' && location.pathname.startsWith(link.to));
+                            let isActive = location.pathname === link.to;
+                            
+                            if (!isActive && link.to !== '/' && location.pathname.startsWith(link.to + '/') && !navLinks.some(l => l.to !== link.to && location.pathname === l.to)) {
+                                isActive = true;
+                            }
+
                             return (
                                 <Link
                                     key={link.to}

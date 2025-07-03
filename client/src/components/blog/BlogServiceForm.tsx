@@ -32,7 +32,7 @@ const BlogServiceForm = ({ postId, onSubmit, loading, initialData }: BlogService
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-4 border border-blue-100 shadow">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white rounded-xl p-4 border border-blue-100 shadow">
             <label className="text-sm font-semibold text-blue-900">
                 Service ID <span className="text-red-500">*</span>
                 <input
