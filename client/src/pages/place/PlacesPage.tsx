@@ -102,10 +102,16 @@ const PlacesPage: React.FC = () => {
             ) : error ? (
                 <div className="text-red-500">{error}</div>
             ) : (
-                <ul>
+                <ul className="flex flex-col gap-2">
                     {places.map(place => (
-                        <li key={place.place_id} className="py-3">
-                            <PlaceCard place={place} onDelete={handleDelete} showActions />
+                        <li key={place.place_id} className="py-3 flex flex-col items-center">
+                            <PlaceCard place={place} />
+                            {/* <button
+                                onClick={() => handleDelete(place.place_id)}
+                                className="px-4 py-2 rounded-lg bg-red-400 text-black border border-red-600 text-xs font-semibold shadow hover:bg-red-600 transition"
+                            >
+                                Delete
+                            </button> */}
                         </li>
                     ))}
                 </ul>

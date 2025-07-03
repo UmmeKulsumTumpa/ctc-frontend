@@ -4,6 +4,7 @@ import type { BlogPostService } from "../../types/blog/blog.postservice.type";
 import type { BlogImage } from "../../types/blog/blog.image.type";
 import ServiceDetailsCard from "../service/ServiceDetailsCard";
 import { getServiceById } from "../../services/service.service";
+import PlaceCard from "../place/PlaceCard";
 
 interface BlogDetailCardProps {
     post: BlogPost;
@@ -40,10 +41,24 @@ const BlogDetailCard: React.FC<BlogDetailCardProps> = ({ post, services, images,
         fetchAll();
     }, [services]);
 
+    // Place details rendering (if any)
+    // If post.place_id is available, fetch the place details by id
+    const [place, setPlace] = useState<any>(null);
+    useEffect(() => {
+        if (post.place_id) {
+            import('../../services/place.service').then(({ getPlaceById }) => {
+                getPlaceById(post.place_id!).then(setPlace).catch(() => setPlace(null));
+            });
+        } else {
+            setPlace(null);
+        }
+    }, [post.place_id]);
+
     return (
         <div className="bg-white rounded-2xl shadow-2xl p-8 border border-blue-200 max-w-3xl mx-auto flex flex-col gap-8 font-sans">
 
             <div className="flex flex-col gap-2 mb-2 relative">
+
                 <div className="flex justify-center items-center mb-2">
                     <svg className="w-7 h-7" fill="#e53935" viewBox="0 0 24 24">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
@@ -62,6 +77,13 @@ const BlogDetailCard: React.FC<BlogDetailCardProps> = ({ post, services, images,
                     <span key={cat} className="bg-white px-3 py-1 rounded-full font-semibold shadow-sm border border-green-400 text-green-800">{cat}</span>
                 ))}
             </div>
+
+            {place && (
+                    <div className="mb-4">
+                        <h4 className="font-semibold mb-2 text-blue-700 text-lg text-center">Place Visited</h4>
+                        <PlaceCard place={place} />
+                    </div>
+                )}
 
             <div className="text-blue-900 mb-2 text-lg md:text-xl font-light italic">{post.description}</div>
 
@@ -85,7 +107,7 @@ const BlogDetailCard: React.FC<BlogDetailCardProps> = ({ post, services, images,
                     </div>
                 </div>
             )}
-            
+
             {services && services.length > 0 && (
                 <div>
                     <h4 className="font-semibold mb-2 text-green-700 text-lg">Services</h4>
