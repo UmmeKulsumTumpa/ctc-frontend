@@ -2,6 +2,7 @@ import api from '../utils/api';
 import type { ApiResponse } from '../types/api.response.type';
 import type { AuthResponseData } from '../types/auth.response.type';
 import type { User } from '../types/user.type';
+import { getRefreshToken } from '../utils/storage';
 
 export const signIn = async (email: string, password: string): Promise<AuthResponseData> => {
     try {
@@ -32,7 +33,8 @@ export const refreshAccessToken = async (refreshToken: string): Promise<{ access
 
 export const signOut = async () => {
     try {
-        await api.post('/users/logout');
+        const refreshToken = getRefreshToken();
+        await api.post('/users/logout', { refreshToken });
     } catch (error: any) {
         throw new Error(error?.response?.data?.message || 'Failed to sign out.');
     }

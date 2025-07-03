@@ -7,6 +7,7 @@ import BlogCreate from "../pages/BlogCreate";
 import BlogEdit from "../pages/BlogEdit";
 import SignIn from "../pages/Signin";
 import SignUp from "../pages/Signup";
+import Dashboard from '../pages/Dashboard';
 
 const AppRoutes = () => {
     return (
@@ -18,6 +19,7 @@ const AppRoutes = () => {
             <Route path={PATHS.BLOG_DETAIL} element={<BlogDetail />} />
             <Route path={PATHS.SIGN_IN} element={<SignIn />} />
             <Route path={PATHS.SIGN_UP} element={<SignUp />} />
+            <Route path={PATHS.DASHBOARD} element={<Dashboard />} />
         </Routes>
     );
 }
