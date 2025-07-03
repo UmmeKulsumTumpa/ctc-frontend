@@ -7,10 +7,13 @@ import BlogList from '../components/blog/BlogList';
 import { useNavigate } from 'react-router-dom';
 import { getUser, updateUser, changePassword } from '../services/user.service';
 import { getBlogsByUser } from '../services/blog/blog.service';
+import { getAllWishlists } from '../services/wishlist.service';
+import WishlistCard from '../components/wishlist/WishlistCard';
 import { POST_VISIBILITY } from '../constants/blog.constants';
 import { useAuth } from '../contexts/AuthContext';
 import type { User } from '../types/user.type';
 import type { BlogPost } from '../types/blog/blog.type';
+import type { WishlistResponseDto } from '../types/wishlist.type';
 
 const Dashboard: React.FC = () => {
     const { user } = useAuth();
@@ -21,6 +24,9 @@ const Dashboard: React.FC = () => {
     const [userPosts, setUserPosts] = useState<BlogPost[]>([]);
     const [postsLoading, setPostsLoading] = useState(false);
     const [postFilters, setPostFilters] = useState<{ visibility?: string }>({});
+    const [wishlistFilters, setWishlistFilters] = useState<{ is_public?: boolean }>({});
+    const [userWishlists, setUserWishlists] = useState<WishlistResponseDto[]>([]);
+    const [wishlistLoading, setWishlistLoading] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -44,6 +50,14 @@ const Dashboard: React.FC = () => {
             })
             .finally(() => setPostsLoading(false));
     }, [user, postFilters]);
+
+    useEffect(() => {
+        if (!user?.user_id) return;
+        setWishlistLoading(true);
+        getAllWishlists({ user_id: String(user.user_id), ...(wishlistFilters.is_public !== undefined ? { public: wishlistFilters.is_public } : {}) })
+            .then(setUserWishlists)
+            .finally(() => setWishlistLoading(false));
+    }, [user, wishlistFilters]);
 
     const handleUpdate = async (data: any) => {
         if (!user?.user_id) return;
@@ -88,12 +102,6 @@ const Dashboard: React.FC = () => {
                                             <option key={v} value={v}>{v}</option>
                                         ))}
                                     </select>
-                                    {/* <button
-                                        className="px-4 py-2 rounded bg-blue-600 text-white font-semibold"
-                                        onClick={() => setPostFilters(f => ({ ...f }))}
-                                    >
-                                        Apply
-                                    </button> */}
                                     <button
                                         className="px-4 py-2 rounded bg-gray-200 text-blue-900 font-semibold"
                                         onClick={() => setPostFilters({})}
@@ -111,6 +119,49 @@ const Dashboard: React.FC = () => {
                                         onEditBlog={(blog) => navigate(`/blogs/${blog.post_id}/edit`)}
                                         onDeleteBlog={() => { /** the delete logic will implement later */ }}
                                     />
+                                )}
+                            </div>
+                        )}
+
+                        {current === 'wishlists' && (
+                            <div className="mt-2">
+                                <h3 className="text-xl font-bold text-blue-800 mb-4">Your Wishlists</h3>
+                                <div className="flex flex-wrap gap-4 mb-6 items-center">
+                                    <select
+                                        className="border rounded px-3 py-2"
+                                        value={wishlistFilters?.is_public === undefined ? '' : wishlistFilters.is_public ? 'public' : 'private'}
+                                        onChange={e => {
+                                            const val = e.target.value;
+                                            setWishlistFilters(f => ({ ...f, is_public: val === '' ? undefined : val === 'public' }));
+                                        }}
+                                    >
+                                        <option value="">All Visibility</option>
+                                        <option value="public">Public</option>
+                                        <option value="private">Private</option>
+                                    </select>
+                                    <button
+                                        className="px-4 py-2 rounded bg-gray-200 text-blue-900 font-semibold"
+                                        onClick={() => setWishlistFilters({})}
+                                    >
+                                        Clear
+                                    </button>
+                                </div>
+                                {wishlistLoading ? (
+                                    <div>Loading your wishlists...</div>
+                                ) : userWishlists.length === 0 ? (
+                                    <div>No wishlists found.</div>
+                                ) : (
+                                    <div className="flex flex-col gap-4">
+                                        {userWishlists.map((wishlist: any) => (
+                                            <WishlistCard
+                                                key={wishlist.wishlist_id}
+                                                wishlist={wishlist}
+                                                onEdit={() => {}}
+                                                onDelete={() => {}}
+                                                alwaysShowActions={true}
+                                            />
+                                        ))}
+                                    </div>
                                 )}
                             </div>
                         )}

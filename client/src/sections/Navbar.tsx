@@ -13,6 +13,7 @@ const NavBar = () => {
         { to: "/dashboard", label: "Dashboard" },
         { to: "/services", label: "Services" },
         { to: "/places", label: "Places" },
+        { to: "/wishlists", label: "Wishlists" },
     ];
 
     return (

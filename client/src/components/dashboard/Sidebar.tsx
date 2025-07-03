@@ -10,6 +10,7 @@ const sections = [
     { key: 'update', label: 'Update Profile' },
     { key: 'password', label: 'Change Password' },
     { key: 'posts', label: 'Your Posts' },
+    { key: 'wishlists', label: 'Your Wishlists' },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ current, onSelect }) => {

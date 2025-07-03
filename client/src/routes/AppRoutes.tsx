@@ -16,6 +16,8 @@ import NearbyServicesPage from '../pages/service/NearbyServicesPage';
 import PlacesPage from '../pages/place/PlacesPage';
 import PlaceCreatePage from '../pages/place/PlaceCreatePage';
 
+import WishlistPage from '../pages/wishlist/WishlistPage';
+
 const AppRoutes = () => {
     return (
         <Routes>
@@ -33,6 +35,7 @@ const AppRoutes = () => {
             <Route path={PATHS.SERVICES_NEARBY} element={<NearbyServicesPage />} />
             <Route path={PATHS.PLACES} element={<PlacesPage />} />
             <Route path={PATHS.PLACES_CREATE} element={<PlaceCreatePage />} />
+            <Route path={PATHS.WISHLISTS} element={<WishlistPage />} />
         </Routes>
     );
 }

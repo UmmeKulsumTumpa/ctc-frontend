@@ -15,6 +15,7 @@ export const PATHS = {
     SERVICES_NEARBY: '/services/nearby',
     PLACES: '/places',
     PLACES_CREATE: '/places/create',
+    WISHLISTS: '/wishlists',
 };
 
 
