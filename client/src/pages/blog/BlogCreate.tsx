@@ -1,15 +1,15 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createBlog, deleteBlog } from "../services/blog.service";
-import BlogForm from "../components/blog/BlogForm";
-import type { BlogCreate } from "../types/blog.type";
-import type { BlogPostServiceCreate } from "../types/blog.postservice.type";
-import type { BlogImageCreate } from "../types/blog.image.type";
-import { addPostService } from "../services/blogPostService.service";
-import { addPostImage } from "../services/blogImage.service";
-import BlogServiceForm from "../components/blog/BlogServiceForm";
-import BlogImageForm from "../components/blog/BlogImageForm";
+import { createBlog, deleteBlog } from "../../services/blog/blog.service";
+import BlogForm from "../../components/blog/BlogForm";
+import type { BlogCreate } from "../../types/blog/blog.type";
+import type { BlogPostServiceCreate } from "../../types/blog/blog.postservice.type";
+import type { BlogImageCreate } from "../../types/blog/blog.image.type";
+import { addPostService } from "../../services/blog/blogPostService.service";
+import { addPostImage } from "../../services/blog/blogImage.service";
+import BlogServiceForm from "../../components/blog/BlogServiceForm";
+import BlogImageForm from "../../components/blog/BlogImageForm";
 
 const BlogCreate: React.FC = () => {
     const [error, setError] = useState<string | null>(null);

@@ -1,4 +1,4 @@
-import type { BlogPostService } from "../../types/blog.postservice.type";
+import type { BlogPostService } from "../../types/blog/blog.postservice.type";
 
 interface BlogServiceListProps {
     services: BlogPostService[];

@@ -1,5 +1,3 @@
-// Blog Image types matching backend DTOs
-
 export interface BlogImage {
 	image_id?: string;
 	post_id: string;

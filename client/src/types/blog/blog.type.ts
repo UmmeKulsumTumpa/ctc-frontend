@@ -1,4 +1,4 @@
-import type { EffortLevel, Visibility } from "../constants/blog.constants";
+import type { EffortLevel, Visibility } from "../../constants/blog.constants";
 
 export interface BlogPost {
     post_id: string;

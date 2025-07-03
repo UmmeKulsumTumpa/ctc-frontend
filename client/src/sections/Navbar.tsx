@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import UserInfo from '../components/UserInfo';
+import UserInfo from '../components/user/UserInfo';
 import { useAuth } from '../contexts/AuthContext';
 
 const NavBar = () => {

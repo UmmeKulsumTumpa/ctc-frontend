@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getBlogById, deleteBlog, likeBlog } from "../services/blog.service";
-import { getPostServices } from "../services/blogPostService.service";
-import { getPostImages } from "../services/blogImage.service";
-import type { BlogPost } from "../types/blog.type";
-import BlogDetailCard from "../components/cards/BlogDetailCard";
-import { useAuth } from "../contexts/AuthContext";
+import { getBlogById, deleteBlog, likeBlog } from "../../services/blog/blog.service";
+import { getPostServices } from "../../services/blog/blogPostService.service";
+import { getPostImages } from "../../services/blog/blogImage.service";
+import type { BlogPost } from "../../types/blog/blog.type";
+import BlogDetailCard from "../../components/blog/BlogDetailCard";
+import { useAuth } from "../../contexts/AuthContext";
 
 const BlogDetail = () => {
     const { id } = useParams<{ id: string }>();

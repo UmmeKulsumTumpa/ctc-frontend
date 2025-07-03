@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { BlogImageCreate } from "../../types/blog.image.type";
+import type { BlogImageCreate } from "../../types/blog/blog.image.type";
 
 interface BlogImageFormProps {
     postId: string;

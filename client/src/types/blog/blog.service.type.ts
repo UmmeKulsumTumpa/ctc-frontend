@@ -1,5 +1,3 @@
-// Blog Service types matching backend DTOs
-
 export type ServiceType = 'Hotel' | 'Restaurant' | 'Attraction' | 'Transport';
 
 export interface BlogService {

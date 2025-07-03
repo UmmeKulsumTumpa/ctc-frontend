@@ -1,6 +1,6 @@
-import axios from '../utils/api';
-import type { BlogPostService, BlogPostServiceCreate } from '../types/blog.postservice.type';
-import { BLOG_API_BASE } from '../constants/blog.constants';
+import axios from '../../utils/api';
+import type { BlogPostService, BlogPostServiceCreate } from '../../types/blog/blog.postservice.type';
+import { BLOG_API_BASE } from '../../constants/blog.constants';
 
 export const getPostServices = async (postId: string): Promise<BlogPostService[]> => {
     const res = await axios.get(`${BLOG_API_BASE}/${postId}/services`);

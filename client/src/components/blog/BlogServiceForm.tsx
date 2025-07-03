@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { BlogPostServiceCreate } from "../../types/blog.postservice.type";
+import type { BlogPostServiceCreate } from "../../types/blog/blog.postservice.type";
 
 interface BlogServiceFormProps {
     postId: string;

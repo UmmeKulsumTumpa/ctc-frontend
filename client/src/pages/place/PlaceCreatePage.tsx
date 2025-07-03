@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createPlace } from '../services/place.service';
-import type { PlaceDto } from '../types/place.type';
+import { createPlace } from '../../services/place.service';
+import type { PlaceDto } from '../../types/place.type';
 
 const initialState: Omit<PlaceDto, 'place_id' | 'created_at'> = {
     name: '',

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { BlogCreate, BlogUpdate } from "../../types/blog.type";
+import type { BlogCreate, BlogUpdate } from "../../types/blog/blog.type";
 import type { EffortLevel, Visibility } from "../../constants/blog.constants";
 
 interface BlogFormProps<T = BlogCreate | BlogUpdate> {

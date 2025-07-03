@@ -2,19 +2,19 @@ import { Routes, Route } from "react-router-dom";
 import { PATHS } from "../constants/path.constants";
 
 import Home from '../pages/Home';
-import Blogs from "../pages/Blog";
-import BlogDetail from "../pages/BlogDetail";
-import BlogCreate from "../pages/BlogCreate";
-import BlogEdit from "../pages/BlogEdit";
+import Blogs from "../pages/blog/Blog";
+import BlogDetail from "../pages/blog/BlogDetail";
+import BlogCreate from "../pages/blog/BlogCreate";
+import BlogEdit from "../pages/blog/BlogEdit";
 import SignIn from "../pages/Signin";
 import SignUp from "../pages/Signup";
 import Dashboard from '../pages/Dashboard';
-import ServiceListPage from '../pages/ServiceListPage';
-import ServiceCreatePage from '../pages/ServiceCreatePage';
-import ServiceEditPage from '../pages/ServiceEditPage';
-import NearbyServicesPage from '../pages/NearbyServicesPage';
-import PlacesPage from '../pages/PlacesPage';
-import PlaceCreatePage from '../pages/PlaceCreatePage';
+import ServiceListPage from '../pages/service/ServiceListPage';
+import ServiceCreatePage from '../pages/service/ServiceCreatePage';
+import ServiceEditPage from '../pages/service/ServiceEditPage';
+import NearbyServicesPage from '../pages/service/NearbyServicesPage';
+import PlacesPage from '../pages/place/PlacesPage';
+import PlaceCreatePage from '../pages/place/PlaceCreatePage';
 
 const AppRoutes = () => {
     return (

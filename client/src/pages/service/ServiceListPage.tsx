@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getAllServices } from '../services/service.service';
-import type { ServiceResponseDto, ServiceType } from '../types/service.type';
-import ServiceDetailsCard from '../components/cards/ServiceDetailsCard';
+import { getAllServices } from '../../services/service.service';
+import type { ServiceResponseDto, ServiceType } from '../../types/service.type';
+import ServiceDetailsCard from '../../components/service/ServiceDetailsCard';
 import { useNavigate } from 'react-router-dom';
 
 const ServiceListPage: React.FC = () => {

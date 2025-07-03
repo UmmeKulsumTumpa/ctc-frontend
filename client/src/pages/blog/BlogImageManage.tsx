@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getPostImages, addPostImage, deletePostImage } from "../services/blogImage.service";
-import BlogImageForm from "../components/blog/BlogImageForm";
-import BlogImageList from "../components/blog/BlogImageList";
-import type { BlogImage, BlogImageCreate } from "../types/blog.image.type";
+import { getPostImages, addPostImage, deletePostImage } from "../../services/blog/blogImage.service";
+import BlogImageForm from "../../components/blog/BlogImageForm";
+import BlogImageList from "../../components/blog/BlogImageList";
+import type { BlogImage, BlogImageCreate } from "../../types/blog/blog.image.type";
 
 const BlogImageManage = () => {
     const { id } = useParams<{ id: string }>();

@@ -1,9 +1,9 @@
-import axios from '../utils/api';
-import type { BlogPost } from '../types/blog.type';
-import type { BlogService } from '../types/blog.service.type';
-import type { BlogImage } from '../types/blog.image.type';
-import type { BlogCreate, BlogUpdate } from '../types/blog.type';
-import { BLOG_API_BASE } from '../constants/blog.constants';
+import axios from '../../utils/api';
+import type { BlogPost } from '../../types/blog/blog.type';
+import type { BlogService } from '../../types/blog/blog.service.type';
+import type { BlogImage } from '../../types/blog/blog.image.type';
+import type { BlogCreate, BlogUpdate } from '../../types/blog/blog.type';
+import { BLOG_API_BASE } from '../../constants/blog.constants';
 
 
 export const getAllBlogs = async (filters: { categories?: string[]; visibility?: string } = {}): Promise<BlogPost[]> => {

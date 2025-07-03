@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import BlogForm from "../components/blog/BlogForm";
-import { getBlogById, updateBlog } from "../services/blog.service";
-import { getPostServices, deletePostService, addPostService } from "../services/blogPostService.service";
-import { getPostImages, deletePostImage, addPostImage } from "../services/blogImage.service";
-import BlogServiceList from "../components/blog/BlogServiceList";
-import BlogServiceForm from "../components/blog/BlogServiceForm";
-import BlogImageList from "../components/blog/BlogImageList";
-import BlogImageForm from "../components/blog/BlogImageForm";
-import type { BlogUpdate } from "../types/blog.type";
-import type { BlogPostService, BlogPostServiceCreate } from "../types/blog.postservice.type";
-import type { BlogImage, BlogImageCreate } from "../types/blog.image.type";
+import BlogForm from "../../components/blog/BlogForm";
+import { getBlogById, updateBlog } from "../../services/blog/blog.service";
+import { getPostServices, deletePostService, addPostService } from "../../services/blog/blogPostService.service";
+import { getPostImages, deletePostImage, addPostImage } from "../../services/blog/blogImage.service";
+import BlogServiceList from "../../components/blog/BlogServiceList";
+import BlogServiceForm from "../../components/blog/BlogServiceForm";
+import BlogImageList from "../../components/blog/BlogImageList";
+import BlogImageForm from "../../components/blog/BlogImageForm";
+import type { BlogUpdate } from "../../types/blog/blog.type";
+import type { BlogPostService, BlogPostServiceCreate } from "../../types/blog/blog.postservice.type";
+import type { BlogImage, BlogImageCreate } from "../../types/blog/blog.image.type";
 
 const BlogEdit: React.FC = () => {
     const { id } = useParams<{ id: string }>();

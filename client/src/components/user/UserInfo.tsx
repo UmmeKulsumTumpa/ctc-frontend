@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { getUser } from '../services/user.service';
-import { useAuth } from '../contexts/AuthContext';
-import SignOutButton from './button/SignOutButton';
+import { getUser } from '../../services/user.service';
+import { useAuth } from '../../contexts/AuthContext';
+import SignOutButton from '../button/SignOutButton';
 
 const UserInfo = () => {
     const { user, isAuthenticated } = useAuth();

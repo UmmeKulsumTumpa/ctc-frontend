@@ -1,6 +1,6 @@
-import axios from '../utils/api';
-import type { BlogImage, BlogImageCreate } from '../types/blog.image.type';
-import { BLOG_API_BASE } from '../constants/blog.constants';
+import axios from '../../utils/api';
+import type { BlogImage, BlogImageCreate } from '../../types/blog/blog.image.type';
+import { BLOG_API_BASE } from '../../constants/blog.constants';
 
 export const getPostImages = async (postId: string): Promise<BlogImage[]> => {
     const res = await axios.get(`${BLOG_API_BASE}/${postId}/images`);

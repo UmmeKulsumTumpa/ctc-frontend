@@ -1,5 +1,5 @@
 import React from 'react';
-import type { BlogPost } from '../../types/blog.type';
+import type { BlogPost } from '../../types/blog/blog.type';
 import BlogCard from './BlogCard';
 
 interface BlogListProps {

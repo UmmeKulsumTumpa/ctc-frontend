@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../constants/path.constants';
 
 const SignInForm = () => {
 	const { signIn, loading } = useAuth();
@@ -14,7 +15,7 @@ const SignInForm = () => {
 		setError(null);
 		try {
 			await signIn(email, password);
-			navigate('/blogs');
+			navigate(PATHS.DASHBOARD);
 		} catch (err: any) {
 			setError(err.message || 'Sign in failed');
 		}

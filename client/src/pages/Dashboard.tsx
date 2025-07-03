@@ -3,14 +3,14 @@ import Sidebar from '../components/dashboard/Sidebar';
 import UserProfile from '../components/dashboard/UserProfile';
 import UpdateProfileForm from '../components/dashboard/UpdateProfileForm';
 import ChangePasswordForm from '../components/dashboard/ChangePasswordForm';
-import BlogList from '../components/cards/BlogList';
+import BlogList from '../components/blog/BlogList';
 import { useNavigate } from 'react-router-dom';
 import { getUser, updateUser, changePassword } from '../services/user.service';
-import { getBlogsByUser } from '../services/blog.service';
+import { getBlogsByUser } from '../services/blog/blog.service';
 import { POST_VISIBILITY } from '../constants/blog.constants';
 import { useAuth } from '../contexts/AuthContext';
 import type { User } from '../types/user.type';
-import type { BlogPost } from '../types/blog.type';
+import type { BlogPost } from '../types/blog/blog.type';
 
 const Dashboard: React.FC = () => {
     const { user } = useAuth();

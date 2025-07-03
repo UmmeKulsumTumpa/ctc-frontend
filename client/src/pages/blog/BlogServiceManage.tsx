@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getPostServices, addPostService, deletePostService } from "../services/blogPostService.service";
-import BlogServiceForm from "../components/blog/BlogServiceForm";
-import BlogServiceList from "../components/blog/BlogServiceList";
-import type { BlogPostService, BlogPostServiceCreate } from "../types/blog.postservice.type";
+import { getPostServices, addPostService, deletePostService } from "../../services/blog/blogPostService.service";
+import BlogServiceForm from "../../components/blog/BlogServiceForm";
+import BlogServiceList from "../../components/blog/BlogServiceList";
+import type { BlogPostService, BlogPostServiceCreate } from "../../types/blog/blog.postservice.type";
 
 const BlogServiceManage = () => {
     const { id } = useParams<{ id: string }>();

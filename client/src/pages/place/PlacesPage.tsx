@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getAllPlaces, deletePlace } from '../services/place.service';
-import type { PlaceDto, PlaceFilters } from '../types/place.type';
-import PlaceCard from '../components/cards/PlaceCard';
+import { getAllPlaces, deletePlace } from '../../services/place.service';
+import type { PlaceDto, PlaceFilters } from '../../types/place.type';
+import PlaceCard from '../../components/place/PlaceCard';
 import { useNavigate } from 'react-router-dom';
 
 const PlacesPage: React.FC = () => {

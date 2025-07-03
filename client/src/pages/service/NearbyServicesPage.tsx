@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { findNearbyServices } from '../services/service.service';
-import type { ServiceResponseDto } from '../types/service.type';
-import ServiceDetailsCard from '../components/cards/ServiceDetailsCard';
+import { findNearbyServices } from '../../services/service.service';
+import type { ServiceResponseDto } from '../../types/service.type';
+import ServiceDetailsCard from '../../components/service/ServiceDetailsCard';
 import { useNavigate } from 'react-router-dom';
 
 const DUMMY_LOCATION = { latitude: 34.0522, longitude: -118.2437, radius: 100 };

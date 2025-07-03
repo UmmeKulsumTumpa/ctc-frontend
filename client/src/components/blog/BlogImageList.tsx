@@ -1,4 +1,4 @@
-import type { BlogImage } from "../../types/blog.image.type";
+import type { BlogImage } from "../../types/blog/blog.image.type";
 
 interface BlogImageListProps {
     images: BlogImage[];

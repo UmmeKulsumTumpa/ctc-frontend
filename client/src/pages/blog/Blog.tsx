@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllBlogs, deleteBlog } from "../services/blog.service";
-import type { BlogPost } from "../types/blog.type";
-import BlogList from "../components/cards/BlogList";
-import { useAuth } from "../contexts/AuthContext";
-import { PATHS } from "../constants/path.constants";
+import { getAllBlogs, deleteBlog } from "../../services/blog/blog.service";
+import type { BlogPost } from "../../types/blog/blog.type";
+import BlogList from "../../components/blog/BlogList";
+import { useAuth } from "../../contexts/AuthContext";
+import { PATHS } from "../../constants/path.constants";
 
 const Blog = () => {
     const [blogs, setBlogs] = useState<BlogPost[]>([]);

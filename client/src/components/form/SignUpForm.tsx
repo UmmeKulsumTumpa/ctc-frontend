@@ -1,5 +1,8 @@
+
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../constants/path.constants';
 
 const SignUpForm = () => {
 	const { signUp, loading } = useAuth();
@@ -7,12 +10,14 @@ const SignUpForm = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState<string | null>(null);
+	const navigate = useNavigate();
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setError(null);
 		try {
 			await signUp({ email, username, password });
+			navigate(PATHS.DASHBOARD);
 		} catch (err: any) {
 			setError(err.message || 'Sign up failed');
 		}
