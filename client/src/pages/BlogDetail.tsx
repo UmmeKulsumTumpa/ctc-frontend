@@ -4,8 +4,6 @@ import { getBlogById, deleteBlog, likeBlog } from "../services/blog.service";
 import { getPostServices } from "../services/blogPostService.service";
 import { getPostImages } from "../services/blogImage.service";
 import type { BlogPost } from "../types/blog.type";
-import type { BlogService } from "../types/blog.service.type";
-import type { BlogImage } from "../types/blog.image.type";
 import BlogDetailCard from "../components/cards/BlogDetailCard";
 import { useAuth } from "../contexts/AuthContext";
 

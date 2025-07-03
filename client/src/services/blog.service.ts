@@ -5,8 +5,16 @@ import type { BlogImage } from '../types/blog.image.type';
 import type { BlogCreate, BlogUpdate } from '../types/blog.type';
 import { BLOG_API_BASE } from '../constants/blog.constants';
 
-export const getAllBlogs = async (): Promise<BlogPost[]> => {
-    const res = await axios.get(BLOG_API_BASE);
+
+export const getAllBlogs = async (filters: { categories?: string[]; visibility?: string } = {}): Promise<BlogPost[]> => {
+    const params: any = {};
+    if (filters.categories && filters.categories.length > 0) {
+        params.category = filters.categories[0]; 
+    }
+    if (filters.visibility) {
+        params.visibility = filters.visibility;
+    }
+    const res = await axios.get(BLOG_API_BASE, { params });
     return res.data.data;
 };
 
@@ -41,4 +49,9 @@ export const deleteBlog = async (id: string): Promise<void> => {
 
 export const likeBlog = async (id: string): Promise<void> => {
     await axios.post(`${BLOG_API_BASE}/${id}/like`);
+};
+
+export const getBlogsByUser = async (userId: string): Promise<BlogPost[]> => {
+    const res = await axios.get(BLOG_API_BASE + `?user_id=${userId}`);
+    return res.data.data;
 };

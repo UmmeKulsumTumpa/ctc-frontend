@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { getAllServices, deleteService, findNearbyServices } from '../services/service.service';
-import type { ServiceResponseDto } from '../types/service.type';
+import { getAllServices } from '../services/service.service';
+import type { ServiceResponseDto, ServiceType } from '../types/service.type';
 import ServiceDetailsCard from '../components/cards/ServiceDetailsCard';
 import { useNavigate } from 'react-router-dom';
 
-const DUMMY_LOCATION = { latitude: 23.8103, longitude: 90.4125, radius: 5 }; // Example: Dhaka, 5km
-
 const ServiceListPage: React.FC = () => {
     const [services, setServices] = useState<ServiceResponseDto[]>([]);
-    const [nearbyServices, setNearbyServices] = useState<ServiceResponseDto[]>([]);
+    const [filters, setFilters] = useState<{ type?: ServiceType; name?: string; address?: string; latitude?: string; longitude?: string }>({});
+    const [filterInputs, setFilterInputs] = useState<{ type?: ServiceType; name?: string; address?: string; latitude?: string; longitude?: string }>({});
     const [loading, setLoading] = useState(true);
-    const [nearbyLoading, setNearbyLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [nearbyError, setNearbyError] = useState<string | null>(null);
     const navigate = useNavigate();
 
     // will Replace with real admin check
@@ -20,33 +17,15 @@ const ServiceListPage: React.FC = () => {
 
     const fetchServices = () => {
         setLoading(true);
-        getAllServices()
+        getAllServices(filters)
             .then(setServices)
             .catch(() => setError('Failed to load services'))
             .finally(() => setLoading(false));
     };
 
-    const fetchNearbyServices = () => {
-        setNearbyLoading(true);
-        setNearbyError(null);
-        findNearbyServices(DUMMY_LOCATION)
-            .then(setNearbyServices)
-            .catch(() => setNearbyError('Failed to load nearby services'))
-            .finally(() => setNearbyLoading(false));
-    };
-
     useEffect(() => {
         fetchServices();
-    }, []);
-
-    const handleDelete = async (id: string) => {
-        try {
-            await deleteService(id);
-            setServices(prev => prev.filter(s => s.service_id !== id));
-        } catch {
-            setError('Failed to delete service');
-        }
-    };
+    }, [filters]);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
@@ -62,6 +41,69 @@ const ServiceListPage: React.FC = () => {
                     Nearby Services
                 </button>
             </div>
+
+            <div className="flex flex-wrap gap-4 mb-6">
+                <select
+                    className="border rounded px-3 py-2"
+                    value={filterInputs.type || ''}
+                    onChange={e => setFilterInputs(f => ({ ...f, type: e.target.value as ServiceType || undefined }))}
+                >
+                    <option value="">All Types</option>
+                    <option value="Hotel">Hotel</option>
+                    <option value="Restaurant">Restaurant</option>
+                    <option value="Attraction">Attraction</option>
+                    <option value="Transport">Transport</option>
+                </select>
+
+                <input
+                    className="border rounded px-3 py-2"
+                    placeholder="Name"
+                    value={filterInputs.name || ''}
+                    onChange={e => setFilterInputs(f => ({ ...f, name: e.target.value }))}
+                />
+
+                <input
+                    className="border rounded px-3 py-2"
+                    placeholder="Address"
+                    value={filterInputs.address || ''}
+                    onChange={e => setFilterInputs(f => ({ ...f, address: e.target.value }))}
+                />
+
+                <input
+                    className="border rounded px-3 py-2"
+                    placeholder="Latitude"
+                    value={filterInputs.latitude || ''}
+                    onChange={e => setFilterInputs(f => ({ ...f, latitude: e.target.value }))}
+                />
+
+                <input
+                    className="border rounded px-3 py-2"
+                    placeholder="Longitude"
+                    value={filterInputs.longitude || ''}
+                    onChange={e => setFilterInputs(f => ({ ...f, longitude: e.target.value }))}
+                />
+
+                <button
+                    className="px-4 py-2 rounded bg-blue-600 text-white font-semibold"
+                    onClick={() => setFilters({
+                        ...filterInputs,
+                        type: filterInputs.type || undefined,
+                        name: filterInputs.name || undefined,
+                        address: filterInputs.address || undefined,
+                        latitude: filterInputs.latitude || undefined,
+                        longitude: filterInputs.longitude || undefined,
+                    })}
+                >
+                    Apply
+                </button>
+                <button
+                    className="px-4 py-2 rounded bg-gray-200 text-blue-900 font-semibold"
+                    onClick={() => { setFilters({}); setFilterInputs({}); }}
+                >
+                    Clear
+                </button>
+            </div>
+
             {isAdmin && <button onClick={() => navigate('/services/create')} className="mb-4">Create New Service</button>}
             <div className="flex flex-col gap-6">
                 {services.map(service => (

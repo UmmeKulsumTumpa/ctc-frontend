@@ -10,6 +10,8 @@ const Blog = () => {
     const [blogs, setBlogs] = useState<BlogPost[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [filters, setFilters] = useState<{ categories?: string[]; visibility?: string }>({});
+    const [categoryInput, setCategoryInput] = useState('');
     const { user } = useAuth();
     const userId = user?.user_id?.toString() ?? null;
     const navigate = useNavigate();
@@ -32,18 +34,19 @@ const Blog = () => {
     };
 
     useEffect(() => {
-        getAllBlogs()
+        setLoading(true);
+        getAllBlogs(filters)
             .then(setBlogs)
             .catch((err) => setError(err.message))
             .finally(() => setLoading(false));
-    }, []);
+    }, [filters]);
 
     if (loading) return <div className="text-center mt-16 text-blue-600 text-xl font-bold animate-pulse">Loading blogs...</div>;
     if (error) return <div className="text-center mt-16 text-red-500 text-lg font-semibold">{error}</div>;
 
     return (
-        <div className="max-w-5xl mx-auto py-12 min-h-[80vh] px-4">
-            <div className="flex items-center justify-between mb-10 ml-50 mr-50">
+        <div className="max-w-5xl mx-auto py-12 min-h-[80vh] px-4 ml-50 mr-50">
+            <div className="flex items-center justify-between mb-10">
                 <h2 className="text-4xl font-extrabold text-blue-800 font-serif tracking-tight drop-shadow-sm">Travel Blogs</h2>
                 <button
                     onClick={() => navigate(PATHS.BLOG_CREATE)}
@@ -52,6 +55,29 @@ const Blog = () => {
                     + Create Blog
                 </button>
             </div>
+
+            <div className="flex flex-wrap gap-4 mb-8 justify-center">
+                <input
+                    className="border rounded px-3 py-2"
+                    placeholder="Category"
+                    value={categoryInput}
+                    onChange={e => setCategoryInput(e.target.value)}
+                />
+                
+                <button
+                    className="px-4 py-2 rounded bg-blue-600 text-white font-semibold"
+                    onClick={() => setFilters(f => ({ ...f, categories: categoryInput ? [categoryInput] : undefined }))}
+                >
+                    Apply
+                </button>
+                <button
+                    className="px-4 py-2 rounded bg-gray-200 text-blue-900 font-semibold"
+                    onClick={() => { setFilters({}); setCategoryInput(''); }}
+                >
+                    Clear
+                </button>
+            </div>
+
             <BlogList
                 blogs={blogs}
                 userId={userId}

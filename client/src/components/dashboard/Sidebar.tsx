@@ -9,7 +9,7 @@ const sections = [
     { key: 'profile', label: 'Profile' },
     { key: 'update', label: 'Update Profile' },
     { key: 'password', label: 'Change Password' },
-    // { key: 'posts', label: 'Your Blogs' }, // To be implemented later
+    { key: 'posts', label: 'Your Posts' },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ current, onSelect }) => {
