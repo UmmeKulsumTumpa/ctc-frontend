@@ -13,6 +13,8 @@ export const PATHS = {
     SERVICE_CREATE: '/services/create',
     SERVICE_EDIT: '/services/:id/edit',
     SERVICES_NEARBY: '/services/nearby',
+    PLACES: '/places',
+    PLACES_CREATE: '/places/create',
 };
 
 
