@@ -1,70 +1,42 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { PlannedPlace } from '../../types/travelPlan.type';
 
-
-
 export interface TravelPlanPlacesFormProps {
-    places: Partial<PlannedPlace>[];
-    setPlaces: React.Dispatch<React.SetStateAction<Partial<PlannedPlace>[]>>;
+    initialData?: Partial<PlannedPlace>;
+    onChange: (data: Partial<PlannedPlace>) => void;
+    formError?: boolean;
 }
 
+const TravelPlanPlacesForm: React.FC<TravelPlanPlacesFormProps> = ({ initialData = {}, onChange, formError }) => {
+    const [place, setPlace] = useState<Partial<PlannedPlace>>(initialData);
 
+    useEffect(() => { setPlace(initialData); }, [initialData]);
 
-const TravelPlanPlacesForm: React.FC<TravelPlanPlacesFormProps> = ({ places, setPlaces }) => {
-    const [newPlaceId, setNewPlaceId] = useState('');
-    const [newPriority, setNewPriority] = useState('');
-    const [error, setError] = useState<string | null>(null);
-
-    const handleAdd = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!newPlaceId) {
-            setError('Place ID is required.');
-            return;
-        }
-
-        setError(null);
-        setPlaces(prev => [...prev, { place_id: newPlaceId }]);
-        setNewPlaceId('');
-        setNewPriority('');
-    };
-
-    const handleRemove = (idx: number) => {
-        setPlaces(prev => prev.filter((_, i) => i !== idx));
+    const handleChange = (field: keyof PlannedPlace, value: any) => {
+        const updated = { ...place, [field]: value };
+        setPlace(updated);
+        onChange(updated);
     };
 
     return (
-        <div className="mt-4 bg-gray-50 p-4 rounded">
-            <h3 className="font-bold mb-2">Planned Places</h3>
-            <div className="flex gap-2 mb-2">
-                <input
-                    placeholder="Place ID"
-                    value={newPlaceId}
-                    onChange={e => setNewPlaceId(e.target.value)}
-                    className="border rounded px-2 py-1"
-                    required
-                />
-                <select
-                    value={newPriority}
-                    onChange={e => setNewPriority(e.target.value)}
-                    className="border rounded px-2 py-1"
-                >
-                    <option value="">Priority</option>
-                    <option value="MustVisit">MustVisit</option>
-                    <option value="Optional">Optional</option>
-                </select>
-                <button type="button" className="bg-green-600 text-white px-3 py-1 rounded" onClick={handleAdd}>Add</button>
-            </div>
-            {error && <div className="text-red-600 mb-2">{error}</div>}
-            <ul className="space-y-1">
-                {places.map((place, idx) => (
-                    <li key={idx} className="flex items-center gap-2">
-                        <span className="font-mono">{place.place_id}</span>
-                        <span className="text-xs text-gray-500">{place.priority}</span>
-                        <button type="button" className="text-red-500 ml-2" onClick={() => handleRemove(idx)}>Remove</button>
-                    </li>
-                ))}
-            </ul>
+        <div className="bg-gray-50 p-4 rounded">
+            <input
+                placeholder="Place ID"
+                value={place.place_id || ''}
+                onChange={e => handleChange('place_id', e.target.value)}
+                className="border rounded px-2 py-1 flex-1"
+                required
+            />
+            <select
+                value={place.priority || ''}
+                onChange={e => handleChange('priority', e.target.value as any)}
+                className="border rounded px-2 py-1 flex-1 mt-2"
+            >
+                <option value="">Priority</option>
+                <option value="MustVisit">MustVisit</option>
+                <option value="Optional">Optional</option>
+            </select>
+            {formError && <div className="text-xs text-red-500 mt-1">Required fields missing</div>}
         </div>
     );
 };

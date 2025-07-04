@@ -1,69 +1,43 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { PlanParticipant } from '../../types/travelPlan.type';
 
 export interface TravelPlanParticipantsFormProps {
-    participants: Partial<PlanParticipant>[];
-    setParticipants: React.Dispatch<React.SetStateAction<Partial<PlanParticipant>[]>>;
+    initialData?: Partial<PlanParticipant>;
+    onChange: (data: Partial<PlanParticipant>) => void;
+    formError?: boolean;
 }
 
-const TravelPlanParticipantsForm: React.FC<TravelPlanParticipantsFormProps> = ({ participants, setParticipants }) => {
-    const [newUserId, setNewUserId] = useState('');
-    const [newRole, setNewRole] = useState('Editor');
-    const [error, setError] = useState<string | null>(null);
+const TravelPlanParticipantsForm: React.FC<TravelPlanParticipantsFormProps> = ({ initialData = {}, onChange, formError }) => {
+    const [participant, setParticipant] = useState<Partial<PlanParticipant>>(initialData);
 
-    const handleAdd = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!newUserId) {
-            setError('User ID is required.');
-            return;
-        }
-        // if (!newRole) {
-        //     setError('Role is required.');
-        //     return;
-        // }
-        setError(null);
-        setParticipants(prev => [...prev, { user_id: Number(newUserId)}]);
-        setNewUserId('');
-        setNewRole('Editor');
-    };
+    useEffect(() => { setParticipant(initialData); }, [initialData]);
 
-    const handleRemove = (idx: number) => {
-        setParticipants(prev => prev.filter((_, i) => i !== idx));
+    const handleChange = (field: keyof PlanParticipant, value: any) => {
+        const updated = { ...participant, [field]: value };
+        setParticipant(updated);
+        onChange(updated);
     };
 
     return (
-        <div className="mt-4 bg-gray-50 p-4 rounded">
-            <h3 className="font-bold mb-2">Participants</h3>
-            <div className="flex gap-2 mb-2">
-                <input
-                    placeholder="User ID"
-                    value={newUserId}
-                    onChange={e => setNewUserId(e.target.value)}
-                    className="border rounded px-2 py-1"
-                    required
-                />
-                <select
-                    value={newRole}
-                    onChange={e => setNewRole(e.target.value)}
-                    className="border rounded px-2 py-1"
-                >
-                    <option value="Owner">Owner</option>
-                    <option value="Editor">Editor</option>
-                    <option value="Viewer">Viewer</option>
-                </select>
-                <button type="button" className="bg-purple-600 text-white px-3 py-1 rounded" onClick={handleAdd}>Add</button>
-            </div>
-            {error && <div className="text-red-600 mb-2">{error}</div>}
-            <ul className="space-y-1">
-                {participants.map((participant, idx) => (
-                    <li key={idx} className="flex items-center gap-2">
-                        <span className="font-mono">{participant.user_id}</span>
-                        <span className="text-xs text-gray-500">{participant.role_permission}</span>
-                        <button type="button" className="text-red-500 ml-2" onClick={() => handleRemove(idx)}>Remove</button>
-                    </li>
-                ))}
-            </ul>
+        <div className="bg-gray-50 p-4 rounded">
+            <input
+                placeholder="User ID"
+                value={participant.user_id ?? ''}
+                onChange={e => handleChange('user_id', Number(e.target.value))}
+                className="border rounded px-2 py-1 flex-1"
+                required
+            />
+            <select
+                value={participant.role_permission ?? ''}
+                onChange={e => handleChange('role_permission', e.target.value as any)}
+                className="border rounded px-2 py-1 flex-1 mt-2"
+            >
+                <option value="">Select Role (optional)</option>
+                <option value="Owner">Owner</option>
+                <option value="Editor">Editor</option>
+                <option value="Viewer">Viewer</option>
+            </select>
+            {formError && <div className="text-xs text-red-500 mt-1">Required fields missing</div>}
         </div>
     );
 };
