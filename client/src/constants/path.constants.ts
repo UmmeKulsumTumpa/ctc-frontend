@@ -18,6 +18,7 @@ export const PATHS = {
     WISHLISTS: '/wishlists',
     TRAVEL_PLANS: '/travel-plans',
     TRAVEL_PLAN_CREATE: '/travel-plans/create',
+    TRAVEL_PLAN_DETAILS: '/travelplan/:planId',
 };
 
 

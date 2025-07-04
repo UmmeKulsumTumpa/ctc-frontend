@@ -57,6 +57,9 @@ const TravelPlanCard: React.FC<TravelPlanCardProps> = ({ plan }) => {
                     ))}
                 </ul>
             </div>
+            <div className="flex justify-end mt-4">
+                <a href={`/travelplan/${plan.plan_id}`} className="px-4 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">View</a>
+            </div>
         </div>
     );
 };
