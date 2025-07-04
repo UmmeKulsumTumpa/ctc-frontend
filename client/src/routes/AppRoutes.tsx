@@ -15,8 +15,9 @@ import ServiceEditPage from '../pages/service/ServiceEditPage';
 import NearbyServicesPage from '../pages/service/NearbyServicesPage';
 import PlacesPage from '../pages/place/PlacesPage';
 import PlaceCreatePage from '../pages/place/PlaceCreatePage';
-
 import WishlistPage from '../pages/wishlist/WishlistPage';
+import TravelPlanPage from '../pages/travelplan/TravelPlanPage';
+import TravelPlanCreatePage from '../pages/travelplan/TravelPlanCreatePage';
 
 const AppRoutes = () => {
     return (
@@ -36,6 +37,8 @@ const AppRoutes = () => {
             <Route path={PATHS.PLACES} element={<PlacesPage />} />
             <Route path={PATHS.PLACES_CREATE} element={<PlaceCreatePage />} />
             <Route path={PATHS.WISHLISTS} element={<WishlistPage />} />
+            <Route path={PATHS.TRAVEL_PLANS} element={<TravelPlanPage />} />
+            <Route path={PATHS.TRAVEL_PLAN_CREATE} element={<TravelPlanCreatePage />} />
         </Routes>
     );
 }

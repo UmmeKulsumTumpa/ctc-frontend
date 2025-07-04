@@ -16,6 +16,8 @@ export const PATHS = {
     PLACES: '/places',
     PLACES_CREATE: '/places/create',
     WISHLISTS: '/wishlists',
+    TRAVEL_PLANS: '/travel-plans',
+    TRAVEL_PLAN_CREATE: '/travel-plans/create',
 };
 
 
@@ -23,5 +25,6 @@ export const API_ENDPOINTS = {
     BLOGS: '/posts',
     USERS: '/users',
     SERVICES: '/services',
+    TRAVEL_PLANS: '/travel-plans',
 };
 

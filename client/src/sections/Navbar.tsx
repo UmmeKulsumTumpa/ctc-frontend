@@ -14,6 +14,7 @@ const NavBar = () => {
         { to: "/services", label: "Services" },
         { to: "/places", label: "Places" },
         { to: "/wishlists", label: "Wishlists" },
+        { to: "/travel-plans", label: "Travel Plan"},
     ];
 
     return (
