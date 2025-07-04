@@ -19,6 +19,7 @@ import WishlistPage from '../pages/wishlist/WishlistPage';
 import TravelPlanPage from '../pages/travelplan/TravelPlanPage';
 import TravelPlanCreatePage from '../pages/travelplan/TravelPlanCreatePage';
 import TravelPlanDetails from '../pages/travelplan/TravelPlanDetails';
+import TravelPlanEditPage from '../pages/travelplan/TravelPlanEditPage';
 
 const AppRoutes = () => {
     return (
@@ -41,6 +42,7 @@ const AppRoutes = () => {
             <Route path={PATHS.TRAVEL_PLANS} element={<TravelPlanPage />} />
             <Route path={PATHS.TRAVEL_PLAN_DETAILS} element={<TravelPlanDetails />} />
             <Route path={PATHS.TRAVEL_PLAN_CREATE} element={<TravelPlanCreatePage />} />
+            <Route path="/travelplan/:planId/edit" element={<TravelPlanEditPage />} />
         </Routes>
     );
 }

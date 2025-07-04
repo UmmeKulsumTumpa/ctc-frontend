@@ -4,7 +4,7 @@ import type { User } from '../types/user.type';
 import type { UpdateUserRequest, ChangePasswordRequest } from '../types/user.request.type';
 
 export const getUser = async (userId: number): Promise<User> => {
-    const res = await api.get<ApiResponse<User[]>>('/users', { params: { id: userId } });
+    const res = await api.get<ApiResponse<User[]>>('/users', { params: { user_id: userId } });
     if (!res.data.data || res.data.data.length === 0) throw new Error('User not found');
     return res.data.data[0];
 };

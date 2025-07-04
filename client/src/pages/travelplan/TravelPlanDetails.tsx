@@ -1,25 +1,59 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 import { useParams } from 'react-router-dom';
-import { getTravelPlanById, getPlanParticipants, getPlanComments, getPlannedPlaces, getPlanServices } from '../../services/travelPlan.service';
+import { getTravelPlanById, getPlanParticipants, getPlanComments, getPlannedPlaces, getPlanServices, addPlanComment } from '../../services/travelPlan.service';
 import { getUser } from '../../services/user.service';
 import { getPlaceById } from '../../services/place.service';
 import { getServiceById } from '../../services/service.service';
 import ServiceCard from '../../components/service/ServiceCard';
 import PlaceCard from '../../components/place/PlaceCard';
 import type { TravelPlan, PlanParticipant, PlanComment } from '../../types/travelPlan.type';
-import type { User } from '../../types/user.type';
 import type { PlaceDto } from '../../types/place.type';
 import type { ServiceResponseDto } from '../../types/service.type';
 
 const TravelPlanDetails: React.FC = () => {
     const { planId } = useParams<{ planId: string }>();
+    const { user } = useAuth();
     const [plan, setPlan] = useState<TravelPlan | null>(null);
-    const [participants, setParticipants] = useState<(PlanParticipant & { user: User | null; idx: number })[]>([]);
+    const [participants, setParticipants] = useState<PlanParticipant[]>([]);
+
+    const [isOwner, setIsOwner] = useState(false);
+    const [isEditor, setIsEditor] = useState(false);
+    const canComment = isOwner || isEditor;
+
+    const [showCommentForm, setShowCommentForm] = useState(false);
+    const [commentContent, setCommentContent] = useState('');
+    const [commentLoading, setCommentLoading] = useState(false);
+
+    const handleNavigateToEdit = () => {
+        if (!planId) return;
+        window.location.href = `/travelplan/${planId}/edit`;
+    };
+
+    const handleAddComment = async () => {
+        if (!planId || !commentContent.trim()) return;
+        setCommentLoading(true);
+        try {
+            const newComment = await addPlanComment(planId, { content: commentContent });
+            setComments(prev => [
+                { ...newComment, user: user || null },
+                ...prev
+            ]);
+            setCommentContent('');
+            setShowCommentForm(false);
+        } catch (err) {
+            alert('Failed to add comment.');
+        } finally {
+            setCommentLoading(false);
+        }
+    };
+
     const [comments, setComments] = useState<(PlanComment & { user: User | null })[]>([]);
     const [places, setPlaces] = useState<PlaceDto[]>([]);
     const [services, setServices] = useState<ServiceResponseDto[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
 
     useEffect(() => {
         if (!planId) return;
@@ -36,23 +70,22 @@ const TravelPlanDetails: React.FC = () => {
                     getPlanServices(planId)
                 ]);
 
-                const participantsWithUser = await Promise.all(
-                    rawParticipants.map(async (p, idx) => {
-                        try {
-                            const user = await getUser(p.user_id);
-                            return { ...p, user, idx };
-                        } catch {
-                            return { ...p, user: null, idx };
-                        }
-                    })
-                );
-                setParticipants(participantsWithUser);
+                if (user) {
+                    const userIdNum = typeof user.user_id === 'string' ? parseInt(user.user_id, 10) : user.user_id;
+                    setIsOwner(rawParticipants.some(p => Number(p.user_id) === userIdNum && p.role_permission === 'Owner'));
+                    setIsEditor(rawParticipants.some(p => Number(p.user_id) === userIdNum && p.role_permission === 'Editor'));
+                } else {
+                    setIsOwner(false);
+                    setIsEditor(false);
+                }
+
+                setParticipants(rawParticipants);
 
                 const commentsWithUser = await Promise.all(
                     rawComments.map(async c => {
                         try {
-                            const user = await getUser(c.user_id);
-                            return { ...c, user };
+                            const userObj = await getUser(c.user_id);
+                            return { ...c, user: userObj };
                         } catch {
                             return { ...c, user: null };
                         }
@@ -88,7 +121,7 @@ const TravelPlanDetails: React.FC = () => {
                 setLoading(false);
             }
         })();
-    }, [planId]);
+    }, [planId, user]);
 
     if (loading) return <div className="p-8 text-lg text-gray-600 animate-pulse">Loading travel plan details...</div>;
     if (error) return <div className="p-8 text-red-600 font-semibold bg-red-100 border border-red-300 rounded-md">{error}</div>;
@@ -96,7 +129,12 @@ const TravelPlanDetails: React.FC = () => {
 
     return (
         <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8 mt-10 border border-gray-200">
-            <h1 className="text-4xl font-extrabold text-blue-900 mb-6">{plan.name}</h1>
+            <div className="flex items-center justify-between mb-6">
+                <h1 className="text-4xl font-extrabold text-blue-900">{plan.name}</h1>
+                {isOwner && (
+                    <button onClick={handleNavigateToEdit} className="px-4 py-2 rounded bg-green-600 text-white font-semibold hover:bg-green-700 transition">Edit</button>
+                )}
+            </div>
             <div className="text-gray-600 mb-4 space-x-4">
                 <span>Status: <span className="text-blue-700 font-medium">{plan.status || 'N/A'}</span></span>
                 <span>| Start: {plan.start_date || '-'}</span>
@@ -107,13 +145,14 @@ const TravelPlanDetails: React.FC = () => {
             <section className="mb-10">
                 <h2 className="text-2xl font-semibold text-blue-800 mb-4 border-b pb-2">👥 Participants</h2>
                 <ul className="space-y-3">
-                    {participants.length === 0 ? <li className="text-gray-500">No participants</li> : participants.map(p => (
-                        <li key={p.idx} className="p-3 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-100 transition">
-                            <span className="font-bold text-blue-700">{p.user?.username || `User ${p.user_id}`}</span>
-                            <span className="ml-2 text-xs text-gray-500">({p.role_permission})</span>
-                            <div className="text-sm text-gray-600">
-                                {p.user?.email && <span>{p.user.email}</span>}
-                                <span className="ml-3 italic">{p.is_going ? 'Going ✅' : 'Not going ❌'}</span>
+                    {participants.length === 0 ? <li className="text-gray-500">No participants</li> : participants.map((p, idx) => (
+                        <li key={idx} className="p-3 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-100 transition flex items-center justify-between">
+                            <div>
+                                <span className="font-bold text-blue-700">User {p.user_id}</span>
+                                <span className="ml-2 text-xs text-gray-500">({p.role_permission})</span>
+                                <div className="text-sm text-gray-600">
+                                    <span className="ml-3 italic">{p.is_going ? 'Going ✅' : 'Not going ❌'}</span>
+                                </div>
                             </div>
                         </li>
                     ))}
@@ -142,7 +181,29 @@ const TravelPlanDetails: React.FC = () => {
 
             {/* Comments */}
             <section className="mb-4">
-                <h2 className="text-2xl font-semibold text-blue-800 mb-4 border-b pb-2">💬 Comments</h2>
+                <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-2xl font-semibold text-blue-800 border-b pb-2">💬 Comments</h2>
+                    {canComment && (
+                        <button onClick={() => setShowCommentForm(v => !v)} className="px-3 py-1 rounded bg-blue-100 text-blue-800 text-sm font-semibold hover:bg-blue-200 transition">
+                            {showCommentForm ? 'Cancel' : 'Add Comment'}
+                        </button>
+                    )}
+                </div>
+                {showCommentForm && (
+                    <form onSubmit={e => { e.preventDefault(); handleAddComment(); }} className="mb-4 flex gap-2">
+                        <input
+                            type="text"
+                            value={commentContent}
+                            onChange={e => setCommentContent(e.target.value)}
+                            className="flex-1 border rounded px-3 py-2 text-sm"
+                            placeholder="Write your comment..."
+                            disabled={commentLoading}
+                        />
+                        <button type="submit" className="px-4 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition" disabled={commentLoading || !commentContent.trim()}>
+                            {commentLoading ? 'Adding...' : 'Add'}
+                        </button>
+                    </form>
+                )}
                 <ul className="space-y-3">
                     {comments.length === 0 ? <li className="text-gray-500">No comments</li> : comments.map(c => (
                         <li key={c.comment_id} className="bg-gray-50 p-4 rounded-md shadow-sm hover:bg-gray-100 transition">

@@ -1,5 +1,6 @@
 import type { CreateTravelPlanRequestDto } from '../types/travelPlan.type';
 import type { PlanParticipant, PlanComment } from '../types/travelPlan.type';
+import type { UpdateTravelPlanRequestDto } from '../types/travelPlan.type';
 import api from '../utils/api';
 import type {
     TravelPlan,
@@ -77,8 +78,6 @@ export const getPlanComments = async (plan_id: string): Promise<PlanComment[]> =
 
 // all the create services
 export const createTravelPlan = async (data: CreateTravelPlanRequestDto): Promise<TravelPlan> => {
-    console.log(('travel plan' , data));
-
     const res = await api.post(TRAVEL_PLANS_BASE_URL, data);
     return res.data.data;
 };
@@ -101,5 +100,34 @@ export const addPlanComment = async (plan_id: string, data: { content: string })
 export const addPlanService = async (plan_id: string, data: TravelPlanServiceUnifiedDTO): Promise<TravelPlanServiceUnifiedDTO> => {
     const res = await api.post(`${TRAVEL_PLANS_BASE_URL}/${plan_id}/services`, data);
     return res.data.data;
+};
+
+// all the update servics
+export const updateTravelPlan = async (plan_id: string, data: UpdateTravelPlanRequestDto): Promise<TravelPlan> => {
+    const res = await api.patch(`${TRAVEL_PLANS_BASE_URL}/${plan_id}`, data);
+    return res.data.data;
+};
+
+export const updatePlanService = async (plan_id: string, service_id: string, data: TravelPlanServiceUnifiedDTO): Promise<TravelPlanServiceUnifiedDTO> => {
+    const res = await api.patch(`${TRAVEL_PLANS_BASE_URL}/${plan_id}/services/${service_id}`, data);
+    return res.data.data;
+};
+
+export const updatePlanParticipant = async (plan_id: string, user_id: number, data: Partial<PlanParticipant>): Promise<PlanParticipant> => {
+    const res = await api.patch(`${TRAVEL_PLANS_BASE_URL}/${plan_id}/participants/${user_id}`, data);
+    return res.data.data;
+};
+
+// all the delete services
+export const deletePlanService = async (plan_id: string, service_id: string): Promise<void> => {
+    await api.delete(`${TRAVEL_PLANS_BASE_URL}/${plan_id}/services/${service_id}`);
+};
+
+export const deleteTravelPlan = async (plan_id: string): Promise<void> => {
+    await api.delete(`${TRAVEL_PLANS_BASE_URL}/${plan_id}`);
+};
+
+export const deletePlanParticipant = async (plan_id: string, user_id: number): Promise<void> => {
+    await api.delete(`${TRAVEL_PLANS_BASE_URL}/${plan_id}/participants/${user_id}`);
 };
 
