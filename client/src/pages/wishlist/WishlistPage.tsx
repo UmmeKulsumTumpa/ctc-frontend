@@ -1,69 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { getAllWishlists, createWishlist, updateWishlist, deleteWishlist } from '../../services/wishlist.service';
-import type { WishlistResponseDto, CreateWishlistRequestDto, UpdateWishlistRequestDto } from '../../types/wishlist.type';
+import React from 'react';
 import WishlistCard from '../../components/wishlist/WishlistCard';
 import WishlistForm from '../../components/wishlist/WishlistForm';
+import { useWishlist } from '../../contexts/WishlistContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 const WishlistPage: React.FC = () => {
-    const [wishlists, setWishlists] = useState<WishlistResponseDto[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [editing, setEditing] = useState<WishlistResponseDto | null>(null);
-    const [showForm, setShowForm] = useState(false);
 
-    const fetchWishlists = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            const data = await getAllWishlists();
-            setWishlists(data);
-        } catch (err) {
-            setError('Failed to load wishlists');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchWishlists();
-    }, []);
-
-
-    const handleCreate = (values: CreateWishlistRequestDto) => {
-        createWishlist(values)
-            .then(() => {
-                setShowForm(false);
-                fetchWishlists();
-            })
-            .catch(() => setError('Failed to create wishlist'));
-    };
-
-    const handleEdit = (wishlist: WishlistResponseDto) => {
-        setEditing(wishlist);
-        setShowForm(true);
-    };
-
-
-    const handleUpdate = (values: UpdateWishlistRequestDto) => {
-        if (!editing) return;
-        updateWishlist(editing.wishlist_id, values)
-            .then(() => {
-                setEditing(null);
-                setShowForm(false);
-                fetchWishlists();
-            })
-            .catch(() => setError('Failed to update wishlist'));
-    };
-
-    const handleDelete = async (id: string) => {
-        if (!window.confirm('Are you sure you want to delete this wishlist?')) return;
-        try {
-            await deleteWishlist(id);
-            fetchWishlists();
-        } catch {
-            setError('Failed to delete wishlist');
-        }
-    };
+    const {
+        allPublicWishlists,
+        loading,
+        error,
+        editing,
+        showForm,
+        handleCreate,
+        handleEdit,
+        handleUpdate,
+        handleDelete,
+        setShowForm,
+        setEditing,
+    } = useWishlist();
+    const { user } = useAuth();
 
     if (showForm) {
         return (
@@ -73,7 +29,7 @@ const WishlistPage: React.FC = () => {
                 </h2>
                 <WishlistForm
                     initialValues={editing || {}}
-                    onSubmit={editing ? handleUpdate : handleCreate}
+                    onSubmit={editing ? (v => handleUpdate(v as any)) : (v => handleCreate(v as any))}
                     submitText={editing ? 'Update' : 'Create'}
                     onBack={() => { setShowForm(false); setEditing(null); }}
                 />
@@ -94,22 +50,25 @@ const WishlistPage: React.FC = () => {
             >
                 + Add Wishlist
             </button>
-            
+
             <div className="mt-6 flex flex-col gap-4">
                 {loading ? (
                     <div>Loading...</div>
-                ) : wishlists.length === 0 ? (
+                ) : allPublicWishlists.length === 0 ? (
                     <div>No wishlists found.</div>
                 ) : (
-                    wishlists.map((wishlist) => (
-                        <WishlistCard
-                            key={wishlist.wishlist_id}
-                            wishlist={wishlist}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
-                            alwaysShowActions={false}
-                        />
-                    ))
+                    allPublicWishlists.map((wishlist) => {
+                        const isOwner = user && String(user.user_id) === String(wishlist.user_id);
+                        return (
+                            <WishlistCard
+                                key={wishlist.wishlist_id}
+                                wishlist={wishlist}
+                                onEdit={isOwner ? handleEdit : undefined}
+                                onDelete={isOwner ? handleDelete : undefined}
+                                alwaysShowActions={false}
+                            />
+                        );
+                    })
                 )}
             </div>
         </div>

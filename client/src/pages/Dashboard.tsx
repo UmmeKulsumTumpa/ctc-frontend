@@ -4,16 +4,16 @@ import UserProfile from '../components/dashboard/UserProfile';
 import UpdateProfileForm from '../components/dashboard/UpdateProfileForm';
 import ChangePasswordForm from '../components/dashboard/ChangePasswordForm';
 import BlogList from '../components/blog/BlogList';
+import WishlistForm from '../components/wishlist/WishlistForm';
 import { useNavigate } from 'react-router-dom';
 import { getUser, updateUser, changePassword } from '../services/user.service';
 import { getBlogsByUser } from '../services/blog/blog.service';
-import { getAllWishlists } from '../services/wishlist.service';
 import WishlistCard from '../components/wishlist/WishlistCard';
+import { useWishlist } from '../contexts/WishlistContext';
 import { POST_VISIBILITY } from '../constants/blog.constants';
 import { useAuth } from '../contexts/AuthContext';
 import type { User } from '../types/user.type';
 import type { BlogPost } from '../types/blog/blog.type';
-import type { WishlistResponseDto } from '../types/wishlist.type';
 
 const Dashboard: React.FC = () => {
     const { user } = useAuth();
@@ -25,8 +25,24 @@ const Dashboard: React.FC = () => {
     const [postsLoading, setPostsLoading] = useState(false);
     const [postFilters, setPostFilters] = useState<{ visibility?: string }>({});
     const [wishlistFilters, setWishlistFilters] = useState<{ is_public?: boolean }>({});
-    const [userWishlists, setUserWishlists] = useState<WishlistResponseDto[]>([]);
-    const [wishlistLoading, setWishlistLoading] = useState(false);
+    const {
+        userWishlists,
+        loading: wishlistLoading,
+        handleEdit: handleWishlistEdit,
+        handleDelete: handleWishlistDelete,
+        editing,
+        showForm,
+        handleUpdate,
+        handleCreate,
+        setShowForm,
+        setEditing,
+    } = useWishlist();
+    
+    // Filter wishlists for dashboard section (private/public)
+    const filteredUserWishlists = userWishlists.filter(w => {
+        if (wishlistFilters.is_public === undefined) return true;
+        return w.is_public === wishlistFilters.is_public;
+    });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -51,15 +67,7 @@ const Dashboard: React.FC = () => {
             .finally(() => setPostsLoading(false));
     }, [user, postFilters]);
 
-    useEffect(() => {
-        if (!user?.user_id) return;
-        setWishlistLoading(true);
-        getAllWishlists({ user_id: String(user.user_id), ...(wishlistFilters.is_public !== undefined ? { public: wishlistFilters.is_public } : {}) })
-            .then(setUserWishlists)
-            .finally(() => setWishlistLoading(false));
-    }, [user, wishlistFilters]);
-
-    const handleUpdate = async (data: any) => {
+    const handleProfileUpdate = async (data: any) => {
         if (!user?.user_id) return;
         setUpdateLoading(true);
         await updateUser(user.user_id, data);
@@ -146,18 +154,32 @@ const Dashboard: React.FC = () => {
                                         Clear
                                     </button>
                                 </div>
+                                <button
+                                    className="px-5 py-2 rounded-lg bg-blue-700 text-white font-bold shadow hover:bg-blue-900 transition mb-6"
+                                    onClick={() => { setShowForm(true); setEditing(null); }}
+                                >
+                                    + Add Wishlist
+                                </button>
+                                {showForm && (
+                                    <WishlistForm
+                                        initialValues={editing || {}}
+                                        onSubmit={editing ? (v => handleUpdate(v as any)) : (v => handleCreate(v as any))}
+                                        submitText={editing ? 'Update' : 'Create'}
+                                        onBack={() => { setShowForm(false); setEditing(null); }}
+                                    />
+                                )}
                                 {wishlistLoading ? (
                                     <div>Loading your wishlists...</div>
-                                ) : userWishlists.length === 0 ? (
+                                ) : filteredUserWishlists.length === 0 ? (
                                     <div>No wishlists found.</div>
                                 ) : (
                                     <div className="flex flex-col gap-4">
-                                        {userWishlists.map((wishlist: any) => (
+                                        {filteredUserWishlists.map((wishlist: any) => (
                                             <WishlistCard
                                                 key={wishlist.wishlist_id}
                                                 wishlist={wishlist}
-                                                onEdit={() => {}}
-                                                onDelete={() => {}}
+                                                onEdit={handleWishlistEdit}
+                                                onDelete={handleWishlistDelete}
                                                 alwaysShowActions={true}
                                             />
                                         ))}
@@ -166,7 +188,7 @@ const Dashboard: React.FC = () => {
                             </div>
                         )}
                         {current === 'update' && (
-                            <UpdateProfileForm initial={profile} onSubmit={handleUpdate} loading={updateLoading} />
+                            <UpdateProfileForm initial={profile} onSubmit={handleProfileUpdate} loading={updateLoading} />
                         )}
                         {current === 'password' && (
                             <ChangePasswordForm onSubmit={handleChangePassword} loading={updateLoading} />
