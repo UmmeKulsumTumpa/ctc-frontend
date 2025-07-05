@@ -48,60 +48,92 @@ const WishlistForm: React.FC<WishlistFormProps> = ({ initialValues = {}, onSubmi
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white p-8 rounded-lg shadow max-w-lg mx-auto border border-gray-200">
+        <form onSubmit={handleSubmit} className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 space-y-6 max-w-2xl mx-auto">
             {typeof onBack === 'function' && (
-                <button type="button" onClick={onBack} className="mb-2 text-blue-700 hover:underline font-semibold w-fit">
-                    ← Back
+                <button 
+                    type="button" 
+                    onClick={onBack} 
+                    className="mb-4 px-6 py-3 rounded-xl bg-gray-200 text-gray-800 font-bold border-2 border-gray-300 hover:bg-gray-300 transition-all"
+                >
+                    ← Back to Dreams
                 </button>
             )}
 
-            <input
-                name="place_id"
-                value={form.place_id}
-                onChange={handleChange}
-                placeholder="Place ID"
-                required
-                className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-
-            <input
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Wishlist Name"
-                required
-                className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-
-            <input
-                name="region"
-                value={form.region}
-                onChange={handleChange}
-                placeholder="Region"
-                className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-
-            <input
-                name="theme"
-                value={form.theme}
-                onChange={handleChange}
-                placeholder="Theme"
-                className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-
-            <label className="flex items-center gap-2 text-gray-700">
+            <div>
+                <label className="block font-bold mb-2 text-blue-900 text-lg">
+                    Place ID <span className="text-red-500">*</span>
+                </label>
                 <input
-                    type="checkbox"
-                    name="is_public"
-                    checked={!!form.is_public}
+                    name="place_id"
+                    value={form.place_id}
                     onChange={handleChange}
-                    className="accent-blue-600"
+                    placeholder="Enter the place identifier"
+                    required
+                    className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors text-lg"
                 />
-                Public
-            </label>
+            </div>
+
+            <div>
+                <label className="block font-bold mb-2 text-emerald-900 text-lg">
+                    Dream Collection Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="Give your wishlist a memorable name..."
+                    required
+                    className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors text-lg"
+                />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label className="block font-bold mb-2 text-blue-900">
+                        Region
+                    </label>
+                    <input
+                        name="region"
+                        value={form.region}
+                        onChange={handleChange}
+                        placeholder="Which region are you dreaming of?"
+                        className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors"
+                    />
+                </div>
+
+                <div>
+                    <label className="block font-bold mb-2 text-emerald-900">
+                        Theme
+                    </label>
+                    <input
+                        name="theme"
+                        value={form.theme}
+                        onChange={handleChange}
+                        placeholder="Adventure, relaxation, culture..."
+                        className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
+                    />
+                </div>
+            </div>
+
+            <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
+                <label className="flex items-center gap-3 text-blue-900 font-bold cursor-pointer">
+                    <input
+                        type="checkbox"
+                        name="is_public"
+                        checked={!!form.is_public}
+                        onChange={handleChange}
+                        className="w-5 h-5 accent-blue-600"
+                    />
+                    🌍 Make this dream collection public
+                    <span className="text-sm text-blue-600 font-normal ml-2">(Others can discover and be inspired)</span>
+                </label>
+            </div>
             
-            <button type="submit" className="bg-blue-700 text-white px-5 py-2 rounded-lg font-bold shadow hover:bg-blue-900 transition mt-2">
-                {submitText}
+            <button 
+                type="submit" 
+                className="w-full mt-8 px-8 py-4 rounded-xl bg-emerald-600 text-white font-bold shadow-lg hover:bg-emerald-700 transition-colors text-lg"
+            >
+                ✨ {submitText}
             </button>
         </form>
     );

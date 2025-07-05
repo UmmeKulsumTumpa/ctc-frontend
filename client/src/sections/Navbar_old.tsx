@@ -22,61 +22,61 @@ const NavBar = () => {
         { to: "/dashboard", label: "Dashboard" },
     ];
 
-    const closeSidebar = () => setIsSidebarOpen(false);
-
     return (
         <>
-            {/* Top bar with toggle button and login/logout */}
-            <div className="fixed top-0 left-0 right-0 z-[60] bg-white border-b-2 border-emerald-200 shadow-lg">
-                <div className="flex items-center justify-between p-4">
-                    <div className="flex items-center">
-                        <button
-                            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                            className="p-2 text-emerald-900 hover:bg-emerald-50 rounded-lg mr-4"
-                        >
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                        </button>
-                        <Link to="/" className="text-2xl font-bold text-emerald-900">
-                            Travel Connect
+            {/* Top bar for login/logout when not authenticated */}
+            {!isAuthenticated && (
+                <div className="fixed top-0 right-0 z-50 p-4">
+                    <div className="flex space-x-3">
+                        <Link to="/signin">
+                            <button className="bg-sky-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg hover:bg-sky-700 transition">
+                                Login
+                            </button>
+                        </Link>
+                        <Link to="/signup">
+                            <button className="bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg hover:bg-emerald-700 transition">
+                                Sign Up
+                            </button>
                         </Link>
                     </div>
-
-                    {/* Login/Logout buttons */}
-                    {!isAuthenticated && (
-                        <div className="flex space-x-3">
-                            <Link to="/signin">
-                                <button className="bg-sky-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg hover:bg-sky-700 transition">
-                                    Login
-                                </button>
-                            </Link>
-                            <Link to="/signup">
-                                <button className="bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg hover:bg-emerald-700 transition">
-                                    Sign Up
-                                </button>
-                            </Link>
-                        </div>
-                    )}
                 </div>
-            </div>
+            )}
 
-            {/* Invisible click area to close sidebar */}
+            {/* Sidebar Toggle Button */}
+            <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="fixed top-4 left-4 z-50 p-3 bg-emerald-600 text-white rounded-lg shadow-lg hover:bg-emerald-700 transition-all"
+            >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+
+            {/* Sidebar Overlay */}
             {isSidebarOpen && (
                 <div 
-                    className="fixed top-16 left-80 right-0 bottom-0 z-[45]"
-                    onClick={closeSidebar}
+                    className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                    onClick={() => setIsSidebarOpen(false)}
                 />
             )}
 
             {/* Collapsible Left Sidebar */}
-            <nav className={`fixed left-0 top-0 h-full w-80 bg-white border-r-2 border-emerald-200 shadow-xl z-[50] transform transition-transform duration-300 ${
+            <nav className={`fixed left-0 top-0 h-full w-64 bg-white border-r-2 border-emerald-200 shadow-xl z-40 transform transition-transform duration-300 ${
                 isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}>
-                <div className="flex flex-col h-full pt-20">
+                <div className="flex flex-col h-full">
+                    {/* Logo */}
+                    <div className="p-6 border-b border-emerald-200 mt-16">
+                        <Link to="/" className="flex items-center" onClick={() => setIsSidebarOpen(false)}>
+                            <h2 className="text-3xl font-extrabold text-emerald-900 tracking-tight">
+                                Travel Connect
+                            </h2>
+                        </Link>
+                    </div>
+
                     {/* Main Navigation */}
-                    <div className="flex-1 p-6">
-                        <div className="space-y-3">
+                    <div className="flex-1 p-4">
+                        <div className="space-y-2">
                             {navLinks.map((link) => {
                                 let isActive = location.pathname === link.to;
                                 
@@ -88,8 +88,8 @@ const NavBar = () => {
                                     <Link
                                         key={link.to}
                                         to={link.to}
-                                        onClick={closeSidebar}
-                                        className={`block px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-200 ${
+                                        onClick={() => setIsSidebarOpen(false)}
+                                        className={`block px-4 py-3 rounded-xl font-semibold transition-all duration-200 ${
                                             isActive 
                                                 ? 'bg-emerald-600 text-white shadow-lg' 
                                                 : 'text-emerald-900 hover:bg-emerald-50 hover:text-emerald-700'
@@ -105,10 +105,10 @@ const NavBar = () => {
                         {isAuthenticated && (
                             <>
                                 <div className="mt-8 pt-6 border-t border-emerald-200">
-                                    <div className="text-sm font-bold text-emerald-900 mb-4 px-6">
+                                    <div className="text-sm font-bold text-emerald-900 mb-3 px-4">
                                         Personal
                                     </div>
-                                    <div className="space-y-3">
+                                    <div className="space-y-2">
                                         {authLinks.map((link) => {
                                             let isActive = location.pathname === link.to;
                                             
@@ -120,8 +120,8 @@ const NavBar = () => {
                                                 <Link
                                                     key={link.to}
                                                     to={link.to}
-                                                    onClick={closeSidebar}
-                                                    className={`block px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-200 ${
+                                                    onClick={() => setIsSidebarOpen(false)}
+                                                    className={`block px-4 py-3 rounded-xl font-semibold transition-all duration-200 ${
                                                         isActive 
                                                             ? 'bg-sky-600 text-white shadow-lg' 
                                                             : 'text-sky-900 hover:bg-sky-50 hover:text-sky-700'

@@ -53,44 +53,135 @@ const ServiceEditPage: React.FC = () => {
         }
     };
 
-    if (!fetched) return <div>Loading...</div>;
+    if (!fetched) return (
+        <div className="min-h-screen bg-white">
+            <div className="max-w-4xl mx-auto px-6 py-16">
+                <div className="text-center text-blue-600 text-xl font-semibold">
+                    Loading service details...
+                </div>
+            </div>
+        </div>
+    );
 
     return (
-        <div className="max-w-xl mx-auto bg-white rounded-xl shadow-lg p-8 mt-8 border border-blue-100">
-            <h2 className="text-2xl font-bold text-blue-800 mb-6 text-center">Edit Service</h2>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1">
-                    <label className="font-semibold text-blue-900">Name:</label>
-                    <input name="name" value={form.name || ''} onChange={handleChange} required className="border-2 border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+        <div className="min-h-screen bg-white">
+            <div className="max-w-4xl mx-auto px-6 py-16">
+                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8">
+                    <h2 className="text-5xl font-bold text-blue-900 mb-2 text-center">Update Travel Service</h2>
+                    <p className="text-xl text-gray-600 text-center mb-8">Make changes to keep your service information fresh and accurate</p>
+                    
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block font-semibold text-blue-900 mb-2">Service Name</label>
+                                <input 
+                                    name="name" 
+                                    value={form.name || ''} 
+                                    onChange={handleChange} 
+                                    required 
+                                    className="w-full border-2 border-blue-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                                    placeholder="Enter service name"
+                                />
+                            </div>
+                            
+                            <div>
+                                <label className="block font-semibold text-blue-900 mb-2">Service Type</label>
+                                <select 
+                                    name="type" 
+                                    value={form.type || ''} 
+                                    onChange={handleChange} 
+                                    required 
+                                    className="w-full border-2 border-emerald-200 rounded-lg px-4 py-3 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+                                >
+                                    <option value="">Select a type</option>
+                                    {SERVICE_TYPES.map(type => (
+                                        <option key={type} value={type}>{type}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block font-semibold text-blue-900 mb-2">Latitude</label>
+                                <input 
+                                    name="latitude" 
+                                    type="number" 
+                                    step="any"
+                                    value={form.latitude ?? ''} 
+                                    onChange={handleChange} 
+                                    className="w-full border-2 border-blue-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                                    placeholder="e.g., 23.8103"
+                                />
+                            </div>
+                            
+                            <div>
+                                <label className="block font-semibold text-blue-900 mb-2">Longitude</label>
+                                <input 
+                                    name="longitude" 
+                                    type="number" 
+                                    step="any"
+                                    value={form.longitude ?? ''} 
+                                    onChange={handleChange} 
+                                    className="w-full border-2 border-blue-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                                    placeholder="e.g., 90.4125"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block font-semibold text-blue-900 mb-2">Address</label>
+                            <input 
+                                name="address" 
+                                value={form.address || ''} 
+                                onChange={handleChange} 
+                                className="w-full border-2 border-blue-200 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+                                placeholder="Enter full address"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block font-semibold text-blue-900 mb-2">Description</label>
+                            <textarea 
+                                name="description" 
+                                value={form.description || ''} 
+                                onChange={handleChange} 
+                                rows={4}
+                                className="w-full border-2 border-emerald-200 rounded-lg px-4 py-3 focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+                                placeholder="Share what makes this service special..."
+                            />
+                        </div>
+
+                        <div className="flex gap-4 pt-4">
+                            <button 
+                                type="submit" 
+                                disabled={loading} 
+                                className="flex-1 px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold shadow-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                            >
+                                {loading ? 'Updating Service...' : 'Update Service'}
+                            </button>
+                            <button 
+                                type="button" 
+                                onClick={() => navigate('/services')}
+                                className="px-6 py-3 rounded-lg bg-gray-200 text-gray-700 font-semibold shadow-md hover:bg-gray-300 transition-all"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+
+                    {error && (
+                        <div className="mt-6 p-4 bg-red-50 border-2 border-red-200 rounded-lg">
+                            <div className="text-red-700 font-semibold text-center">{error}</div>
+                        </div>
+                    )}
+                    {success && (
+                        <div className="mt-6 p-4 bg-emerald-50 border-2 border-emerald-200 rounded-lg">
+                            <div className="text-emerald-700 font-semibold text-center">Service updated successfully! Redirecting...</div>
+                        </div>
+                    )}
                 </div>
-                <div className="flex flex-col gap-1">
-                    <label className="font-semibold text-blue-900">Type:</label>
-                    <select name="type" value={form.type || ''} onChange={handleChange} required className="border-2 border-green-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-300">
-                        {SERVICE_TYPES.map(type => (
-                            <option key={type} value={type}>{type}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="flex flex-col gap-1">
-                    <label className="font-semibold text-blue-900">Latitude:</label>
-                    <input name="latitude" type="number" value={form.latitude ?? ''} onChange={handleChange} className="border-2 border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300" />
-                </div>
-                <div className="flex flex-col gap-1">
-                    <label className="font-semibold text-blue-900">Longitude:</label>
-                    <input name="longitude" type="number" value={form.longitude ?? ''} onChange={handleChange} className="border-2 border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300" />
-                </div>
-                <div className="flex flex-col gap-1">
-                    <label className="font-semibold text-blue-900">Address:</label>
-                    <input name="address" value={form.address || ''} onChange={handleChange} className="border-2 border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300" />
-                </div>
-                <div className="flex flex-col gap-1">
-                    <label className="font-semibold text-blue-900">Description:</label>
-                    <textarea name="description" value={form.description || ''} onChange={handleChange} className="border-2 border-green-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-300 min-h-[80px]" />
-                </div>
-                <button type="submit" disabled={loading} className="mt-2 px-6 py-2 rounded-lg bg-blue-600 text-white font-bold shadow-lg hover:bg-blue-700 transition-all text-base">{loading ? 'Updating...' : 'Update'}</button>
-            </form>
-            {error && <div className="text-red-500 mt-3 text-center font-semibold">{error}</div>}
-            {success && <div className="text-green-600 mt-3 text-center font-semibold">Service updated successfully!</div>}
+            </div>
         </div>
     );
 };

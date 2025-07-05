@@ -20,25 +20,69 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service, onDelete, showAction
     };
 
     return (
-        <div className="bg-gray-50 rounded-xl shadow-lg p-6 border border-blue-200 flex flex-col gap-2 font-sans">
-            <h3 className="text-xl font-bold text-blue-800 mb-1">{service.name}</h3>
-            <p className="text-sm text-green-800">Type: {service.type}</p>
-            {service.address && <p className="text-sm text-blue-900">Address: {service.address}</p>}
-            {service.description && <p className="text-sm text-blue-900">Description: {service.description}</p>}
-            {service.latitude && service.longitude && (
-                <p className="text-sm text-blue-900">Location: {service.latitude}, {service.longitude}</p>
-            )}
-            {service.transport && (
-                <div className="mt-2 p-2 bg-blue-50 rounded border border-blue-100">
-                    <strong className="font-semibold text-blue-700">Transport Specialization:</strong>
-                    <div>Mode: {service.transport.mode}</div>
-                    {service.transport.operator && <div>Operator: {service.transport.operator}</div>}
+        <div className="bg-white border-2 border-blue-200 shadow-lg rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group">
+            <div className="flex items-start justify-between mb-4">
+                <div className="flex-1">
+                    <h3 className="text-2xl font-bold text-blue-900 mb-2 group-hover:text-blue-700 transition-colors">
+                        🏨 {service.name}
+                    </h3>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                        <span className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm font-bold border border-emerald-200">
+                            {service.type}
+                        </span>
+                    </div>
                 </div>
-            )}
+            </div>
+
+            <div className="space-y-3 mb-4">
+                {service.address && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-3">
+                        <div className="text-blue-600 text-sm font-medium mb-1">📍 Address</div>
+                        <div className="text-blue-900 font-semibold">{service.address}</div>
+                    </div>
+                )}
+
+                {service.description && (
+                    <div className="bg-gray-50 border border-gray-200 rounded-xl p-3">
+                        <div className="text-gray-600 text-sm font-medium mb-1">📝 Description</div>
+                        <div className="text-gray-900 font-semibold">{service.description}</div>
+                    </div>
+                )}
+
+                {service.latitude && service.longitude && (
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+                        <div className="text-emerald-600 text-sm font-medium mb-1">🌍 Coordinates</div>
+                        <div className="text-emerald-900 font-semibold">{service.latitude}, {service.longitude}</div>
+                    </div>
+                )}
+
+                {service.transport && (
+                    <div className="bg-purple-50 border border-purple-200 rounded-xl p-3">
+                        <div className="text-purple-600 text-sm font-medium mb-2">🚗 Transport Details</div>
+                        <div className="space-y-1">
+                            <div className="text-purple-900 font-semibold">Mode: {service.transport.mode}</div>
+                            {service.transport.operator && (
+                                <div className="text-purple-900 font-semibold">Operator: {service.transport.operator}</div>
+                            )}
+                        </div>
+                    </div>
+                )}
+            </div>
+
             {showActions && (
-                <div className="flex gap-2 mt-3">
-                    <button onClick={handleEdit} className="px-4 py-2 rounded-lg bg-green-600 text-white text-xs font-semibold shadow hover:bg-green-700 transition">Edit</button>
-                    <button onClick={handleDelete} className="px-4 py-2 rounded-lg bg-red-500 text-white text-xs font-semibold shadow hover:bg-red-600 transition">Delete</button>
+                <div className="flex gap-3 pt-4 border-t border-blue-100">
+                    <button 
+                        onClick={handleEdit} 
+                        className="px-4 py-2 rounded-xl bg-blue-600 text-white font-bold shadow-lg hover:bg-blue-700 transition-colors"
+                    >
+                        ✏️ Edit
+                    </button>
+                    <button 
+                        onClick={handleDelete} 
+                        className="px-4 py-2 rounded-xl bg-red-500 text-white font-bold shadow-lg hover:bg-red-600 transition-colors"
+                    >
+                        🗑️ Delete
+                    </button>
                 </div>
             )}
         </div>

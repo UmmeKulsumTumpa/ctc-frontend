@@ -27,7 +27,7 @@ const NavBar = () => {
     return (
         <>
             {/* Top bar with toggle button and login/logout */}
-            <div className="fixed top-0 left-0 right-0 z-[60] bg-white border-b-2 border-emerald-200 shadow-lg">
+            <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b-2 border-emerald-200 shadow-lg">
                 <div className="flex items-center justify-between p-4">
                     <div className="flex items-center">
                         <button
@@ -61,16 +61,16 @@ const NavBar = () => {
                 </div>
             </div>
 
-            {/* Invisible click area to close sidebar */}
+            {/* Overlay */}
             {isSidebarOpen && (
                 <div 
-                    className="fixed top-16 left-80 right-0 bottom-0 z-[45]"
+                    className="fixed inset-0 bg-black bg-opacity-50 z-40"
                     onClick={closeSidebar}
                 />
             )}
 
             {/* Collapsible Left Sidebar */}
-            <nav className={`fixed left-0 top-0 h-full w-80 bg-white border-r-2 border-emerald-200 shadow-xl z-[50] transform transition-transform duration-300 ${
+            <nav className={`fixed left-0 top-0 h-full w-80 bg-white border-r-2 border-emerald-200 shadow-xl z-50 transform transition-transform duration-300 ${
                 isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
             }`}>
                 <div className="flex flex-col h-full pt-20">

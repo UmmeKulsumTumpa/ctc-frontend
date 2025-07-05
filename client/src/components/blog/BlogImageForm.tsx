@@ -22,26 +22,36 @@ const BlogImageForm = ({ postId, onSubmit, loading }: BlogImageFormProps) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white rounded-xl p-4 border border-blue-100 shadow">
-            <label className="text-sm font-semibold text-blue-900">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6 bg-white rounded-3xl p-6 border border-blue-200 shadow-lg">
+            <label className="text-sm font-bold text-blue-900">
                 Image URL <span className="text-red-500">*</span>
                 <input
                     type="url"
                     value={url}
                     onChange={e => setUrl(e.target.value)}
-                    className="border-2 border-blue-200 rounded px-3 py-2 w-full mt-1 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    placeholder="https://example.com/image.jpg"
+                    className="border-2 border-blue-200 rounded-xl px-4 py-3 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors"
                     required
                 />
             </label>
-            <input
-                type="text"
-                placeholder="Caption (optional)"
-                value={caption}
-                onChange={e => setCaption(e.target.value)}
-                className="border-2 border-green-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-300"
-            />
-            <button type="submit" className="bg-blue-200 text-blue-900 rounded-lg px-5 py-2 mt-2 font-bold shadow hover:bg-blue-300 transition" disabled={loading}>
-                {loading ? "Adding..." : "Add Image"}
+
+            <label className="text-sm font-bold text-emerald-900">
+                Image Caption
+                <input
+                    type="text"
+                    placeholder="Describe this beautiful moment..."
+                    value={caption}
+                    onChange={e => setCaption(e.target.value)}
+                    className="border-2 border-emerald-200 rounded-xl px-4 py-3 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
+                />
+            </label>
+
+            <button
+                type="submit"
+                className="bg-blue-600 text-white rounded-xl px-6 py-3 mt-4 font-bold shadow-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={loading || !url}
+            >
+                {loading ? "Adding Image..." : "Add Image to Blog"}
             </button>
         </form>
     );

@@ -35,35 +35,60 @@ const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({ onSubmit, loadi
     return (
         <form
             onSubmit={handleSubmit}
-            className="bg-white rounded-lg shadow p-6 w-full max-w-lg mx-auto space-y-4"
+            className="w-full max-w-2xl mx-auto"
         >
-            <h3 className="text-xl font-bold text-blue-900">Change Password</h3>
-            {error && <div className="text-red-500">{error}</div>}
-            {success && <div className="text-green-600">{success}</div>}
-            <input
-                name="oldPassword"
-                value={form.oldPassword}
-                onChange={handleChange}
-                placeholder="Old Password"
-                className="w-full border p-2 rounded"
-                type="password"
-                required
-            />
-            <input
-                name="newPassword"
-                value={form.newPassword}
-                onChange={handleChange}
-                placeholder="New Password"
-                className="w-full border p-2 rounded"
-                type="password"
-                required
-            />
+            {error && (
+                <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-xl px-4 py-3 font-semibold mb-6">
+                    {error}
+                </div>
+            )}
+            {success && (
+                <div className="bg-green-50 border-2 border-green-200 text-green-700 rounded-xl px-4 py-3 font-semibold mb-6">
+                    {success}
+                </div>
+            )}
+            
+            <div className="space-y-6">
+                <div>
+                    <label className="block font-bold mb-2 text-sky-900">
+                        Current Password
+                    </label>
+                    <input
+                        name="oldPassword"
+                        value={form.oldPassword}
+                        onChange={handleChange}
+                        placeholder="Enter your current password"
+                        className="w-full border-2 border-sky-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-colors"
+                        type="password"
+                        required
+                    />
+                </div>
+                
+                <div>
+                    <label className="block font-bold mb-2 text-sky-900">
+                        New Password
+                    </label>
+                    <input
+                        name="newPassword"
+                        value={form.newPassword}
+                        onChange={handleChange}
+                        placeholder="Choose a strong new password"
+                        className="w-full border-2 border-sky-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-colors"
+                        type="password"
+                        required
+                    />
+                    <p className="text-sky-600 text-sm mt-2">
+                        Use a mix of letters, numbers, and symbols for security
+                    </p>
+                </div>
+            </div>
+            
             <button
                 type="submit"
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+                className="w-full mt-8 px-8 py-4 rounded-xl bg-sky-600 text-white font-bold shadow-lg hover:bg-sky-700 transition-colors text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={loading}
             >
-                Change Password
+                {loading ? 'Updating Password...' : 'Change Password'}
             </button>
         </form>
     );

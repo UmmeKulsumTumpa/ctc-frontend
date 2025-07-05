@@ -2,9 +2,20 @@ import SignInForm from "../components/form/SignInForm";
 
 const SignIn = () => {
     return (
-        <div className="max-w-md mx-auto py-8 min-h-[80vh] py-32">
-            <h2 className="text-2xl font-bold mb-6 text-center">Sign In To Your Account</h2>
-            <SignInForm />
+        <div className="min-h-[85vh] bg-white py-16">
+            <div className="max-w-6xl mx-auto px-6">
+                <div className="max-w-md mx-auto">
+                    <div className="text-center mb-8">
+                        <h1 className="text-4xl font-bold text-emerald-900 mb-3">
+                            Welcome Back, Explorer
+                        </h1>
+                        <p className="text-gray-600 text-lg">
+                            Your adventure continues here
+                        </p>
+                    </div>
+                    <SignInForm />
+                </div>
+            </div>
         </div>
     );
 };

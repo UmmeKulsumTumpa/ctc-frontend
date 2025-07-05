@@ -7,14 +7,13 @@ import {
     getPlanServices,
     updatePlanService,
     deletePlanService,
-    getPlannedPlaces,
     getPlanParticipants,
     updatePlanParticipant,
     deletePlanParticipant
 } from '../../services/travelPlan.service';
 import TravelPlanServicesForm from '../../components/travelplan/TravelPlanServicesForm';
 import TravelPlanParticipantsForm from '../../components/travelplan/TravelPlanParticipantsForm';
-import type { UpdateTravelPlanRequestDto, TravelPlan } from '../../types/travelPlan.type';
+import type { UpdateTravelPlanRequestDto } from '../../types/travelPlan.type';
 
 const TravelPlanEditPage: React.FC = () => {
     const { planId } = useParams<{ planId: string }>();
@@ -23,7 +22,6 @@ const TravelPlanEditPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [services, setServices] = useState<any[]>([]);
-    const [places, setPlaces] = useState<any[]>([]);
     const [participants, setParticipants] = useState<any[]>([]);
     const [svcLoading, setSvcLoading] = useState(false);
     const [partLoading, setPartLoading] = useState(false);
@@ -34,13 +32,11 @@ const TravelPlanEditPage: React.FC = () => {
         Promise.all([
             getTravelPlanById(planId),
             getPlanServices(planId),
-            getPlannedPlaces(planId),
             getPlanParticipants(planId)
         ])
-            .then(([plan, services, places, participants]) => {
+            .then(([plan, services, participants]) => {
                 setInitialValues(plan);
                 setServices(services);
-                setPlaces(places);
                 setParticipants(participants);
                 setLoading(false);
             })
@@ -60,8 +56,24 @@ const TravelPlanEditPage: React.FC = () => {
         }
     };
 
-    if (loading) return <div className="text-center py-16 text-blue-600 text-xl font-bold animate-pulse">Loading...</div>;
-    if (error) return <div className="text-center text-red-500 py-16 text-lg font-semibold">{error}</div>;
+    if (loading) return (
+        <div className="min-h-screen bg-white">
+            <div className="max-w-4xl mx-auto px-6 py-16">
+                <div className="text-center text-blue-600 text-xl font-semibold">
+                    Loading travel plan details...
+                </div>
+            </div>
+        </div>
+    );
+    if (error) return (
+        <div className="min-h-screen bg-white">
+            <div className="max-w-4xl mx-auto px-6 py-16">
+                <div className="bg-red-50 border-2 border-red-200 rounded-lg p-6">
+                    <div className="text-center text-red-700 text-lg font-semibold">{error}</div>
+                </div>
+            </div>
+        </div>
+    );
     if (!initialValues) return null;
 
     const handleUpdateService = async (idx: number, data: any) => {
@@ -117,39 +129,75 @@ const TravelPlanEditPage: React.FC = () => {
     };
 
     return (
-        <div className="py-12 max-w-3xl mx-auto">
-            <h2 className="text-3xl font-extrabold mb-6 text-center text-blue-800 font-serif tracking-tight drop-shadow-lg">Edit Travel Plan</h2>
-            <TravelPlanForm
-                initialValues={initialValues}
-                onSubmit={handleUpdate}
-                submitLabel="Update"
-            />
+        <div className="min-h-screen bg-white">
+            <div className="max-w-4xl mx-auto px-6 py-16">
+                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8 mb-8">
+                    <h2 className="text-5xl font-bold text-blue-900 mb-2 text-center">Update Travel Plan</h2>
+                    <p className="text-xl text-gray-600 text-center mb-8">Modify your travel plan details and settings</p>
+                    <TravelPlanForm
+                        initialValues={initialValues}
+                        onSubmit={handleUpdate}
+                        submitLabel="Update Plan"
+                    />
+                </div>
 
-            <div className="mt-10">
-                <h3 className="text-xl font-bold mb-3 text-green-800">Services</h3>
-                <ul className="space-y-4">
-                    {services.map((svc, idx) => (
-                        <li key={svc.service_id} className="flex flex-col gap-2 border-b border-blue-100 pb-3">
-                            <TravelPlanServicesForm
-                                initialData={svc}
-                                onChange={data => handleUpdateService(idx, { ...svc, ...data })}
-                            />
-                            <button type="button" onClick={() => handleDeleteService(svc.service_id)} className="self-end px-3 py-1 text-xs bg-red-400 text-white rounded-lg shadow hover:bg-red-500 transition">Delete</button>
-                        </li>
-                    ))}
-                </ul>
-                <h3 className="text-xl font-bold mb-3 mt-10 text-blue-800">Participants</h3>
-                <ul className="space-y-4">
-                    {participants.map((part, idx) => (
-                        <li key={part.user_id} className="flex flex-col gap-2 border-b border-blue-100 pb-3">
-                            <TravelPlanParticipantsForm
-                                initialData={part}
-                                onChange={data => handleUpdateParticipant(idx, { ...part, ...data })}
-                            />
-                            <button type="button" onClick={() => handleDeleteParticipant(part.user_id)} className="self-end px-3 py-1 text-xs bg-red-400 text-white rounded-lg shadow hover:bg-red-500 transition">Delete</button>
-                        </li>
-                    ))}
-                </ul>
+                {/* Services Section */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-xl p-8 mb-8">
+                    <h3 className="text-2xl font-bold text-emerald-800 mb-6">Plan Services</h3>
+                    {services.length === 0 ? (
+                        <div className="text-center py-8 text-gray-500">No services added yet</div>
+                    ) : (
+                        <div className="space-y-6">
+                            {services.map((svc, idx) => (
+                                <div key={svc.service_id} className="bg-gray-50 border-2 border-gray-200 rounded-lg p-6">
+                                    <TravelPlanServicesForm
+                                        initialData={svc}
+                                        onChange={data => handleUpdateService(idx, { ...svc, ...data })}
+                                    />
+                                    <div className="mt-4 flex justify-end">
+                                        <button 
+                                            type="button" 
+                                            onClick={() => handleDeleteService(svc.service_id)} 
+                                            disabled={svcLoading}
+                                            className="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                                        >
+                                            Remove Service
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Participants Section */}
+                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-xl p-8">
+                    <h3 className="text-2xl font-bold text-blue-800 mb-6">Plan Participants</h3>
+                    {participants.length === 0 ? (
+                        <div className="text-center py-8 text-gray-500">No participants added yet</div>
+                    ) : (
+                        <div className="space-y-6">
+                            {participants.map((part, idx) => (
+                                <div key={part.user_id} className="bg-gray-50 border-2 border-gray-200 rounded-lg p-6">
+                                    <TravelPlanParticipantsForm
+                                        initialData={part}
+                                        onChange={data => handleUpdateParticipant(idx, { ...part, ...data })}
+                                    />
+                                    <div className="mt-4 flex justify-end">
+                                        <button 
+                                            type="button" 
+                                            onClick={() => handleDeleteParticipant(part.user_id)} 
+                                            disabled={partLoading}
+                                            className="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                                        >
+                                            Remove Participant
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

@@ -4,7 +4,7 @@ import { PATHS } from "../constants/path.constants";
 import Home from '../pages/Home';
 import Blogs from "../pages/blog/Blog";
 import BlogDetail from "../pages/blog/BlogDetail";
-import BlogCreate from "../pages/blog/BlogCreate";
+import BlogCreatePage from "../pages/blog/BlogCreate";
 import BlogEdit from "../pages/blog/BlogEdit";
 import SignIn from "../pages/Signin";
 import SignUp from "../pages/Signup";
@@ -26,7 +26,7 @@ const AppRoutes = () => {
         <Routes>
             <Route path={PATHS.HOME} element={<Home />} />
             <Route path={PATHS.BLOGS} element={<Blogs />} />
-            <Route path={PATHS.BLOG_CREATE} element={<BlogCreate />} />
+            <Route path={PATHS.BLOG_CREATE} element={<BlogCreatePage />} />
             <Route path={PATHS.BLOG_EDIT} element={<BlogEdit />} />
             <Route path={PATHS.BLOG_DETAIL} element={<BlogDetail />} />
             <Route path={PATHS.SIGN_IN} element={<SignIn />} />

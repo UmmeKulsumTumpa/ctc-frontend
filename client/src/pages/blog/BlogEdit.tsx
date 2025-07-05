@@ -97,27 +97,63 @@ const BlogEdit: React.FC = () => {
         }
     };
 
-    if (loading) return <div className="text-center py-16 text-blue-600 text-xl font-bold animate-pulse">Loading...</div>;
-    if (error) return <div className="text-center text-red-500 py-16 text-lg font-semibold">{error}</div>;
+    if (loading) return (
+        <div className="min-h-[85vh] bg-white">
+            <div className="max-w-6xl mx-auto px-6 py-16">
+                <div className="text-center text-emerald-600 text-2xl font-bold animate-pulse">
+                    📝 Loading your story for editing...
+                </div>
+            </div>
+        </div>
+    );
+    
+    if (error) return (
+        <div className="min-h-[85vh] bg-white">
+            <div className="max-w-6xl mx-auto px-6 py-16">
+                <div className="text-center text-red-500 text-lg font-semibold">
+                    ❌ {error}
+                </div>
+            </div>
+        </div>
+    );
+    
     if (!initialValues) return null;
 
     return (
-        <div className="py-12 max-w-3xl mx-auto">
-            <h2 className="text-3xl font-extrabold mb-6 text-center text-blue-800 font-serif tracking-tight drop-shadow-lg">Edit Blog Post</h2>
-            <BlogForm
-                initialValues={initialValues}
-                onSubmit={handleUpdate}
-                submitLabel="Update"
-            />
-            <div className="mt-10">
-                <h3 className="text-xl font-bold mb-3 text-green-800">Services</h3>
-                <BlogServiceForm postId={id!} onSubmit={handleAddService} loading={svcLoading} />
-                <div className="mt-4">
+        <div className="min-h-[85vh] bg-white">
+            <div className="max-w-6xl mx-auto px-6 py-16">
+                {/* Header Section */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <div className="text-center">
+                        <h2 className="text-5xl font-bold text-emerald-900 mb-2">Edit Your Story</h2>
+                        <p className="text-xl text-gray-600">Update your travel adventure</p>
+                    </div>
+                </div>
+
+                {/* Main Form Container */}
+                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <BlogForm
+                        initialValues={initialValues}
+                        onSubmit={handleUpdate}
+                        submitLabel="Update Story"
+                    />
+                </div>
+
+                {/* Services Section */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <h3 className="text-2xl font-bold text-emerald-900 mb-6">Manage Travel Services</h3>
+                    <div className="bg-gray-50 border-2 border-gray-200 rounded-2xl p-6 mb-6">
+                        <BlogServiceForm postId={id!} onSubmit={handleAddService} loading={svcLoading} />
+                    </div>
                     <BlogServiceList services={services} onDelete={handleDeleteService} />
                 </div>
-                <h3 className="text-xl font-bold mb-3 mt-10 text-blue-800">Images</h3>
-                <BlogImageForm postId={id!} onSubmit={handleAddImage} loading={imgLoading} />
-                <div className="mt-4">
+
+                {/* Images Section */}
+                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8">
+                    <h3 className="text-2xl font-bold text-blue-900 mb-6">Manage Travel Photos</h3>
+                    <div className="bg-gray-50 border-2 border-gray-200 rounded-2xl p-6 mb-6">
+                        <BlogImageForm postId={id!} onSubmit={handleAddImage} loading={imgLoading} />
+                    </div>
                     <BlogImageList images={images} onDelete={handleDeleteImage} />
                 </div>
             </div>

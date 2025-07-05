@@ -55,108 +55,191 @@ const BlogDetailCard: React.FC<BlogDetailCardProps> = ({ post, services, images,
     }, [post.place_id]);
 
     return (
-        <div className="bg-white rounded-2xl shadow-2xl p-8 border border-blue-200 max-w-3xl mx-auto flex flex-col gap-8 font-sans">
+        <div className="bg-white rounded-3xl shadow-lg p-8 border-2 border-blue-200 max-w-5xl mx-auto flex flex-col gap-8">
 
-            <div className="flex flex-col gap-2 mb-2 relative">
-
-                <div className="flex justify-center items-center mb-2">
-                    <svg className="w-7 h-7" fill="#e53935" viewBox="0 0 24 24">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                    </svg>
-                    <span className="text-lg font-bold text-red-700 ml-2">{post.likes}</span>
+            {/* Header Section */}
+            <div className="flex flex-col gap-4">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <h2 className="text-4xl md:text-5xl font-bold text-blue-900 leading-tight">{post.title}</h2>
+                    <div className="flex items-center gap-4">
+                        <span className="text-sm font-bold text-emerald-700 bg-emerald-100 px-4 py-2 rounded-full shadow-sm border border-emerald-200">
+                            {new Date(post.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </span>
+                        <div className="flex items-center gap-2 bg-red-50 px-4 py-2 rounded-full border border-red-200">
+                            <svg className="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                            </svg>
+                            <span className="text-lg font-bold text-red-600">{post.likes || 0}</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-                    <h2 className="text-3xl md:text-4xl font-extrabold text-blue-800 font-serif drop-shadow-lg tracking-tight w-full text-center md:text-left">{post.title}</h2>
-                    <span className="text-xs font-semibold text-green-700 bg-green-100 px-3 py-1 rounded shadow font-mono whitespace-nowrap border border-green-200 md:ml-auto">{new Date(post.created_at).toLocaleDateString()}</span>
-                </div>
-            </div>
-
-            <div className="flex flex-wrap gap-2 text-xs text-green-700 mb-2">
-                {post.categories?.map((cat) => (
-                    <span key={cat} className="bg-white px-3 py-1 rounded-full font-semibold shadow-sm border border-green-400 text-green-800">{cat}</span>
-                ))}
-            </div>
-
-            {place && (
-                    <div className="mb-4">
-                        <h4 className="font-semibold mb-2 text-blue-700 text-lg text-center">Place Visited</h4>
-                        <PlaceCard place={place} />
+                {/* Categories */}
+                {post.categories && post.categories.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                        {post.categories.map((cat) => (
+                            <span key={cat} className="bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full text-sm font-bold border border-emerald-300">
+                                {cat}
+                            </span>
+                        ))}
                     </div>
                 )}
-
-            <div className="text-blue-900 mb-2 text-lg md:text-xl font-light italic">{post.description}</div>
-
-            <div className="flex flex-wrap gap-4 text-base text-blue-900 bg-gray-50 rounded-xl p-4 shadow-inner items-center border border-blue-400">
-                <span><span className="font-semibold">Effort:</span> {post.effort_level || 'N/A'}</span>
-                <span><span className="font-semibold">Cost:</span> {post.total_cost ?? 'N/A'}</span>
-                <span><span className="font-semibold">Duration:</span> {post.total_duration ?? 'N/A'}</span>
-                <span><span className="font-semibold">Visibility:</span> {post.visibility}</span>
             </div>
 
+            {/* Trip Details */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-blue-50 rounded-2xl p-4 border border-blue-200 text-center">
+                    <div className="text-blue-600 text-sm font-medium mb-1">Difficulty</div>
+                    <div className="text-blue-900 font-bold text-lg">{post.effort_level || 'Not specified'}</div>
+                </div>
+                <div className="bg-emerald-50 rounded-2xl p-4 border border-emerald-200 text-center">
+                    <div className="text-emerald-600 text-sm font-medium mb-1">Total Cost</div>
+                    <div className="text-emerald-900 font-bold text-lg">{post.total_cost ? `$${post.total_cost}` : 'Not specified'}</div>
+                </div>
+                <div className="bg-blue-50 rounded-2xl p-4 border border-blue-200 text-center">
+                    <div className="text-blue-600 text-sm font-medium mb-1">Duration</div>
+                    <div className="text-blue-900 font-bold text-lg">{post.total_duration ? `${post.total_duration} days` : 'Not specified'}</div>
+                </div>
+                <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200 text-center">
+                    <div className="text-gray-600 text-sm font-medium mb-1">Visibility</div>
+                    <div className="text-gray-900 font-bold text-lg">{post.visibility}</div>
+                </div>
+            </div>
+
+            {/* Place Information */}
+            {place && (
+                <div className="bg-blue-50 rounded-3xl p-6 border border-blue-200">
+                    <h4 className="font-bold mb-4 text-blue-900 text-xl">📍 Destination</h4>
+                    <PlaceCard place={place} />
+                </div>
+            )}
+
+            {/* Description */}
+            <div className="bg-white border-2 border-gray-200 rounded-3xl p-6">
+                <h4 className="font-bold mb-4 text-blue-900 text-xl">Travel Story</h4>
+                <div className="text-gray-700 text-lg leading-relaxed whitespace-pre-wrap">{post.description}</div>
+            </div>
+
+            {/* Images Section */}
             {images && images.length > 0 && (
-                <div>
-                    <h4 className="font-semibold mb-2 text-blue-700 text-lg">Images</h4>
-                    <div className="flex flex-wrap gap-6">
+                <div className="bg-blue-50 rounded-3xl p-6 border border-blue-200">
+                    <h4 className="font-bold mb-6 text-blue-900 text-xl">📸 Travel Photos</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {images.map((img) => (
-                            <div key={img.url} className="relative flex flex-col items-center">
-                                <img src={img.url} alt={img.caption || ''} className="h-44 w-44 object-cover rounded-xl border-2 border-blue-200 shadow-lg" />
-                                {img.caption && <div className="text-xs text-center mt-2 text-blue-900 bg-blue-50 rounded px-2 py-1 border border-blue-100">{img.caption}</div>}
+                            <div key={img.url} className="bg-white rounded-2xl p-4 shadow-lg border border-blue-100">
+                                <img
+                                    src={img.url}
+                                    alt={img.caption || 'Travel photo'}
+                                    className="w-full h-48 object-cover rounded-xl border border-blue-200"
+                                />
+                                {img.caption && (
+                                    <div className="mt-3 text-sm text-center text-blue-900 bg-blue-100 rounded-xl px-3 py-2 border border-blue-200 font-medium">
+                                        {img.caption}
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
                 </div>
             )}
 
+            {/* Services Section */}
             {services && services.length > 0 && (
-                <div>
-                    <h4 className="font-semibold mb-2 text-green-700 text-lg">Services</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-emerald-50 rounded-3xl p-6 border border-emerald-200">
+                    <h4 className="font-bold mb-6 text-emerald-900 text-xl">🏨 Services & Experiences</h4>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {services.map((svc) => (
-                            <div key={svc.post_service_id} className="bg-gray-50 rounded-xl shadow-lg p-5 border border-green-200 flex flex-col gap-2">
+                            <div key={svc.post_service_id} className="bg-white rounded-2xl shadow-lg p-6 border border-emerald-100">
                                 {serviceDetails[svc.service_id] ? (
                                     <ServiceDetailsCard service={serviceDetails[svc.service_id]} />
                                 ) : (
-                                    <span className="font-bold text-green-800 text-lg">{svc.service_id}</span>
+                                    <div className="font-bold text-emerald-900 text-lg mb-3">Service: {svc.service_id}</div>
                                 )}
-                                {svc.recommended && <span className="ml-2 px-2 py-0.5 text-xs bg-green-200 text-green-900 rounded-full border border-green-300">Recommended</span>}
-                                {svc.cost && <div className="text-sm text-green-900">Cost: <span className="font-semibold">{svc.cost}</span></div>}
-                                {svc.rating && <div className="text-sm text-blue-700">Rating: <span className="font-semibold">{svc.rating}</span></div>}
-                                {svc.visit_date && <div className="text-sm text-blue-900">Date: {svc.visit_date}</div>}
-                                {svc.notes && <div className="text-sm text-blue-900 italic">Notes: {svc.notes}</div>}
+
+                                <div className="grid grid-cols-2 gap-3 mt-4">
+                                    {svc.cost && (
+                                        <div className="bg-emerald-50 rounded-xl p-3 border border-emerald-200">
+                                            <div className="text-emerald-600 text-sm font-medium">Cost</div>
+                                            <div className="text-emerald-900 font-bold">${svc.cost}</div>
+                                        </div>
+                                    )}
+                                    {svc.rating && (
+                                        <div className="bg-blue-50 rounded-xl p-3 border border-blue-200">
+                                            <div className="text-blue-600 text-sm font-medium">Rating</div>
+                                            <div className="text-blue-900 font-bold">{svc.rating}/5 ⭐</div>
+                                        </div>
+                                    )}
+                                    {svc.visit_date && (
+                                        <div className="bg-gray-50 rounded-xl p-3 border border-gray-200 col-span-2">
+                                            <div className="text-gray-600 text-sm font-medium">Visit Date</div>
+                                            <div className="text-gray-900 font-bold">{new Date(svc.visit_date).toLocaleDateString()}</div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {svc.recommended && (
+                                    <div className="mt-3 text-center">
+                                        <span className="bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full text-sm font-bold border border-emerald-300">
+                                            ✅ Highly Recommended
+                                        </span>
+                                    </div>
+                                )}
+
+                                {svc.notes && (
+                                    <div className="mt-4 p-3 bg-gray-50 rounded-xl border border-gray-200">
+                                        <div className="text-gray-600 text-sm font-medium mb-1">Notes</div>
+                                        <div className="text-gray-900 italic">{svc.notes}</div>
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
                 </div>
             )}
 
-            <div className="flex flex-wrap gap-3 mt-8 justify-between items-center">
-                <div className="flex items-center gap-2">
+            {/* Action Buttons */}
+            <div className="flex flex-wrap gap-4 justify-between items-center pt-6 border-t-2 border-blue-100">
+                <div className="flex items-center gap-3">
                     {onLike && (
                         <button
                             onClick={onLike}
-                            title="Like this post"
-                            className="px-2 py-1 rounded-full bg-white border-2 border-red-700 shadow text-xl hover:bg-red-50 hover:scale-110 active:scale-95 transition-all flex items-center text-[#b71c1c]"
+                            title="Like this travel story"
+                            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-red-50 border-2 border-red-200 text-red-600 hover:bg-red-100 hover:border-red-300 transition-all shadow-lg hover:shadow-xl"
                         >
-                            <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M9 22h-3c-1.1 0-2-.9-2-2v-7c0-1.1.9-2 2-2h3v11zm11-11c0-1.1-.9-2-2-2h-5.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06l-1-1c-.37-.36-.89-.54-1.41-.46-.52.08-.97.44-1.13.95l-3.24 9.65c-.09.28-.14.57-.14.87v7c0 1.1.9 2 2 2h8c.82 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1c0-1.1-.9-2-2-2z" />
+                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                             </svg>
+                            <span className="font-bold">Love This Story</span>
                         </button>
                     )}
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                     {showViewButton && (
-                        <button onClick={onView} className="px-5 py-2 rounded-lg bg-blue-500 text-white text-sm font-bold shadow hover:bg-blue-600 transition-all">{viewLabel}</button>
+                        <button
+                            onClick={onView}
+                            className="px-6 py-3 rounded-xl bg-blue-600 text-white font-bold shadow-lg hover:bg-blue-700 transition-colors"
+                        >
+                            {viewLabel}
+                        </button>
                     )}
                     {isOwner && (
                         <>
-                            <button onClick={onEdit} className="px-5 py-2 rounded-lg bg-green-600 text-white text-sm font-bold shadow hover:bg-green-700 transition-all">Edit</button>
-                            <button onClick={onDelete} className="px-5 py-2 rounded-lg bg-red-400 text-white text-sm font-bold shadow hover:bg-red-500 transition-all">Delete</button>
+                            <button
+                                onClick={onEdit}
+                                className="px-6 py-3 rounded-xl bg-emerald-600 text-white font-bold shadow-lg hover:bg-emerald-700 transition-colors"
+                            >
+                                Edit Story
+                            </button>
+                            <button
+                                onClick={onDelete}
+                                className="px-6 py-3 rounded-xl bg-red-500 text-white font-bold shadow-lg hover:bg-red-600 transition-colors"
+                            >
+                                Delete Story
+                            </button>
                         </>
                     )}
                 </div>
-
             </div>
         </div>
     );

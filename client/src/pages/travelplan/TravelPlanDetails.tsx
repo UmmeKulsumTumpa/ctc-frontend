@@ -10,6 +10,7 @@ import PlaceCard from '../../components/place/PlaceCard';
 import type { TravelPlan, PlanParticipant, PlanComment } from '../../types/travelPlan.type';
 import type { PlaceDto } from '../../types/place.type';
 import type { ServiceResponseDto } from '../../types/service.type';
+import type { User } from '../../types/user.type';
 
 const TravelPlanDetails: React.FC = () => {
     const { planId } = useParams<{ planId: string }>();
@@ -123,96 +124,187 @@ const TravelPlanDetails: React.FC = () => {
         })();
     }, [planId, user]);
 
-    if (loading) return <div className="p-8 text-lg text-gray-600 animate-pulse">Loading travel plan details...</div>;
-    if (error) return <div className="p-8 text-red-600 font-semibold bg-red-100 border border-red-300 rounded-md">{error}</div>;
-    if (!plan) return <div className="p-8 text-gray-700">Travel plan not found.</div>;
+    if (loading) return (
+        <div className="min-h-screen bg-white">
+            <div className="max-w-4xl mx-auto px-6 py-16">
+                <div className="text-center text-blue-600 text-xl font-semibold">
+                    Loading travel plan details...
+                </div>
+            </div>
+        </div>
+    );
+    
+    if (error) return (
+        <div className="min-h-screen bg-white">
+            <div className="max-w-4xl mx-auto px-6 py-16">
+                <div className="bg-red-50 border-2 border-red-200 rounded-lg p-6">
+                    <div className="text-center text-red-700 text-lg font-semibold">{error}</div>
+                </div>
+            </div>
+        </div>
+    );
+    
+    if (!plan) return (
+        <div className="min-h-screen bg-white">
+            <div className="max-w-4xl mx-auto px-6 py-16">
+                <div className="text-center text-gray-600 text-lg">Travel plan not found.</div>
+            </div>
+        </div>
+    );
 
     return (
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8 mt-10 border border-gray-200">
-            <div className="flex items-center justify-between mb-6">
-                <h1 className="text-4xl font-extrabold text-blue-900">{plan.name}</h1>
-                {isOwner && (
-                    <button onClick={handleNavigateToEdit} className="px-4 py-2 rounded bg-green-600 text-white font-semibold hover:bg-green-700 transition">Edit</button>
-                )}
-            </div>
-            <div className="text-gray-600 mb-4 space-x-4">
-                <span>Status: <span className="text-blue-700 font-medium">{plan.status || 'N/A'}</span></span>
-                <span>| Start: {plan.start_date || '-'}</span>
-                <span>| End: {plan.end_date || '-'}</span>
-            </div>
-
-            {/* Participants */}
-            <section className="mb-10">
-                <h2 className="text-2xl font-semibold text-blue-800 mb-4 border-b pb-2">👥 Participants</h2>
-                <ul className="space-y-3">
-                    {participants.length === 0 ? <li className="text-gray-500">No participants</li> : participants.map((p, idx) => (
-                        <li key={idx} className="p-3 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-100 transition flex items-center justify-between">
-                            <div>
-                                <span className="font-bold text-blue-700">User {p.user_id}</span>
-                                <span className="ml-2 text-xs text-gray-500">({p.role_permission})</span>
-                                <div className="text-sm text-gray-600">
-                                    <span className="ml-3 italic">{p.is_going ? 'Going ✅' : 'Not going ❌'}</span>
-                                </div>
+        <div className="min-h-screen bg-white">
+            <div className="max-w-4xl mx-auto px-6 py-16">
+                {/* Header Section */}
+                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-xl p-8 mb-10">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                        <div className="flex-1">
+                            <h1 className="text-5xl font-bold text-blue-900 mb-4">{plan.name}</h1>
+                            <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                                <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full font-medium">
+                                    Status: {plan.status || 'Draft'}
+                                </span>
+                                <span className="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full font-medium">
+                                    Start: {plan.start_date || 'TBD'}
+                                </span>
+                                <span className="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full font-medium">
+                                    End: {plan.end_date || 'TBD'}
+                                </span>
                             </div>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-
-            {/* Places */}
-            <section className="mb-10">
-                <h2 className="text-2xl font-semibold text-blue-800 mb-4 border-b pb-2">Places</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {places.length === 0 ? <div className="text-gray-500">No places</div> : places.map(place => (
-                        <PlaceCard key={place.place_id} place={place} />
-                    ))}
+                        </div>
+                        {isOwner && (
+                            <button 
+                                onClick={handleNavigateToEdit} 
+                                className="px-6 py-3 rounded-lg bg-blue-600 text-white font-semibold shadow-md hover:bg-blue-700 transition-all"
+                            >
+                                Edit Plan
+                            </button>
+                        )}
+                    </div>
                 </div>
-            </section>
 
-            {/* Services */}
-            <section className="mb-10">
-                <h2 className="text-2xl font-semibold text-blue-800 mb-4 border-b pb-2"> Services</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {services.length === 0 ? <div className="text-gray-500">No services</div> : services.map(service => (
-                        <ServiceCard key={service.service_id} service={service} />
-                    ))}
-                </div>
-            </section>
-
-            {/* Comments */}
-            <section className="mb-4">
-                <div className="flex items-center justify-between mb-2">
-                    <h2 className="text-2xl font-semibold text-blue-800 border-b pb-2">💬 Comments</h2>
-                    {canComment && (
-                        <button onClick={() => setShowCommentForm(v => !v)} className="px-3 py-1 rounded bg-blue-100 text-blue-800 text-sm font-semibold hover:bg-blue-200 transition">
-                            {showCommentForm ? 'Cancel' : 'Add Comment'}
-                        </button>
+                {/* Participants Section */}
+                <div className="bg-white border-2 border-gray-100 shadow-lg rounded-xl p-8 mb-8">
+                    <h2 className="text-2xl font-bold text-blue-800 mb-6">Participants</h2>
+                    {participants.length === 0 ? (
+                        <div className="text-center py-8 text-gray-500">No participants added yet</div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {participants.map((p, idx) => (
+                                <div key={idx} className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 hover:border-blue-200 transition-all">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <span className="font-semibold text-blue-700">User {p.user_id}</span>
+                                            <span className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
+                                                {p.role_permission}
+                                            </span>
+                                        </div>
+                                        <div className="text-sm">
+                                            {p.is_going ? (
+                                                <span className="px-2 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-medium">
+                                                    Going
+                                                </span>
+                                            ) : (
+                                                <span className="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium">
+                                                    Not Going
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     )}
                 </div>
-                {showCommentForm && (
-                    <form onSubmit={e => { e.preventDefault(); handleAddComment(); }} className="mb-4 flex gap-2">
-                        <input
-                            type="text"
-                            value={commentContent}
-                            onChange={e => setCommentContent(e.target.value)}
-                            className="flex-1 border rounded px-3 py-2 text-sm"
-                            placeholder="Write your comment..."
-                            disabled={commentLoading}
-                        />
-                        <button type="submit" className="px-4 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition" disabled={commentLoading || !commentContent.trim()}>
-                            {commentLoading ? 'Adding...' : 'Add'}
-                        </button>
-                    </form>
-                )}
-                <ul className="space-y-3">
-                    {comments.length === 0 ? <li className="text-gray-500">No comments</li> : comments.map(c => (
-                        <li key={c.comment_id} className="bg-gray-50 p-4 rounded-md shadow-sm hover:bg-gray-100 transition">
-                            <span className="font-semibold text-blue-700">{c.user?.username || `User ${c.user_id}`}</span>:&nbsp;
-                            <span className="text-gray-700">{c.content}</span>
-                        </li>
-                    ))}
-                </ul>
-            </section>
+
+                {/* Places Section */}
+                <div className="bg-white border-2 border-emerald-100 shadow-lg rounded-xl p-8 mb-8">
+                    <h2 className="text-2xl font-bold text-emerald-800 mb-6">Places to Visit</h2>
+                    {places.length === 0 ? (
+                        <div className="text-center py-8 text-gray-500">No places added yet</div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {places.map(place => (
+                                <div key={place.place_id} className="border-2 border-emerald-200 rounded-lg p-4 hover:border-emerald-300 transition-all">
+                                    <PlaceCard place={place} />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Services Section */}
+                <div className="bg-white border-2 border-blue-100 shadow-lg rounded-xl p-8 mb-8">
+                    <h2 className="text-2xl font-bold text-blue-800 mb-6">Services & Bookings</h2>
+                    {services.length === 0 ? (
+                        <div className="text-center py-8 text-gray-500">No services added yet</div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {services.map(service => (
+                                <div key={service.service_id} className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-300 transition-all">
+                                    <ServiceCard service={service} />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Comments Section */}
+                <div className="bg-white border-2 border-gray-100 shadow-lg rounded-xl p-8">
+                    <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-2xl font-bold text-gray-800">Comments & Notes</h2>
+                        {canComment && (
+                            <button 
+                                onClick={() => setShowCommentForm(v => !v)} 
+                                className="px-4 py-2 rounded-lg bg-emerald-600 text-white font-semibold shadow-md hover:bg-emerald-700 transition-all"
+                            >
+                                {showCommentForm ? 'Cancel' : 'Add Comment'}
+                            </button>
+                        )}
+                    </div>
+                    
+                    {showCommentForm && (
+                        <form onSubmit={e => { e.preventDefault(); handleAddComment(); }} className="mb-6 p-4 bg-gray-50 border-2 border-gray-200 rounded-lg">
+                            <div className="flex gap-3">
+                                <input
+                                    type="text"
+                                    value={commentContent}
+                                    onChange={e => setCommentContent(e.target.value)}
+                                    className="flex-1 border-2 border-gray-300 rounded-lg px-4 py-3 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-100"
+                                    placeholder="Write your comment..."
+                                    disabled={commentLoading}
+                                />
+                                <button 
+                                    type="submit" 
+                                    className="px-6 py-3 rounded-lg bg-emerald-600 text-white font-semibold shadow-md hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all" 
+                                    disabled={commentLoading || !commentContent.trim()}
+                                >
+                                    {commentLoading ? 'Adding...' : 'Add'}
+                                </button>
+                            </div>
+                        </form>
+                    )}
+                    
+                    {comments.length === 0 ? (
+                        <div className="text-center py-8 text-gray-500">No comments yet</div>
+                    ) : (
+                        <div className="space-y-4">
+                            {comments.map(c => (
+                                <div key={c.comment_id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:bg-gray-100 transition-all">
+                                    <div className="flex items-start gap-3">
+                                        <div className="flex-1">
+                                            <span className="font-semibold text-blue-700">
+                                                {c.user?.username || `User ${c.user_id}`}
+                                            </span>
+                                            <p className="text-gray-700 mt-1">{c.content}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 };

@@ -20,36 +20,44 @@ const TravelPlanPage: React.FC = () => {
     }, []);
 
     return (
-        <div className="max-w-4xl mx-auto py-12 px-6">
-            <h2 className="text-4xl font-extrabold mb-8 text-center text-indigo-800 tracking-tight">
-                🗺️ Travel Plans
-            </h2>
+        <div className="min-h-screen bg-white">
+            <div className="max-w-6xl mx-auto px-6 py-16">
+                {/* Header Section */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div>
+                            <h2 className="text-5xl font-bold text-emerald-900 mb-2">Travel Plan Hub</h2>
+                            <p className="text-xl text-gray-600">Design and manage your perfect adventures</p>
+                        </div>
+                        <button
+                            onClick={() => navigate(PATHS.TRAVEL_PLAN_CREATE)}
+                            className="px-8 py-4 rounded-2xl bg-sky-600 text-white text-lg font-bold border-4 border-sky-700 shadow-lg hover:bg-sky-700 hover:border-sky-800 transform hover:scale-105 transition-all duration-300"
+                        >
+                            Create New Plan
+                        </button>
+                    </div>
+                </div>
 
-            <div className="flex justify-end mb-6">
-                <button
-                    onClick={() => navigate(PATHS.TRAVEL_PLAN_CREATE)}
-                    className="inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition flex-shrink-0"
-                >
-                    + Create Travel Plan
-                </button>
+                {/* Error State */}
+                {error && (
+                    <div className="bg-red-50 border-2 border-red-200 rounded-lg p-6 mb-8">
+                        <div className="text-red-700 font-semibold text-center">{error}</div>
+                    </div>
+                )}
+
+                {/* Loading State */}
+                {loading ? (
+                    <div className="bg-sky-50 border-2 border-sky-200 rounded-lg p-12 text-center">
+                        <div className="text-sky-600 text-xl font-semibold">
+                            Loading your travel plans...
+                        </div>
+                    </div>
+                ) : (
+                    <div className="w-full">
+                        <TravelPlanList plans={plans} />
+                    </div>
+                )}
             </div>
-
-            {error && (
-                <div className="bg-red-50 text-red-700 border border-red-200 rounded-lg px-4 py-3 mb-6">
-                    {error}
-                </div>
-            )}
-
-            {loading ? (
-                <div className="animate-pulse space-y-4">
-                    <div className="h-6 bg-gray-200 rounded w-3/4 mx-auto" />
-                    <div className="h-6 bg-gray-200 rounded w-1/2 mx-auto" />
-                </div>
-            ) : (
-                <div className="space-y-6">
-                    <TravelPlanList plans={plans} />
-                </div>
-            )}
         </div>
     );
 };

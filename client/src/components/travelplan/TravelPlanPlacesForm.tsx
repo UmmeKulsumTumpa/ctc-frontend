@@ -19,24 +19,40 @@ const TravelPlanPlacesForm: React.FC<TravelPlanPlacesFormProps> = ({ initialData
     };
 
     return (
-        <div className="bg-gray-50 p-4 rounded">
-            <input
-                placeholder="Place ID"
-                value={place.place_id || ''}
-                onChange={e => handleChange('place_id', e.target.value)}
-                className="border rounded px-2 py-1 flex-1"
-                required
-            />
-            <select
-                value={place.priority || ''}
-                onChange={e => handleChange('priority', e.target.value as any)}
-                className="border rounded px-2 py-1 flex-1 mt-2"
-            >
-                <option value="">Priority</option>
-                <option value="MustVisit">MustVisit</option>
-                <option value="Optional">Optional</option>
-            </select>
-            {formError && <div className="text-xs text-red-500 mt-1">Required fields missing</div>}
+        <div className="bg-white border-2 border-blue-200 shadow-lg rounded-xl p-6 space-y-4">
+            <div>
+                <label className="block font-bold mb-2 text-blue-900">
+                    Place ID <span className="text-red-500">*</span>
+                </label>
+                <input
+                    placeholder="Enter the place identifier"
+                    value={place.place_id || ''}
+                    onChange={e => handleChange('place_id', e.target.value)}
+                    className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors"
+                    required
+                />
+            </div>
+
+            <div>
+                <label className="block font-bold mb-2 text-emerald-900">
+                    Visit Priority
+                </label>
+                <select
+                    value={place.priority || ''}
+                    onChange={e => handleChange('priority', e.target.value as any)}
+                    className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
+                >
+                    <option value="">Choose priority level</option>
+                    <option value="MustVisit">🎯 Must Visit</option>
+                    <option value="Optional">💫 Optional</option>
+                </select>
+            </div>
+
+            {formError && (
+                <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm font-semibold">
+                    ❌ Required fields are missing
+                </div>
+            )}
         </div>
     );
 };

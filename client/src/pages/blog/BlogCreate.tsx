@@ -11,7 +11,7 @@ import { addPostImage } from "../../services/blog/blogImage.service";
 import BlogServiceForm from "../../components/blog/BlogServiceForm";
 import BlogImageForm from "../../components/blog/BlogImageForm";
 
-const BlogCreate: React.FC = () => {
+const BlogCreatePage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [detailedError, setDetailedError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
@@ -97,58 +97,108 @@ const BlogCreate: React.FC = () => {
 
 
     return (
-        <div className="max-w-3xl mx-auto py-12 px-4">
-            <h2 className="text-3xl font-extrabold mb-6 text-center text-blue-800 font-serif tracking-tight drop-shadow-lg">Create New Blog</h2>
+        <div className="min-h-[85vh] bg-white">
+            <div className="max-w-6xl mx-auto px-6 py-16">
+                {/* Header Section */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <div className="text-center">
+                        <h2 className="text-5xl font-bold text-emerald-900 mb-2">Share Your Adventure</h2>
+                        <p className="text-xl text-gray-600">Tell the world about your amazing travel experience</p>
+                    </div>
+                </div>
 
-            {error && <div className="text-red-500 mb-3 text-center text-lg font-semibold">{error}</div>}
-            {detailedError && <div className="text-red-400 mb-3 text-center text-xs">{detailedError}</div>}
+                {/* Error Messages */}
+                {error && (
+                    <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-2xl px-6 py-4 mb-8 text-lg font-medium">
+                        ❌ {error}
+                    </div>
+                )}
+                {detailedError && (
+                    <div className="bg-red-50 border-2 border-red-200 text-red-600 rounded-2xl px-6 py-3 mb-8 text-sm">
+                        {detailedError}
+                    </div>
+                )}
 
-            <BlogForm onSubmit={handleSubmit} submitLabel={loading ? "Creating..." : "Create"} />
+                {/* Main Form Container */}
+                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <BlogForm onSubmit={handleSubmit} submitLabel={loading ? "Publishing Story..." : "Publish Story"} />
+                </div>
 
-            <div className="mt-10">
-
-                <h3 className="text-xl font-bold mb-3 text-blue-800">Services 
-                    <span className="text-xs text-blue-400">(optional)</span>
-                </h3>
-
-                <button type="button" onClick={handleAddServiceForm} className="mb-3 px-4 py-2 bg-blue-50 text-blue-900 border border-blue-700 rounded-lg font-bold shadow hover:bg-blue-300 transition">Add Service</button>
-
-                <ul className="space-y-4 mt-2">
-                    {serviceForms.map((svc, idx) => (
-                        <li key={idx} className="flex flex-col gap-2 border-b border-blue-100 pb-3">
-                            <BlogServiceForm
-                                postId=""
-                                onSubmit={data => handleServiceFormChange(idx, data)}
-                                initialData={svc}
-                            />
-                            {formErrors.services[idx] && <span className="text-xs text-red-500">Required fields missing</span>}
-                            <button type="button" onClick={() => handleRemoveServiceForm(idx)} className="self-end px-3 py-1 text-xs bg-red-400 text-white rounded-lg shadow hover:bg-red-500 transition">Remove</button>
-                        </li>
-                    ))}
-                </ul>
-
-                <h3 className="text-xl font-bold mb-3 mt-10 text-blue-800">Images 
-                    <span className="text-xs text-blue-400">(optional)</span>
-                </h3>
-
-                <button type="button" onClick={handleAddImageForm} className="mb-3 px-4 py-2 bg-blue-50 border border-blue-700 text-blue-900 rounded-lg font-bold shadow hover:bg-blue-300 transition">Add Image</button>
-
-                <div className="flex flex-wrap gap-6 mt-2">
-                    {imageForms.map((img, idx) => (
-                        <div key={idx} className="relative flex flex-col items-center">
-                            <BlogImageForm
-                                postId=""
-                                onSubmit={data => handleImageFormChange(idx, data)}
-                                initialData={img}
-                            />
-                            {formErrors.images[idx] && <span className="text-xs text-red-500">Required fields missing</span>}
-                            <button type="button" onClick={() => handleRemoveImageForm(idx)} className="absolute top-1 right-1 px-3 py-1 text-xs bg-red-400 text-white rounded-lg shadow hover:bg-red-500 transition">Remove</button>
+                {/* Services Section */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <div className="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 className="text-2xl font-bold text-emerald-900">Add Travel Services</h3>
+                            <p className="text-gray-600">Hotels, restaurants, or activities you recommend (optional)</p>
                         </div>
-                    ))}
+                        <button 
+                            type="button" 
+                            onClick={handleAddServiceForm} 
+                            className="px-6 py-3 bg-emerald-600 text-white border-2 border-emerald-700 rounded-xl font-bold shadow hover:bg-emerald-700 transition"
+                        >
+                            Add Service
+                        </button>
+                    </div>
+
+                    <div className="space-y-6">
+                        {serviceForms.map((svc, idx) => (
+                            <div key={idx} className="bg-gray-50 border-2 border-gray-200 rounded-2xl p-6">
+                                <BlogServiceForm
+                                    postId=""
+                                    onSubmit={data => handleServiceFormChange(idx, data)}
+                                    initialData={svc}
+                                />
+                                {formErrors.services[idx] && <span className="text-sm text-red-500 mt-2 block">Please fill in required fields</span>}
+                                <button 
+                                    type="button" 
+                                    onClick={() => handleRemoveServiceForm(idx)} 
+                                    className="mt-4 px-4 py-2 bg-red-100 text-red-700 border-2 border-red-200 rounded-xl font-bold hover:bg-red-200 transition"
+                                >
+                                    Remove Service
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Images Section */}
+                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8">
+                    <div className="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 className="text-2xl font-bold text-blue-900">Add Travel Photos</h3>
+                            <p className="text-gray-600">Share beautiful moments from your journey (optional)</p>
+                        </div>
+                        <button 
+                            type="button" 
+                            onClick={handleAddImageForm} 
+                            className="px-6 py-3 bg-blue-600 text-white border-2 border-blue-700 rounded-xl font-bold shadow hover:bg-blue-700 transition"
+                        >
+                            Add Photo
+                        </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {imageForms.map((_, idx) => (
+                            <div key={idx} className="relative bg-gray-50 border-2 border-gray-200 rounded-2xl p-6">
+                                <BlogImageForm
+                                    postId=""
+                                    onSubmit={data => handleImageFormChange(idx, data)}
+                                />
+                                {formErrors.images[idx] && <span className="text-sm text-red-500 mt-2 block">Please add image URL</span>}
+                                <button 
+                                    type="button" 
+                                    onClick={() => handleRemoveImageForm(idx)} 
+                                    className="absolute top-2 right-2 px-3 py-1 bg-red-100 text-red-700 border-2 border-red-200 rounded-xl text-sm font-bold hover:bg-red-200 transition"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
     );
 };
 
-export default BlogCreate;
+export default BlogCreatePage;

@@ -46,40 +46,94 @@ const TravelPlanForm: React.FC<TravelPlanFormProps> = ({ initialValues = {}, onS
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            {error && <div className="text-red-500 text-sm">{error}</div>}
+        <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+                <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-xl px-6 py-4 font-semibold">
+                    {error}
+                </div>
+            )}
 
             <div>
-                <label className="block font-semibold">Name<span className="text-red-500">*</span></label>
-                <input name="name" value={form.name} onChange={handleChange} required className="w-full border rounded px-3 py-2" />
+                <label className="block font-bold mb-2 text-emerald-900 text-lg">
+                    Plan Name <span className="text-red-500">*</span>
+                </label>
+                <input 
+                    name="name" 
+                    value={form.name} 
+                    onChange={handleChange} 
+                    required 
+                    placeholder="Enter a name for your travel plan"
+                    className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors text-lg" 
+                />
             </div>
 
-            <div className="flex gap-4">
-                <div className="flex-1">
-                    <label className="block font-semibold">Start Date</label>
-                    <input type="date" name="start_date" value={form.start_date || ''} onChange={handleChange} className="w-full border rounded px-3 py-2" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label className="block font-bold mb-2 text-emerald-900">
+                        Start Date
+                    </label>
+                    <input 
+                        type="date" 
+                        name="start_date" 
+                        value={form.start_date || ''} 
+                        onChange={handleChange} 
+                        className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors" 
+                    />
                 </div>
-                <div className="flex-1">
-                    <label className="block font-semibold">End Date</label>
-                    <input type="date" name="end_date" value={form.end_date || ''} onChange={handleChange} className="w-full border rounded px-3 py-2" />
+                <div>
+                    <label className="block font-bold mb-2 text-emerald-900">
+                        End Date
+                    </label>
+                    <input 
+                        type="date" 
+                        name="end_date" 
+                        value={form.end_date || ''} 
+                        onChange={handleChange} 
+                        className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors" 
+                    />
                 </div>
             </div>
 
-            <div className="flex gap-4">
-                <div className="flex-1">
-                    <label className="block font-semibold">Total Cost</label>
-                    <input type="number" name="total_cost" value={form.total_cost ?? ''} onChange={handleChange} className="w-full border rounded px-3 py-2" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label className="block font-bold mb-2 text-sky-900">
+                        Total Budget ($)
+                    </label>
+                    <input 
+                        type="number" 
+                        name="total_cost" 
+                        value={form.total_cost ?? ''} 
+                        onChange={handleChange} 
+                        placeholder="Estimated total cost"
+                        className="w-full border-2 border-sky-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-colors" 
+                    />
                 </div>
-                <div className="flex-1">
-                    <label className="block font-semibold">Total Duration</label>
-                    <input type="number" name="total_duration" value={form.total_duration ?? ''} onChange={handleChange} className="w-full border rounded px-3 py-2" />
+                <div>
+                    <label className="block font-bold mb-2 text-emerald-900">
+                        Duration (days)
+                    </label>
+                    <input 
+                        type="number" 
+                        name="total_duration" 
+                        value={form.total_duration ?? ''} 
+                        onChange={handleChange} 
+                        placeholder="How many days?"
+                        className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors" 
+                    />
                 </div>
             </div>
 
             <div>
-                <label className="block font-semibold">Status</label>
-                <select name="status" value={form.status || ''} onChange={handleChange} className="w-full border rounded px-3 py-2">
-                    <option value="">Select status</option>
+                <label className="block font-bold mb-2 text-navy-900">
+                    Plan Status
+                </label>
+                <select 
+                    name="status" 
+                    value={form.status || ''} 
+                    onChange={handleChange} 
+                    className="w-full border-2 border-navy-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-navy-400 focus:border-navy-400 transition-colors"
+                >
+                    <option value="">Select current status</option>
                     <option value="Draft">Draft</option>
                     <option value="Active">Active</option>
                     <option value="Completed">Completed</option>
@@ -87,7 +141,12 @@ const TravelPlanForm: React.FC<TravelPlanFormProps> = ({ initialValues = {}, onS
                 </select>
             </div>
             
-            <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded font-bold hover:bg-blue-700 transition">{submitLabel}</button>
+            <button 
+                type="submit" 
+                className="w-full mt-8 px-8 py-4 rounded-xl bg-emerald-600 text-white font-bold shadow-lg hover:bg-emerald-700 transition-colors text-lg"
+            >
+                {submitLabel}
+            </button>
         </form>
     );
 };

@@ -5,10 +5,10 @@ const SignOutButton = () => {
 	return (
 		<button
 			onClick={() => signOut()}
-			className="bg-red-600 text-white px-4 py-2 rounded"
+			className="bg-red-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg hover:bg-red-700 transition-colors"
 			disabled={loading}
 		>
-			Sign Out
+			{loading ? '👋 Signing out...' : '👋 Sign Out'}
 		</button>
 	);
 };

@@ -28,7 +28,7 @@ const PlaceCreatePage: React.FC = () => {
         setLoading(true);
 
         try {
-            const created = await createPlace(form);
+            await createPlace(form);
             navigate('/places');
         } catch (err: any) {
             setError(err?.response?.data?.message || 'Failed to create place.');
@@ -38,90 +38,118 @@ const PlaceCreatePage: React.FC = () => {
     };
 
     return (
-        <div className="max-w-xl mx-auto py-10 px-4">
-            <h2 className="text-2xl font-bold text-blue-800 mb-6 text-center">Create New Place</h2>
-            {error && <div className="text-red-500 mb-4 text-center">{error}</div>}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <label className="block font-semibold mb-1">Name<span className="text-red-500">*</span></label>
-                    <input
-                        name="name"
-                        value={form.name}
-                        onChange={handleChange}
-                        required
-                        className="w-full border rounded px-3 py-2"
-                    />
-                </div>
-
-                <div className="flex gap-4">
-                    <div className="flex-1">
-                        <label className="block font-semibold mb-1">Latitude<span className="text-red-500">*</span></label>
-                        <input
-                            name="latitude"
-                            type="number"
-                            value={form.latitude}
-                            onChange={handleChange}
-                            required
-                            className="w-full border rounded px-3 py-2"
-                        />
-                    </div>
-
-                    <div className="flex-1">
-                        <label className="block font-semibold mb-1">Longitude<span className="text-red-500">*</span></label>
-                        <input
-                            name="longitude"
-                            type="number"
-                            value={form.longitude}
-                            onChange={handleChange}
-                            required
-                            className="w-full border rounded px-3 py-2"
-                        />
+        <div className="min-h-[85vh] bg-white">
+            <div className="max-w-6xl mx-auto px-6 py-16">
+                {/* Header Section */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <div className="text-center">
+                        <h2 className="text-5xl font-bold text-emerald-900 mb-2">Add New Paradise</h2>
+                        <p className="text-xl text-gray-600">Share a beautiful destination with fellow travelers</p>
                     </div>
                 </div>
 
-                <div>
-                    <label className="block font-semibold mb-1">Address</label>
-                    <input
-                        name="address"
-                        value={form.address}
-                        onChange={handleChange}
-                        className="w-full border rounded px-3 py-2"
-                    />
+                {/* Error Message */}
+                {error && (
+                    <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-2xl px-6 py-4 mb-8 text-lg font-medium">
+                        ❌ {error}
+                    </div>
+                )}
+
+                {/* Main Form Container */}
+                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div>
+                            <label className="block text-lg font-bold text-blue-900 mb-2">
+                                Place Name <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                                name="name"
+                                value={form.name}
+                                onChange={handleChange}
+                                required
+                                className="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none shadow-sm"
+                                placeholder="Enter the name of this amazing place..."
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="block text-lg font-bold text-blue-900 mb-2">
+                                    Latitude <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    name="latitude"
+                                    type="number"
+                                    step="any"
+                                    value={form.latitude}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none shadow-sm"
+                                    placeholder="e.g., 40.7128"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-lg font-bold text-blue-900 mb-2">
+                                    Longitude <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    name="longitude"
+                                    type="number"
+                                    step="any"
+                                    value={form.longitude}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none shadow-sm"
+                                    placeholder="e.g., -74.0060"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-lg font-bold text-blue-900 mb-2">Address</label>
+                            <input
+                                name="address"
+                                value={form.address}
+                                onChange={handleChange}
+                                className="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none shadow-sm"
+                                placeholder="Street address or general location..."
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-lg font-bold text-blue-900 mb-2">Travel Notes</label>
+                            <textarea
+                                name="notes"
+                                value={form.notes}
+                                onChange={handleChange}
+                                className="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none shadow-sm"
+                                rows={4}
+                                placeholder="Share what makes this place special, travel tips, or memorable experiences..."
+                            />
+                        </div>
+
+                        <div className="flex justify-center gap-4 pt-6">
+                            <button
+                                type="button"
+                                className="px-8 py-4 rounded-xl bg-gray-200 text-gray-800 text-lg font-bold border-2 border-gray-300 shadow-sm hover:bg-gray-300 transition-all"
+                                onClick={() => navigate('/places')}
+                                disabled={loading}
+                            >
+                                Cancel
+                            </button>
+
+                            <button
+                                type="submit"
+                                className="px-8 py-4 rounded-xl bg-emerald-600 text-white text-lg font-bold border-2 border-emerald-700 shadow-sm hover:bg-emerald-700 transition-all"
+                                disabled={loading}
+                            >
+                                {loading ? 'Adding Paradise...' : 'Add Paradise'}
+                            </button>
+                        </div>
+                    </form>
                 </div>
-
-                <div>
-                    <label className="block font-semibold mb-1">Notes</label>
-                    <textarea
-                        name="notes"
-                        value={form.notes}
-                        onChange={handleChange}
-                        className="w-full border rounded px-3 py-2"
-                        rows={3}
-                    />
-                </div>
-
-                <div className="flex justify-end gap-2">
-                    <button
-                        type="button"
-                        className="px-4 py-2 rounded bg-gray-200 text-blue-900 font-semibold"
-                        onClick={() => navigate('/places')}
-                        disabled={loading}
-                    >
-                        Cancel
-                    </button>
-
-                    <button
-                        type="submit"
-                        className="px-4 py-2 rounded bg-blue-600 text-white font-semibold"
-                        disabled={loading}
-                    >
-                        {loading ? 'Creating...' : 'Create'}
-                    </button>
-                </div>
-
-            </form>
-            
+            </div>
         </div>
     );
 };

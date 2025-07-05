@@ -7,14 +7,33 @@ interface PlaceCardProps {
 
 const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
     return (
-        <div className="bg-gray-50 rounded-xl shadow-lg p-6 border border-blue-200 flex flex-col gap-2 font-sans w-full">
-            <h3 className="text-xl font-bold text-blue-800 mb-1">{place.name}</h3>
+        <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group">
+            <div className="flex items-start justify-between mb-4">
+                <h3 className="text-2xl font-bold text-emerald-900 mb-2 group-hover:text-emerald-700 transition-colors">
+                    {place.name}
+                </h3>
+            </div>
 
-            {place.address && <p className="text-sm text-blue-900">Address: {place.address}</p>}
+            <div className="space-y-3">
+                {place.address && (
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+                        <div className="text-emerald-600 text-sm font-medium mb-1">Address</div>
+                        <div className="text-emerald-900 font-semibold">{place.address}</div>
+                    </div>
+                )}
 
-            <p className="text-sm text-blue-900">Location: {place.latitude}, {place.longitude}</p>
+                <div className="bg-sky-50 border border-sky-200 rounded-xl p-3">
+                    <div className="text-sky-600 text-sm font-medium mb-1">Coordinates</div>
+                    <div className="text-sky-900 font-semibold">{place.latitude}, {place.longitude}</div>
+                </div>
 
-            {place.notes && <p className="text-sm text-blue-900">Notes: {place.notes}</p>}
+                {place.notes && (
+                    <div className="bg-gray-50 border border-gray-200 rounded-xl p-3">
+                        <div className="text-gray-600 text-sm font-medium mb-1">Notes</div>
+                        <div className="text-gray-900 font-semibold">{place.notes}</div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

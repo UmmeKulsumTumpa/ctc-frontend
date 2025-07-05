@@ -6,8 +6,13 @@ import { PATHS } from '../../constants/path.constants';
 const TravelPlanCreatePage: React.FC = () => {
     const navigate = useNavigate();
     return (
-        <div className="max-w-2xl mx-auto py-8 px-4">
-            <h2 className="text-2xl font-bold mb-4 text-blue-800">Create Travel Plan</h2>
+        <div className="min-h-screen bg-white">
+            <div className="max-w-4xl mx-auto pt-8 pb-4 px-6">
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-8">
+                    <h1 className="text-5xl font-bold text-emerald-900 mb-4 text-center">Create Travel Plan</h1>
+                    <p className="text-xl text-gray-600 text-center">Plan your next journey with friends and family</p>
+                </div>
+            </div>
             <TravelPlanCreateForm onCreated={() => navigate(PATHS.TRAVEL_PLANS)} />
         </div>
     );

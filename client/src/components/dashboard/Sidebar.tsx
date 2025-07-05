@@ -6,24 +6,32 @@ interface SidebarProps {
 }
 
 const sections = [
-    { key: 'profile', label: 'Profile' },
-    { key: 'update', label: 'Update Profile' },
-    { key: 'password', label: 'Change Password' },
-    { key: 'posts', label: 'Your Posts' },
-    { key: 'wishlists', label: 'Your Wishlists' },
+    { key: 'profile', label: '👤 Profile', icon: '👤' },
+    { key: 'update', label: '✏️ Update Profile', icon: '✏️' },
+    { key: 'password', label: '🔐 Change Password', icon: '🔐' },
+    { key: 'posts', label: '📚 Your Stories', icon: '📚' },
+    { key: 'wishlists', label: '⭐ Your Dreams', icon: '⭐' },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ current, onSelect }) => {
     return (
-        <aside className="bg-gray-100 w-56 min-h-full p-4 flex flex-col gap-2 border-r">
-            <h2 className="text-lg font-bold text-blue-900 mb-4">Dashboard</h2>
+        <aside className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl w-72 min-h-full p-6 flex flex-col gap-3">
+            <div className="mb-6">
+                <h2 className="text-2xl font-bold text-blue-900 mb-2">Travel Dashboard</h2>
+                <p className="text-gray-600 text-sm">Manage your adventure profile</p>
+            </div>
             {sections.map(s => (
                 <button
                     key={s.key}
-                    className={`text-left px-3 py-2 rounded font-semibold transition-all ${current === s.key ? 'bg-blue-600 text-white shadow' : 'hover:bg-blue-200 text-blue-900'}`}
+                    className={`text-left px-4 py-3 rounded-xl font-bold transition-all duration-300 flex items-center gap-3 ${
+                        current === s.key 
+                            ? 'bg-blue-600 text-white shadow-lg border-2 border-blue-700 transform scale-105' 
+                            : 'hover:bg-blue-50 text-blue-900 border-2 border-transparent hover:border-blue-200 hover:shadow-md'
+                    }`}
                     onClick={() => onSelect(s.key)}
                 >
-                    {s.label}
+                    <span className="text-lg">{s.icon}</span>
+                    <span>{s.label.replace(/^[^\s]+ /, '')}</span>
                 </button>
             ))}
         </aside>

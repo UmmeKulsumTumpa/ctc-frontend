@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import type { TravelPlan, PlanParticipant, PlanComment, PlannedPlace, TravelPlanServiceUnifiedDTO } from '../../types/travelPlan.type';
+import type { TravelPlan, PlanParticipant } from '../../types/travelPlan.type';
 import { getPlanParticipants, getPlanComments, getPlannedPlaces, getPlanServices } from '../../services/travelPlan.service';
 
 interface TravelPlanCardProps {
@@ -8,9 +8,6 @@ interface TravelPlanCardProps {
 
 const TravelPlanCard: React.FC<TravelPlanCardProps> = ({ plan }) => {
     const [participants, setParticipants] = useState<PlanParticipant[]>([]);
-    const [comments, setComments] = useState<PlanComment[]>([]);
-    const [places, setPlaces] = useState<PlannedPlace[]>([]);
-    const [services, setServices] = useState<TravelPlanServiceUnifiedDTO[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -22,43 +19,97 @@ const TravelPlanCard: React.FC<TravelPlanCardProps> = ({ plan }) => {
             getPlannedPlaces(plan.plan_id),
             getPlanServices(plan.plan_id)
         ])
-            .then(([participants, comments, places, services]) => {
+            .then(([participants]) => {
                 setParticipants(participants);
-                setComments(comments);
-                setPlaces(places);
-                setServices(services);
+                // We only use participants for the card display
             })
             .catch(() => setError('Failed to load plan details'))
             .finally(() => setLoading(false));
     }, [plan.plan_id]);
 
-    if (loading) return <div className="p-4">Loading plan details...</div>;
-    if (error) return <div className="p-4 text-red-600">{error}</div>;
+    if (loading) {
+        return (
+            <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-xl p-8 text-center">
+                <div className="text-emerald-600 text-lg font-bold animate-pulse">
+                    Loading plan details...
+                </div>
+            </div>
+        );
+    }
+    
+    if (error) {
+        return (
+            <div className="bg-red-50 border-2 border-red-200 shadow-lg rounded-xl p-8 text-center">
+                <div className="text-red-700 text-lg font-bold">{error}</div>
+            </div>
+        );
+    }
 
     return (
-        <div className="border rounded p-4 bg-white shadow mb-6">
-            <h3 className="text-lg font-bold text-blue-800 mb-2">{plan.name}</h3>
-            <div className="text-sm text-gray-600 mb-2">Status: {plan.status || 'N/A'}</div>
-            <div className="text-xs text-gray-500 mb-2">Start: {plan.start_date || '-'} | End: {plan.end_date || '-'}</div>
-            <div className="mb-2">
-                <b>Participants:</b> {participants.length === 0 ? 'None' : participants.map(p => `User ${p.user_id} (${p.role_permission})`).join(', ')}
+        <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] group">
+            {/* Header */}
+            <div className="flex items-start justify-between mb-4">
+                <div className="flex-1">
+                    <h3 className="text-2xl font-bold text-emerald-900 mb-2 group-hover:text-emerald-700 transition-colors">
+                        {plan.name}
+                    </h3>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                        <span className="bg-sky-100 text-sky-800 px-3 py-1 rounded-full text-sm font-bold border border-sky-200">
+                            {plan.status || 'Draft'}
+                        </span>
+                        {plan.total_cost && (
+                            <span className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm font-bold border border-emerald-200">
+                                ${plan.total_cost}
+                            </span>
+                        )}
+                        {plan.total_duration && (
+                            <span className="bg-navy-100 text-navy-800 px-3 py-1 rounded-full text-sm font-bold border border-navy-200">
+                                {plan.total_duration} days
+                            </span>
+                        )}
+                    </div>
+                </div>
             </div>
-            <div className="mb-2">
-                <b>Places:</b> {places.length === 0 ? 'None' : places.map(pl => pl.place_id).join(', ')}
+
+            {/* Date Range */}
+            {(plan.start_date || plan.end_date) && (
+                <div className="bg-sky-50 border border-sky-200 rounded-xl p-3 mb-4">
+                    <div className="text-sky-600 text-sm font-medium mb-1">Travel Dates</div>
+                    <div className="text-sky-900 font-bold">
+                        {plan.start_date || 'TBD'} → {plan.end_date || 'TBD'}
+                    </div>
+                </div>
+            )}
+
+            {/* Team Section */}
+            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 mb-4">
+                <div className="text-emerald-600 text-sm font-medium mb-2">Travel Team</div>
+                {participants.length === 0 ? (
+                    <div className="text-gray-500 text-sm italic">Solo adventure</div>
+                ) : (
+                    <div className="flex flex-wrap gap-2">
+                        {participants.slice(0, 3).map(p => (
+                            <span key={p.user_id} className="bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full text-xs font-semibold">
+                                User {p.user_id} ({p.role_permission})
+                            </span>
+                        ))}
+                        {participants.length > 3 && (
+                            <span className="bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full text-xs font-semibold">
+                                +{participants.length - 3} more
+                            </span>
+                        )}
+                    </div>
+                )}
             </div>
-            <div className="mb-2">
-                <b>Services:</b> {services.length === 0 ? 'None' : services.map(s => s.service_id).join(', ')}
-            </div>
-            <div className="mb-2">
-                <b>Comments:</b>
-                <ul className="ml-4 list-disc">
-                    {comments.length === 0 ? <li>No comments</li> : comments.map(c => (
-                        <li key={c.comment_id}><span className="font-semibold">User {c.user_id}:</span> {c.content}</li>
-                    ))}
-                </ul>
-            </div>
-            <div className="flex justify-end mt-4">
-                <a href={`/travelplan/${plan.plan_id}`} className="px-4 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">View</a>
+
+            {/* Action Button */}
+            <div className="flex justify-end">
+                <a 
+                    href={`/travelplan/${plan.plan_id}`} 
+                    className="px-6 py-3 rounded-xl bg-emerald-600 text-white font-bold shadow-lg hover:bg-emerald-700 transition-all transform hover:scale-105"
+                >
+                    View Details
+                </a>
             </div>
         </div>
     );

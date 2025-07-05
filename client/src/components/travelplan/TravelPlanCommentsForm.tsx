@@ -19,15 +19,26 @@ const TravelPlanCommentsForm: React.FC<TravelPlanCommentsFormProps> = ({ initial
     };
 
     return (
-        <div className="bg-gray-50 p-4 rounded">
-            <input
-                placeholder="Comment"
-                value={comment.content || ''}
-                onChange={e => handleChange('content', e.target.value)}
-                className="border rounded px-2 py-1 flex-1"
-                required
-            />
-            {formError && <div className="text-xs text-red-500 mt-1">Required fields missing</div>}
+        <div className="bg-white border-2 border-gray-200 shadow-lg rounded-xl p-6">
+            <div>
+                <label className="block font-bold mb-2 text-gray-900">
+                    Your Comment <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                    placeholder="Share your thoughts about this travel plan..."
+                    value={comment.content || ''}
+                    onChange={e => handleChange('content', e.target.value)}
+                    className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-gray-400 transition-colors resize-none"
+                    rows={3}
+                    required
+                />
+            </div>
+
+            {formError && (
+                <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm font-semibold mt-3">
+                    ❌ Comment content is required
+                </div>
+            )}
         </div>
     );
 };

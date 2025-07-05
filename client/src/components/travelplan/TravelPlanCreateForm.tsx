@@ -91,22 +91,37 @@ const TravelPlanCreateForm: React.FC<{ onCreated?: (plan: TravelPlan) => void }>
     };
 
     return (
-        <div className="max-w-3xl mx-auto py-12 px-4">
-            <h2 className="text-3xl font-extrabold mb-6 text-center text-blue-800 font-serif tracking-tight drop-shadow-lg">Create New Travel Plan</h2>
+        <div className="max-w-4xl mx-auto py-8 px-6">
+            {error && (
+                <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-xl px-6 py-4 mb-6 font-semibold text-center">
+                    {error}
+                </div>
+            )}
+            {detailedError && (
+                <div className="bg-red-50 border-2 border-red-200 text-red-600 rounded-xl px-6 py-3 mb-6 text-sm text-center">
+                    {detailedError}
+                </div>
+            )}
 
-            {error && <div className="text-red-500 mb-3 text-center text-lg font-semibold">{error}</div>}
-            {detailedError && <div className="text-red-400 mb-3 text-center text-xs">{detailedError}</div>}
+            <div className="bg-white border-2 border-gray-200 shadow-lg rounded-3xl p-8 mb-8">
+                <TravelPlanForm onSubmit={handleSubmit} submitLabel={loading ? "Creating Plan..." : "Create Plan"} />
+            </div>
 
-            <TravelPlanForm onSubmit={handleSubmit} submitLabel={loading ? "Creating..." : "Create"} />
 
-
-            <div className="mt-10">
+            <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-8">
                 {/* PLACES */}
-                <h3 className="text-xl font-bold mb-3 text-blue-800">Places <span className="text-xs text-blue-400">(optional)</span></h3>
-                <button type="button" onClick={handleAddPlace} className="mb-3 px-4 py-2 bg-green-50 border border-green-700 text-green-900 rounded-lg font-bold shadow hover:bg-green-200 transition">Add Place</button>
-                <ul className="space-y-4 mt-2">
+                <h3 className="text-3xl font-bold mb-4 text-emerald-900">Destinations</h3>
+                <p className="text-emerald-700 mb-6">Add the places you want to visit during your trip</p>
+                <button 
+                    type="button" 
+                    onClick={handleAddPlace} 
+                    className="mb-6 px-6 py-3 bg-emerald-600 text-white rounded-xl font-bold shadow-lg hover:bg-emerald-700 transition-colors"
+                >
+                    Add Destination
+                </button>
+                <div className="space-y-6">
                     {places.map((place, idx) => (
-                        <li key={idx} className="flex flex-col gap-2 border-b border-green-100 pb-3">
+                        <div key={idx} className="relative">
                             <TravelPlanPlacesForm
                                 initialData={place}
                                 onChange={data => {
@@ -116,18 +131,35 @@ const TravelPlanCreateForm: React.FC<{ onCreated?: (plan: TravelPlan) => void }>
                                 }}
                                 formError={formErrors.places[idx]}
                             />
-                            {formErrors.places[idx] && <span className="text-xs text-red-500">Required fields missing</span>}
-                            <button type="button" onClick={() => setPlaces(places.filter((_, i) => i !== idx))} className="self-end px-3 py-1 text-xs bg-red-400 text-white rounded-lg shadow hover:bg-red-500 transition">Remove</button>
-                        </li>
+                            {formErrors.places[idx] && (
+                                <div className="mt-2 text-red-600 text-sm font-semibold">Required fields missing</div>
+                            )}
+                            <button 
+                                type="button" 
+                                onClick={() => setPlaces(places.filter((_, i) => i !== idx))} 
+                                className="absolute top-4 right-4 px-3 py-2 bg-red-600 text-white rounded-xl text-sm font-bold shadow-lg hover:bg-red-700 transition-colors"
+                            >
+                                Remove
+                            </button>
+                        </div>
                     ))}
-                </ul>
+                </div>
+            </div>
 
+            <div className="bg-white border-2 border-sky-200 shadow-lg rounded-3xl p-8 mb-8">
                 {/* SERVICES */}
-                <h3 className="text-xl font-bold mb-3 mt-10 text-blue-800">Services <span className="text-xs text-blue-400">(optional)</span></h3>
-                <button type="button" onClick={handleAddService} className="mb-3 px-4 py-2 bg-yellow-50 border border-yellow-700 text-yellow-900 rounded-lg font-bold shadow hover:bg-yellow-200 transition">Add Service</button>
-                <ul className="space-y-4 mt-2">
+                <h3 className="text-3xl font-bold mb-4 text-sky-900">Travel Services</h3>
+                <p className="text-sky-700 mb-6">Add hotels, restaurants, and other services for your trip</p>
+                <button 
+                    type="button" 
+                    onClick={handleAddService} 
+                    className="mb-6 px-6 py-3 bg-sky-600 text-white rounded-xl font-bold shadow-lg hover:bg-sky-700 transition-colors"
+                >
+                    Add Service
+                </button>
+                <div className="space-y-6">
                     {services.map((svc, idx) => (
-                        <li key={idx} className="flex flex-col gap-2 border-b border-yellow-100 pb-3">
+                        <div key={idx} className="relative">
                             <TravelPlanServicesForm
                                 initialData={svc}
                                 onChange={data => {
@@ -137,18 +169,35 @@ const TravelPlanCreateForm: React.FC<{ onCreated?: (plan: TravelPlan) => void }>
                                 }}
                                 formError={formErrors.services[idx]}
                             />
-                            {formErrors.services[idx] && <span className="text-xs text-red-500">Required fields missing</span>}
-                            <button type="button" onClick={() => setServices(services.filter((_, i) => i !== idx))} className="self-end px-3 py-1 text-xs bg-red-400 text-white rounded-lg shadow hover:bg-red-500 transition">Remove</button>
-                        </li>
+                            {formErrors.services[idx] && (
+                                <div className="mt-2 text-red-600 text-sm font-semibold">Required fields missing</div>
+                            )}
+                            <button 
+                                type="button" 
+                                onClick={() => setServices(services.filter((_, i) => i !== idx))} 
+                                className="absolute top-4 right-4 px-3 py-2 bg-red-600 text-white rounded-xl text-sm font-bold shadow-lg hover:bg-red-700 transition-colors"
+                            >
+                                Remove
+                            </button>
+                        </div>
                     ))}
-                </ul>
+                </div>
+            </div>
 
+            <div className="bg-white border-2 border-navy-200 shadow-lg rounded-3xl p-8 mb-8">
                 {/* PARTICIPANTS */}
-                <h3 className="text-xl font-bold mb-3 mt-10 text-blue-800">Participants <span className="text-xs text-blue-400">(optional)</span></h3>
-                <button type="button" onClick={handleAddParticipant} className="mb-3 px-4 py-2 bg-purple-50 border border-purple-700 text-purple-900 rounded-lg font-bold shadow hover:bg-purple-200 transition">Add Participant</button>
-                <ul className="space-y-4 mt-2">
+                <h3 className="text-3xl font-bold mb-4 text-navy-900">Travel Companions</h3>
+                <p className="text-navy-700 mb-6">Invite friends and family to join your trip</p>
+                <button 
+                    type="button" 
+                    onClick={handleAddParticipant} 
+                    className="mb-6 px-6 py-3 bg-navy-600 text-white rounded-xl font-bold shadow-lg hover:bg-navy-700 transition-colors"
+                >
+                    Add Team Member
+                </button>
+                <div className="space-y-6">
                     {participants.map((p, idx) => (
-                        <li key={idx} className="flex flex-col gap-2 border-b border-purple-100 pb-3">
+                        <div key={idx} className="relative">
                             <TravelPlanParticipantsForm
                                 initialData={p}
                                 onChange={data => {
@@ -158,18 +207,35 @@ const TravelPlanCreateForm: React.FC<{ onCreated?: (plan: TravelPlan) => void }>
                                 }}
                                 formError={formErrors.participants[idx]}
                             />
-                            {formErrors.participants[idx] && <span className="text-xs text-red-500">Required fields missing</span>}
-                            <button type="button" onClick={() => setParticipants(participants.filter((_, i) => i !== idx))} className="self-end px-3 py-1 text-xs bg-red-400 text-white rounded-lg shadow hover:bg-red-500 transition">Remove</button>
-                        </li>
+                            {formErrors.participants[idx] && (
+                                <div className="mt-2 text-red-600 text-sm font-semibold">Required fields missing</div>
+                            )}
+                            <button 
+                                type="button" 
+                                onClick={() => setParticipants(participants.filter((_, i) => i !== idx))} 
+                                className="absolute top-4 right-4 px-3 py-2 bg-red-600 text-white rounded-xl text-sm font-bold shadow-lg hover:bg-red-700 transition-colors"
+                            >
+                                Remove
+                            </button>
+                        </div>
                     ))}
-                </ul>
+                </div>
+            </div>
 
+            <div className="bg-white border-2 border-gray-200 shadow-lg rounded-3xl p-8 mb-8">
                 {/* COMMENTS */}
-                <h3 className="text-xl font-bold mb-3 mt-10 text-blue-800">Comments <span className="text-xs text-blue-400">(optional)</span></h3>
-                <button type="button" onClick={handleAddComment} className="mb-3 px-4 py-2 bg-blue-50 border border-blue-700 text-blue-900 rounded-lg font-bold shadow hover:bg-blue-200 transition">Add Comment</button>
-                <ul className="space-y-4 mt-2">
+                <h3 className="text-3xl font-bold mb-4 text-gray-900">Notes & Ideas</h3>
+                <p className="text-gray-700 mb-6">Add any thoughts or planning notes for your trip</p>
+                <button 
+                    type="button" 
+                    onClick={handleAddComment} 
+                    className="mb-6 px-6 py-3 bg-gray-600 text-white rounded-xl font-bold shadow-lg hover:bg-gray-700 transition-colors"
+                >
+                    Add Comment
+                </button>
+                <div className="space-y-6">
                     {comments.map((c, idx) => (
-                        <li key={idx} className="flex flex-col gap-2 border-b border-blue-100 pb-3">
+                        <div key={idx} className="relative">
                             <TravelPlanCommentsForm
                                 initialData={c}
                                 onChange={data => {
@@ -179,15 +245,26 @@ const TravelPlanCreateForm: React.FC<{ onCreated?: (plan: TravelPlan) => void }>
                                 }}
                                 formError={formErrors.comments[idx]}
                             />
-                            {formErrors.comments[idx] && <span className="text-xs text-red-500">Required fields missing</span>}
-                            <button type="button" onClick={() => setComments(comments.filter((_, i) => i !== idx))} className="self-end px-3 py-1 text-xs bg-red-400 text-white rounded-lg shadow hover:bg-red-500 transition">Remove</button>
-                        </li>
+                            {formErrors.comments[idx] && (
+                                <div className="mt-2 text-red-600 text-sm font-semibold">Required fields missing</div>
+                            )}
+                            <button 
+                                type="button" 
+                                onClick={() => setComments(comments.filter((_, i) => i !== idx))} 
+                                className="absolute top-4 right-4 px-3 py-2 bg-red-600 text-white rounded-xl text-sm font-bold shadow-lg hover:bg-red-700 transition-colors"
+                            >
+                                Remove
+                            </button>
+                        </div>
                     ))}
-                </ul>
+                </div>
             </div>
 
             {createdPlan && (
-                <div className="mt-6 text-green-700 font-semibold">Travel plan created successfully!</div>
+                <div className="bg-green-50 border-2 border-green-200 shadow-lg rounded-xl p-8 text-center">
+                    <div className="text-green-700 text-2xl font-bold mb-2">Travel Plan Created Successfully!</div>
+                    <div className="text-green-600">Your travel plan is ready. Time to make it happen!</div>
+                </div>
             )}
         </div>
     );

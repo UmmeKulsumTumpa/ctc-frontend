@@ -7,25 +7,65 @@ interface ServiceDetailsCardProps {
 
 const ServiceDetailsCard: React.FC<ServiceDetailsCardProps> = ({ service }) => {
     return (
-        <div className="bg-white rounded-lg shadow p-4 border mb-4 flex flex-col gap-2">
-            <div className="flex items-center gap-4">
-                <h3 className="text-xl font-bold text-blue-800">{service.name}</h3>
-                <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full border border-blue-200 font-semibold">{service.type}</span>
+        <div className="bg-white border-2 border-sky-200 shadow-lg rounded-xl p-6">
+            <div className="flex items-center gap-4 mb-4">
+                <h3 className="text-2xl font-bold text-sky-900">{service.name}</h3>
+                <span className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm font-bold border border-emerald-200">
+                    {service.type}
+                </span>
             </div>
             
-            {service.address && <div><span className="font-semibold">Address:</span> {service.address}</div>}
-            {service.description && <div><span className="font-semibold">Description:</span> {service.description}</div>}
-            {(service.latitude !== undefined && service.longitude !== undefined) && (
-                <div><span className="font-semibold">Location:</span> {service.latitude}, {service.longitude}</div>
-            )}
-            <div><span className="font-semibold">Created At:</span> {new Date(service.created_at).toLocaleString()}</div>
-            {service.type === 'Transport' && service.transport && (
-                <div className="mt-2 p-2 bg-blue-50 rounded border border-blue-100">
-                    <div className="font-semibold text-blue-700 mb-1">Transport Details:</div>
-                    <div><span className="font-semibold">Mode:</span> {service.transport.mode}</div>
-                    {service.transport.operator && <div><span className="font-semibold">Operator:</span> {service.transport.operator}</div>}
+            <div className="space-y-3">
+                {service.address && (
+                    <div className="bg-sky-50 border border-sky-200 rounded-xl p-3">
+                        <div className="text-sky-600 text-sm font-medium mb-1">Address</div>
+                        <div className="text-sky-900 font-semibold">{service.address}</div>
+                    </div>
+                )}
+
+                {service.description && (
+                    <div className="bg-gray-50 border border-gray-200 rounded-xl p-3">
+                        <div className="text-gray-600 text-sm font-medium mb-1">Description</div>
+                        <div className="text-gray-900 font-semibold">{service.description}</div>
+                    </div>
+                )}
+
+                {(service.latitude !== undefined && service.longitude !== undefined) && (
+                    <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+                        <div className="text-emerald-600 text-sm font-medium mb-1">Coordinates</div>
+                        <div className="text-emerald-900 font-semibold">{service.latitude}, {service.longitude}</div>
+                    </div>
+                )}
+
+                <div className="bg-sky-50 border border-sky-200 rounded-xl p-3">
+                    <div className="text-sky-600 text-sm font-medium mb-1">Created</div>
+                    <div className="text-sky-900 font-semibold">{new Date(service.created_at).toLocaleDateString(undefined, {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })}</div>
                 </div>
-            )}
+
+                {service.type === 'Transport' && service.transport && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <div className="text-blue-600 text-sm font-medium mb-3">🚗 Transport Specialization</div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div className="bg-white rounded-lg p-3 border border-blue-100">
+                                <div className="text-blue-700 text-xs font-medium">Mode</div>
+                                <div className="text-blue-900 font-bold">{service.transport.mode}</div>
+                            </div>
+                            {service.transport.operator && (
+                                <div className="bg-white rounded-lg p-3 border border-blue-100">
+                                    <div className="text-blue-700 text-xs font-medium">Operator</div>
+                                    <div className="text-blue-900 font-bold">{service.transport.operator}</div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

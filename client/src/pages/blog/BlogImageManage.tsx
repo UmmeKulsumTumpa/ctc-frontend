@@ -39,12 +39,36 @@ const BlogImageManage = () => {
     };
 
     return (
-        <div className="max-w-xl mx-auto py-8">
-            <h2 className="text-xl font-bold mb-4">Manage Images</h2>
-            {error && <div className="text-red-500 mb-2">{error}</div>}
-            <BlogImageForm postId={id!} onSubmit={handleAdd} loading={loading} />
-            <div className="mt-6">
-                <BlogImageList images={images} onDelete={handleDelete} />
+        <div className="min-h-[85vh] bg-white">
+            <div className="max-w-6xl mx-auto px-6 py-16">
+                {/* Header Section */}
+                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <div className="text-center">
+                        <h2 className="text-5xl font-bold text-blue-900 mb-2">Manage Travel Photos</h2>
+                        <p className="text-xl text-gray-600">Add or remove photos for this travel story</p>
+                    </div>
+                </div>
+
+                {/* Error Message */}
+                {error && (
+                    <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-2xl px-6 py-4 mb-8 text-lg font-medium">
+                        ❌ {error}
+                    </div>
+                )}
+
+                {/* Add Image Section */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <h3 className="text-2xl font-bold text-emerald-900 mb-6">Add New Photo</h3>
+                    <div className="bg-gray-50 border-2 border-gray-200 rounded-2xl p-6">
+                        <BlogImageForm postId={id!} onSubmit={handleAdd} loading={loading} />
+                    </div>
+                </div>
+
+                {/* Images List Section */}
+                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8">
+                    <h3 className="text-2xl font-bold text-blue-900 mb-6">Current Photos</h3>
+                    <BlogImageList images={images} onDelete={handleDelete} />
+                </div>
             </div>
         </div>
     );

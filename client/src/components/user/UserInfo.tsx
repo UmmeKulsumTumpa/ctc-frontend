@@ -16,8 +16,10 @@ const UserInfo = () => {
     }, [user]);
     if (!isAuthenticated || !user) return null;
     return (
-        <div className="flex items-center gap-2">
-            <span className="font-medium">{username || user.email}</span>
+        <div className="flex items-center gap-3">
+            <div className="bg-blue-100 text-blue-900 px-3 py-2 rounded-lg font-bold shadow border border-blue-200">
+                👤 {username || user.email}
+            </div>
             <SignOutButton />
         </div>
     );

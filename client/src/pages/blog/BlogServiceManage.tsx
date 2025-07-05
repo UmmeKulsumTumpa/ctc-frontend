@@ -39,12 +39,36 @@ const BlogServiceManage = () => {
     };
 
     return (
-        <div className="max-w-xl mx-auto py-8">
-            <h2 className="text-xl font-bold mb-4">Manage Services</h2>
-            {error && <div className="text-red-500 mb-2">{error}</div>}
-            <BlogServiceForm postId={id!} onSubmit={handleAdd} loading={loading} />
-            <div className="mt-6">
-                <BlogServiceList services={services} onDelete={handleDelete} />
+        <div className="min-h-[85vh] bg-white">
+            <div className="max-w-6xl mx-auto px-6 py-16">
+                {/* Header Section */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <div className="text-center">
+                        <h2 className="text-5xl font-bold text-emerald-900 mb-2">Manage Travel Services</h2>
+                        <p className="text-xl text-gray-600">Add or remove services for this travel story</p>
+                    </div>
+                </div>
+
+                {/* Error Message */}
+                {error && (
+                    <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-2xl px-6 py-4 mb-8 text-lg font-medium">
+                        ❌ {error}
+                    </div>
+                )}
+
+                {/* Add Service Section */}
+                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <h3 className="text-2xl font-bold text-blue-900 mb-6">Add New Service</h3>
+                    <div className="bg-gray-50 border-2 border-gray-200 rounded-2xl p-6">
+                        <BlogServiceForm postId={id!} onSubmit={handleAdd} loading={loading} />
+                    </div>
+                </div>
+
+                {/* Services List Section */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8">
+                    <h3 className="text-2xl font-bold text-emerald-900 mb-6">Current Services</h3>
+                    <BlogServiceList services={services} onDelete={handleDelete} />
+                </div>
             </div>
         </div>
     );

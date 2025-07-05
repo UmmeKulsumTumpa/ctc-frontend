@@ -36,12 +36,29 @@ const BlogDetail = () => {
             .finally(() => setLoading(false));
     }, [id]);
 
-    if (loading) return <div className="text-center mt-10">Loading blog...</div>;
-    if (error || !blog) return <div className="text-center mt-10 text-red-500">{error || "Blog not found."}</div>;
+    if (loading) return (
+        <div className="min-h-[85vh] bg-white">
+            <div className="max-w-6xl mx-auto px-6 py-16">
+                <div className="text-center text-emerald-600 text-2xl font-bold animate-pulse">
+                    📖 Loading this travel story...
+                </div>
+            </div>
+        </div>
+    );
+    
+    if (error || !blog) return (
+        <div className="min-h-[85vh] bg-white">
+            <div className="max-w-6xl mx-auto px-6 py-16">
+                <div className="text-center text-red-500 text-lg font-semibold">
+                    ❌ {error || "Story not found."}
+                </div>
+            </div>
+        </div>
+    );
 
     const handleDelete = async () => {
         if (!blog) return;
-        if (window.confirm('Are you sure you want to delete this blog?')) {
+        if (window.confirm('Are you sure you want to delete this amazing story?')) {
             try {
                 await deleteBlog(blog.post_id);
                 navigate('/blogs');
@@ -58,25 +75,47 @@ const BlogDetail = () => {
             await likeBlog(blog.post_id);
             setBlog({ ...blog, likes: blog.likes + 1 });
         } catch (err: any) {
-            setError(err?.response?.data?.message || "Failed to like blog.");
+            setError(err?.response?.data?.message || "Failed to like this story.");
         } finally {
             setLikeLoading(false);
         }
     };
 
     return (
-        <div className="max-w-3xl mx-auto py-8 min-h-[80vh] px-4">
-            <BlogDetailCard
-                post={blog}
-                services={services}
-                images={images}
-                userId={userId}
-                onView={() => navigate(-1)}
-                onEdit={() => navigate(`/blogs/${blog.post_id}/edit`)}
-                onDelete={handleDelete}
-                onLike={likeLoading ? undefined : handleLike}
-                viewLabel="Back"
-            />
+        <div className="min-h-[85vh] bg-white">
+            <div className="max-w-6xl mx-auto px-6 py-16">
+                {/* Hero Section with Back Button */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-6 mb-8">
+                    <div className="flex items-center justify-between">
+                        <button 
+                            onClick={() => navigate(-1)}
+                            className="px-6 py-3 rounded-xl bg-blue-200 text-gray-800 font-bold border-2 border-gray-300 hover:bg-gray-300 transition-all"
+                        >
+                            ← Back to Stories
+                        </button>
+                        <div className="text-center">
+                            <h1 className="text-5xl font-bold text-emerald-900">Travel Story</h1>
+                            <p className="text-xl text-gray-600">Experience this amazing journey</p>
+                        </div>
+                        <div className="w-32"></div> {/* Spacer for balance */}
+                    </div>
+                </div>
+
+                {/* Main Content with Enhanced Framing */}
+                <div className="bg-white border-4 border-blue-300 shadow-2xl rounded-3xl p-8">
+                    <BlogDetailCard
+                        post={blog}
+                        services={services}
+                        images={images}
+                        userId={userId}
+                        onView={() => navigate(-1)}
+                        onEdit={() => navigate(`/blogs/${blog.post_id}/edit`)}
+                        onDelete={handleDelete}
+                        onLike={likeLoading ? undefined : handleLike}
+                        viewLabel="← Back to Stories"
+                    />
+                </div>
+            </div>
         </div>
     );
 };

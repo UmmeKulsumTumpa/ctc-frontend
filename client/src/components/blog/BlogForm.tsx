@@ -84,10 +84,17 @@ const BlogForm = <T extends BlogCreate | BlogUpdate = BlogCreate | BlogUpdate>({
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8 flex flex-col gap-6 max-w-2xl mx-auto border border-blue-100">
-            {error && <div className="text-red-500 text-sm">{error}</div>}
+        <form onSubmit={handleSubmit} className="bg-white rounded-3xl shadow-lg p-8 flex flex-col gap-6 max-w-4xl mx-auto border-2 border-blue-200">
+            {error && (
+                <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-xl px-4 py-3 font-semibold">
+                    {error}
+                </div>
+            )}
+
             <div>
-                <label htmlFor="title" className="block font-bold mb-1 text-[#1a237e]">Title <span className="text-red-500">*</span></label>
+                <label htmlFor="title" className="block font-bold mb-2 text-blue-900 text-lg">
+                    Story Title <span className="text-red-500">*</span>
+                </label>
                 <input
                     id="title"
                     type="text"
@@ -95,33 +102,40 @@ const BlogForm = <T extends BlogCreate | BlogUpdate = BlogCreate | BlogUpdate>({
                     value={form.title as string}
                     onChange={handleChange}
                     required
-                    className="w-full border-2 border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300 bg-white"
+                    placeholder="Give your travel story a captivating title..."
+                    className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors text-lg"
                 />
             </div>
-            <div className="flex gap-4">
-                <div className="flex-1">
-                    <label htmlFor="effort_level" className="block font-semibold mb-1 text-[#1a237e]">Effort Level</label>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label htmlFor="effort_level" className="block font-bold mb-2 text-emerald-900">
+                        Difficulty Level
+                    </label>
                     <select
                         id="effort_level"
                         name="effort_level"
                         value={form.effort_level || ""}
                         onChange={handleChange}
-                        className="w-full border-2 border-green-200 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-green-300"
+                        className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
                     >
-                        <option value="">Select</option>
+                        <option value="">Select difficulty level</option>
                         {effortLevels.map((lvl) => (
                             <option key={lvl} value={lvl}>{lvl}</option>
                         ))}
                     </select>
                 </div>
-                <div className="flex-1">
-                    <label htmlFor="visibility" className="block font-semibold mb-1 text-[#1a237e]">Visibility</label>
+
+                <div>
+                    <label htmlFor="visibility" className="block font-bold mb-2 text-blue-900">
+                        Story Visibility
+                    </label>
                     <select
                         id="visibility"
                         name="visibility"
                         value={form.visibility || ""}
                         onChange={handleChange}
-                        className="w-full border-2 border-blue-200 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors"
                     >
                         {visibilities.map((v) => (
                             <option key={v} value={v}>{v}</option>
@@ -129,50 +143,65 @@ const BlogForm = <T extends BlogCreate | BlogUpdate = BlogCreate | BlogUpdate>({
                     </select>
                 </div>
             </div>
-            <div className="flex gap-4">
-                <div className="flex-1">
-                    <label htmlFor="total_cost" className="block font-semibold mb-1 text-[#1a237e]">Total Cost</label>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label htmlFor="total_cost" className="block font-bold mb-2 text-emerald-900">
+                        Total Budget ($)
+                    </label>
                     <input
                         id="total_cost"
                         type="number"
                         name="total_cost"
                         value={form.total_cost ?? ""}
                         onChange={handleChange}
-                        className="w-full border-2 border-green-200 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-green-300"
+                        placeholder="How much did this adventure cost?"
+                        className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
                     />
                 </div>
-                <div className="flex-1">
-                    <label htmlFor="total_duration" className="block font-semibold mb-1 text-[#1a237e]">Total Duration</label>
+
+                <div>
+                    <label htmlFor="total_duration" className="block font-bold mb-2 text-blue-900">
+                        Duration (days)
+                    </label>
                     <input
                         id="total_duration"
                         type="number"
                         name="total_duration"
                         value={form.total_duration ?? ""}
                         onChange={handleChange}
-                        className="w-full border-2 border-blue-200 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        placeholder="How many days was this trip?"
+                        className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors"
                     />
                 </div>
             </div>
+
             <div>
-                <label htmlFor="place_id" className="block font-semibold mb-1 text-[#1a237e]">Place ID</label>
+                <label htmlFor="place_id" className="block font-bold mb-2 text-blue-900">
+                    Destination (Place ID)
+                </label>
                 <input
                     id="place_id"
                     type="text"
                     name="place_id"
                     value={form.place_id || ""}
                     onChange={handleChange}
-                    className="w-full border-2 border-blue-200 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    placeholder="Enter the place ID for your destination"
+                    className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors"
                 />
             </div>
+
             <div>
-                <label className="block font-semibold mb-1 text-[#1a237e]">Categories</label>
-                <div className="flex gap-2 mb-2">
+                <label className="block font-bold mb-2 text-emerald-900">
+                    Travel Categories
+                </label>
+                <div className="flex gap-3 mb-3">
                     <input
                         type="text"
                         value={categoryInput}
                         onChange={(e) => setCategoryInput(e.target.value)}
-                        className="flex-1 border-2 border-green-200 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-green-300"
-                        placeholder="Add category"
+                        className="flex-1 border-2 border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
+                        placeholder="Add tags like 'adventure', 'budget', 'luxury'..."
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
                                 e.preventDefault();
@@ -180,28 +209,51 @@ const BlogForm = <T extends BlogCreate | BlogUpdate = BlogCreate | BlogUpdate>({
                             }
                         }}
                     />
-                    <button type="button" onClick={handleCategoryAdd} className="px-4 py-2 rounded-lg bg-blue-200 text-blue-900 text-xs font-bold shadow hover:bg-blue-300 transition">Add</button>
+                    <button
+                        type="button"
+                        onClick={handleCategoryAdd}
+                        className="px-6 py-3 rounded-xl bg-emerald-600 text-white font-bold shadow-lg hover:bg-emerald-700 transition-colors"
+                    >
+                        Add Tag
+                    </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
                     {(form.categories || []).map((cat) => (
-                        <span key={cat} className="bg-green-100 text-green-800 px-3 py-1 rounded-full flex items-center gap-1 border border-green-700">
+                        <span key={cat} className="bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full flex items-center gap-2 border border-emerald-300 font-semibold">
                             {cat}
-                            <button type="button" onClick={() => handleCategoryRemove(cat)} className="text-xs text-red-500 ml-1">&times;</button>
+                            <button
+                                type="button"
+                                onClick={() => handleCategoryRemove(cat)}
+                                className="text-red-500 hover:text-red-700 font-bold text-lg"
+                            >
+                                ×
+                            </button>
                         </span>
                     ))}
                 </div>
             </div>
+
             <div>
-                <label htmlFor="description" className="block font-semibold mb-1 text-[#1a237e]">Description</label>
+                <label htmlFor="description" className="block font-bold mb-2 text-blue-900 text-lg">
+                    Your Travel Story
+                </label>
                 <textarea
                     id="description"
                     name="description"
                     value={form.description as string}
                     onChange={handleChange}
-                    className="w-full border-2 border-blue-200 rounded px-3 py-2 min-h-[80px] bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    placeholder="Share the details of your amazing journey. What made this trip special? What would you recommend to other travelers?"
+                    rows={6}
+                    className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors resize-none"
                 />
             </div>
-            <button type="submit" className="mt-2 px-6 py-2 rounded-lg bg-blue-400 text-white font-bold shadow-lg hover:bg-blue-500 transition-all text-base">{submitLabel}</button>
+
+            <button
+                type="submit"
+                className="mt-4 px-8 py-4 rounded-xl bg-blue-600 text-white font-bold shadow-lg hover:bg-blue-700 transition-colors text-lg"
+            >
+                {submitLabel}
+            </button>
         </form>
     );
 };

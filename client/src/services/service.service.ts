@@ -2,8 +2,7 @@ import api from '../utils/api';
 import type {
     ServiceCreateRequestDto,
     ServiceUpdateRequestDto,
-    ServiceResponseDto,
-    ServiceType
+    ServiceResponseDto
 } from '../types/service.type';
 
 const SERVICE_API_BASE = '/services';
