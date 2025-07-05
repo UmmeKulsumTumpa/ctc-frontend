@@ -48,16 +48,7 @@ const WishlistForm: React.FC<WishlistFormProps> = ({ initialValues = {}, onSubmi
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 space-y-6 max-w-2xl mx-auto">
-            {typeof onBack === 'function' && (
-                <button 
-                    type="button" 
-                    onClick={onBack} 
-                    className="mb-4 px-6 py-3 rounded-xl bg-gray-200 text-gray-800 font-bold border-2 border-gray-300 hover:bg-gray-300 transition-all"
-                >
-                    ← Back to Dreams
-                </button>
-            )}
+        <form onSubmit={handleSubmit} className="bg-white p-8 space-y-6 max-w-2xl mx-auto">
 
             <div>
                 <label className="block font-bold mb-2 text-blue-900 text-lg">
@@ -75,7 +66,7 @@ const WishlistForm: React.FC<WishlistFormProps> = ({ initialValues = {}, onSubmi
 
             <div>
                 <label className="block font-bold mb-2 text-emerald-900 text-lg">
-                    Dream Collection Name <span className="text-red-500">*</span>
+                    Wishlist Collection Name <span className="text-red-500">*</span>
                 </label>
                 <input
                     name="name"
@@ -124,7 +115,7 @@ const WishlistForm: React.FC<WishlistFormProps> = ({ initialValues = {}, onSubmi
                         onChange={handleChange}
                         className="w-5 h-5 accent-blue-600"
                     />
-                    🌍 Make this dream collection public
+                    Make this dream collection public
                     <span className="text-sm text-blue-600 font-normal ml-2">(Others can discover and be inspired)</span>
                 </label>
             </div>
@@ -135,6 +126,19 @@ const WishlistForm: React.FC<WishlistFormProps> = ({ initialValues = {}, onSubmi
             >
                 ✨ {submitText}
             </button>
+
+            {typeof onBack === 'function' && (
+                <div className="flex justify-center">
+                    <button 
+                        type="button" 
+                        onClick={onBack} 
+                        className="mb-4 px-6 py-3 rounded-xl bg-gray-200 text-gray-800 font-bold border-2 border-gray-300 hover:bg-gray-300 transition-all"
+                    >
+                     Back
+                    </button>
+                </div>
+            )}
+            
         </form>
     );
 };

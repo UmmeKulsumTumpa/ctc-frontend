@@ -19,16 +19,16 @@ const TravelPlanPlacesForm: React.FC<TravelPlanPlacesFormProps> = ({ initialData
     };
 
     return (
-        <div className="bg-white border-2 border-blue-200 shadow-lg rounded-xl p-6 space-y-4">
+        <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-xl p-6 space-y-4">
             <div>
-                <label className="block font-bold mb-2 text-blue-900">
+                <label className="block font-bold mb-2 text-emerald-900">
                     Place ID <span className="text-red-500">*</span>
                 </label>
                 <input
                     placeholder="Enter the place identifier"
                     value={place.place_id || ''}
                     onChange={e => handleChange('place_id', e.target.value)}
-                    className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors"
+                    className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
                     required
                 />
             </div>
@@ -43,14 +43,14 @@ const TravelPlanPlacesForm: React.FC<TravelPlanPlacesFormProps> = ({ initialData
                     className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
                 >
                     <option value="">Choose priority level</option>
-                    <option value="MustVisit">🎯 Must Visit</option>
-                    <option value="Optional">💫 Optional</option>
+                    <option value="MustVisit">Must Visit</option>
+                    <option value="Optional">Optional</option>
                 </select>
             </div>
 
             {formError && (
                 <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm font-semibold">
-                    ❌ Required fields are missing
+                    Required fields are missing
                 </div>
             )}
         </div>

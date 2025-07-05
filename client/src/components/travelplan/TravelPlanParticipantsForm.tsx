@@ -19,40 +19,40 @@ const TravelPlanParticipantsForm: React.FC<TravelPlanParticipantsFormProps> = ({
     };
 
     return (
-        <div className="bg-white border-2 border-purple-200 shadow-lg rounded-xl p-6 space-y-4">
+        <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-xl p-6 space-y-4">
             <div>
-                <label className="block font-bold mb-2 text-purple-900">
+                <label className="block font-bold mb-2 text-emerald-900">
                     User ID <span className="text-red-500">*</span>
                 </label>
                 <input
                     placeholder="Enter the user identifier"
                     value={participant.user_id ?? ''}
                     onChange={e => handleChange('user_id', Number(e.target.value))}
-                    className="w-full border-2 border-purple-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition-colors"
+                    className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
                     type="number"
                     required
                 />
             </div>
 
             <div>
-                <label className="block font-bold mb-2 text-blue-900">
+                <label className="block font-bold mb-2 text-sky-900">
                     Team Role
                 </label>
                 <select
                     value={participant.role_permission ?? ''}
                     onChange={e => handleChange('role_permission', e.target.value as any)}
-                    className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors"
+                    className="w-full border-2 border-sky-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition-colors"
                 >
                     <option value="">Choose team role (optional)</option>
-                    <option value="Owner">👑 Owner</option>
-                    <option value="Editor">✏️ Editor</option>
-                    <option value="Viewer">👀 Viewer</option>
+                    <option value="Owner">Owner</option>
+                    <option value="Editor">Editor</option>
+                    <option value="Viewer">Viewer</option>
                 </select>
             </div>
 
             {formError && (
                 <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm font-semibold">
-                    ❌ Required fields are missing
+                    Required fields are missing
                 </div>
             )}
         </div>

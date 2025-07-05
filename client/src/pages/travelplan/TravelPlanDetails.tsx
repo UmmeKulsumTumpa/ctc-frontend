@@ -184,14 +184,14 @@ const TravelPlanDetails: React.FC = () => {
                 </div>
 
                 {/* Participants Section */}
-                <div className="bg-white border-2 border-gray-100 shadow-lg rounded-xl p-8 mb-8">
-                    <h2 className="text-2xl font-bold text-blue-800 mb-6">Participants</h2>
+                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-xl p-8 mb-8">
+                    <h2 className="text-2xl font-bold text-blue-900 mb-6">Participants</h2>
                     {participants.length === 0 ? (
                         <div className="text-center py-8 text-gray-500">No participants added yet</div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {participants.map((p, idx) => (
-                                <div key={idx} className="bg-gray-50 border-2 border-gray-200 rounded-lg p-4 hover:border-blue-200 transition-all">
+                                <div key={idx} className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 hover:border-blue-300 transition-all">
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <span className="font-semibold text-blue-700">User {p.user_id}</span>
@@ -218,14 +218,14 @@ const TravelPlanDetails: React.FC = () => {
                 </div>
 
                 {/* Places Section */}
-                <div className="bg-white border-2 border-emerald-100 shadow-lg rounded-xl p-8 mb-8">
-                    <h2 className="text-2xl font-bold text-emerald-800 mb-6">Places to Visit</h2>
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-xl p-8 mb-8">
+                    <h2 className="text-2xl font-bold text-emerald-900 mb-6">Places to Visit</h2>
                     {places.length === 0 ? (
                         <div className="text-center py-8 text-gray-500">No places added yet</div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {places.map(place => (
-                                <div key={place.place_id} className="border-2 border-emerald-200 rounded-lg p-4 hover:border-emerald-300 transition-all">
+                                <div key={place.place_id}>
                                     <PlaceCard place={place} />
                                 </div>
                             ))}
@@ -234,14 +234,14 @@ const TravelPlanDetails: React.FC = () => {
                 </div>
 
                 {/* Services Section */}
-                <div className="bg-white border-2 border-blue-100 shadow-lg rounded-xl p-8 mb-8">
-                    <h2 className="text-2xl font-bold text-blue-800 mb-6">Services & Bookings</h2>
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-xl p-8 mb-8">
+                    <h2 className="text-2xl font-bold text-emerald-900 mb-6">Services & Bookings</h2>
                     {services.length === 0 ? (
                         <div className="text-center py-8 text-gray-500">No services added yet</div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {services.map(service => (
-                                <div key={service.service_id} className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-300 transition-all">
+                                <div key={service.service_id}>
                                     <ServiceCard service={service} />
                                 </div>
                             ))}
@@ -250,9 +250,9 @@ const TravelPlanDetails: React.FC = () => {
                 </div>
 
                 {/* Comments Section */}
-                <div className="bg-white border-2 border-gray-100 shadow-lg rounded-xl p-8">
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-xl p-8">
                     <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-2xl font-bold text-gray-800">Comments & Notes</h2>
+                        <h2 className="text-2xl font-bold text-emerald-900">Comments & Notes</h2>
                         {canComment && (
                             <button 
                                 onClick={() => setShowCommentForm(v => !v)} 
@@ -264,13 +264,13 @@ const TravelPlanDetails: React.FC = () => {
                     </div>
                     
                     {showCommentForm && (
-                        <form onSubmit={e => { e.preventDefault(); handleAddComment(); }} className="mb-6 p-4 bg-gray-50 border-2 border-gray-200 rounded-lg">
+                        <form onSubmit={e => { e.preventDefault(); handleAddComment(); }} className="mb-6 p-4 bg-emerald-50 border-2 border-emerald-200 rounded-lg">
                             <div className="flex gap-3">
                                 <input
                                     type="text"
                                     value={commentContent}
                                     onChange={e => setCommentContent(e.target.value)}
-                                    className="flex-1 border-2 border-gray-300 rounded-lg px-4 py-3 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-100"
+                                    className="flex-1 border-2 border-emerald-200 rounded-lg px-4 py-3 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-100"
                                     placeholder="Write your comment..."
                                     disabled={commentLoading}
                                 />
@@ -290,19 +290,29 @@ const TravelPlanDetails: React.FC = () => {
                     ) : (
                         <div className="space-y-4">
                             {comments.map(c => (
-                                <div key={c.comment_id} className="bg-gray-50 border border-gray-200 rounded-lg p-4 hover:bg-gray-100 transition-all">
+                                <div key={c.comment_id} className="bg-emerald-50 border-2 border-emerald-200 rounded-lg p-4 hover:border-emerald-300 transition-all">
                                     <div className="flex items-start gap-3">
                                         <div className="flex-1">
-                                            <span className="font-semibold text-blue-700">
+                                            <span className="font-semibold text-emerald-700">
                                                 {c.user?.username || `User ${c.user_id}`}
                                             </span>
-                                            <p className="text-gray-700 mt-1">{c.content}</p>
+                                            <p className="text-emerald-900 mt-1">{c.content}</p>
                                         </div>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     )}
+                </div>
+
+                {/* Back Button */}
+                <div className="flex justify-center mt-8">
+                    <button 
+                        onClick={() => window.history.back()} 
+                        className="px-6 py-3 rounded-xl bg-gray-200 text-gray-800 font-bold border-2 border-gray-300 hover:bg-gray-300 transition-all"
+                    >
+                        ← Back to Travel Plans
+                    </button>
                 </div>
             </div>
         </div>

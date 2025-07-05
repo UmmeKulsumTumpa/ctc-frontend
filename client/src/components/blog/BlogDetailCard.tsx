@@ -109,7 +109,7 @@ const BlogDetailCard: React.FC<BlogDetailCardProps> = ({ post, services, images,
             {/* Place Information */}
             {place && (
                 <div className="bg-blue-50 rounded-3xl p-6 border border-blue-200">
-                    <h4 className="font-bold mb-4 text-blue-900 text-xl">📍 Destination</h4>
+                    <h4 className="font-bold mb-4 text-sky-900 text-xl">Destination</h4>
                     <PlaceCard place={place} />
                 </div>
             )}
@@ -146,7 +146,7 @@ const BlogDetailCard: React.FC<BlogDetailCardProps> = ({ post, services, images,
             {/* Services Section */}
             {services && services.length > 0 && (
                 <div className="bg-emerald-50 rounded-3xl p-6 border border-emerald-200">
-                    <h4 className="font-bold mb-6 text-emerald-900 text-xl">🏨 Services & Experiences</h4>
+                    <h4 className="font-bold mb-6 text-emerald-900 text-xl">Services & Experiences</h4>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {services.map((svc) => (
                             <div key={svc.post_service_id} className="bg-white rounded-2xl shadow-lg p-6 border border-emerald-100">

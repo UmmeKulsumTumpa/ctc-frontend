@@ -34,20 +34,20 @@ const TravelPlanServicesForm: React.FC<TravelPlanServicesFormProps> = ({ initial
             </div>
 
             <div>
-                <label className="block font-bold mb-2 text-blue-900">
+                <label className="block font-bold mb-2 text-emerald-900">
                     Additional Notes
                 </label>
                 <input
                     placeholder="Any special requirements or notes about this service..."
                     value={service.notes || ''}
                     onChange={e => handleChange('notes', e.target.value)}
-                    className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors"
+                    className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
                 />
             </div>
 
             {formError && (
                 <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm font-semibold">
-                    ❌ Required fields are missing
+                    Required fields are missing
                 </div>
             )}
         </div>

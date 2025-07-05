@@ -103,7 +103,7 @@ const TravelPlanCreateForm: React.FC<{ onCreated?: (plan: TravelPlan) => void }>
                 </div>
             )}
 
-            <div className="bg-white border-2 border-gray-200 shadow-lg rounded-3xl p-8 mb-8">
+            <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8 mb-8">
                 <TravelPlanForm onSubmit={handleSubmit} submitLabel={loading ? "Creating Plan..." : "Create Plan"} />
             </div>
 
@@ -146,14 +146,14 @@ const TravelPlanCreateForm: React.FC<{ onCreated?: (plan: TravelPlan) => void }>
                 </div>
             </div>
 
-            <div className="bg-white border-2 border-sky-200 shadow-lg rounded-3xl p-8 mb-8">
+            <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-8">
                 {/* SERVICES */}
-                <h3 className="text-3xl font-bold mb-4 text-sky-900">Travel Services</h3>
-                <p className="text-sky-700 mb-6">Add hotels, restaurants, and other services for your trip</p>
+                <h3 className="text-3xl font-bold mb-4 text-emerald-900">Travel Services</h3>
+                <p className="text-emerald-700 mb-6">Add hotels, restaurants, and other services for your trip</p>
                 <button 
                     type="button" 
                     onClick={handleAddService} 
-                    className="mb-6 px-6 py-3 bg-sky-600 text-white rounded-xl font-bold shadow-lg hover:bg-sky-700 transition-colors"
+                    className="mb-6 px-6 py-3 bg-emerald-600 text-white rounded-xl font-bold shadow-lg hover:bg-emerald-700 transition-colors"
                 >
                     Add Service
                 </button>
@@ -184,14 +184,14 @@ const TravelPlanCreateForm: React.FC<{ onCreated?: (plan: TravelPlan) => void }>
                 </div>
             </div>
 
-            <div className="bg-white border-2 border-navy-200 shadow-lg rounded-3xl p-8 mb-8">
+            <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-8">
                 {/* PARTICIPANTS */}
-                <h3 className="text-3xl font-bold mb-4 text-navy-900">Travel Companions</h3>
-                <p className="text-navy-700 mb-6">Invite friends and family to join your trip</p>
+                <h3 className="text-3xl font-bold mb-4 text-emerald-900">Travel Companions</h3>
+                <p className="text-emerald-700 mb-6">Invite friends and family to join your trip</p>
                 <button 
                     type="button" 
                     onClick={handleAddParticipant} 
-                    className="mb-6 px-6 py-3 bg-navy-600 text-white rounded-xl font-bold shadow-lg hover:bg-navy-700 transition-colors"
+                    className="mb-6 px-6 py-3 bg-emerald-600 text-white rounded-xl font-bold shadow-lg hover:bg-emerald-700 transition-colors"
                 >
                     Add Team Member
                 </button>
@@ -222,14 +222,14 @@ const TravelPlanCreateForm: React.FC<{ onCreated?: (plan: TravelPlan) => void }>
                 </div>
             </div>
 
-            <div className="bg-white border-2 border-gray-200 shadow-lg rounded-3xl p-8 mb-8">
+            <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-8">
                 {/* COMMENTS */}
-                <h3 className="text-3xl font-bold mb-4 text-gray-900">Notes & Ideas</h3>
-                <p className="text-gray-700 mb-6">Add any thoughts or planning notes for your trip</p>
+                <h3 className="text-3xl font-bold mb-4 text-emerald-900">Notes & Ideas</h3>
+                <p className="text-emerald-700 mb-6">Add any thoughts or planning notes for your trip</p>
                 <button 
                     type="button" 
                     onClick={handleAddComment} 
-                    className="mb-6 px-6 py-3 bg-gray-600 text-white rounded-xl font-bold shadow-lg hover:bg-gray-700 transition-colors"
+                    className="mb-6 px-6 py-3 bg-emerald-600 text-white rounded-xl font-bold shadow-lg hover:bg-emerald-700 transition-colors"
                 >
                     Add Comment
                 </button>

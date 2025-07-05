@@ -39,7 +39,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ wishlist, onEdit, onDelete,
                                 ? 'bg-emerald-100 text-emerald-800 border-emerald-200' 
                                 : 'bg-gray-100 text-gray-800 border-gray-200'
                         }`}>
-                            {wishlist.is_public ? 'Public Dream' : 'Private Dream'}
+                            {wishlist.is_public ? 'Public' : 'Private'}
                         </span>
                     </div>
 

@@ -74,14 +74,10 @@ const NearbyServicesPage: React.FC = () => {
 
                 {/* Services List */}
                 {nearbyServices.length > 0 && (
-                    <div className="bg-white border-2 border-gray-100 shadow-lg rounded-xl p-8">
-                        <div className="grid grid-cols-1 gap-6">
-                            {nearbyServices.map(service => (
-                                <div key={service.service_id} className="bg-white border-2 border-emerald-100 rounded-lg p-6 shadow-md hover:shadow-lg hover:border-emerald-200 transition-all">
-                                    <ServiceDetailsCard service={service} />
-                                </div>
-                            ))}
-                        </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {nearbyServices.map(service => (
+                            <ServiceDetailsCard key={service.service_id} service={service} />
+                        ))}
                     </div>
                 )}
 

@@ -43,7 +43,7 @@ const PlaceCreatePage: React.FC = () => {
                 {/* Header Section */}
                 <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
                     <div className="text-center">
-                        <h2 className="text-5xl font-bold text-emerald-900 mb-2">Add New Paradise</h2>
+                        <h2 className="text-5xl font-bold text-emerald-900 mb-2">Add New Place</h2>
                         <p className="text-xl text-gray-600">Share a beautiful destination with fellow travelers</p>
                     </div>
                 </div>
@@ -144,7 +144,7 @@ const PlaceCreatePage: React.FC = () => {
                                 className="px-8 py-4 rounded-xl bg-emerald-600 text-white text-lg font-bold border-2 border-emerald-700 shadow-sm hover:bg-emerald-700 transition-all"
                                 disabled={loading}
                             >
-                                {loading ? 'Adding Paradise...' : 'Add Paradise'}
+                                {loading ? 'Adding Place...' : 'Add Place'}
                             </button>
                         </div>
                     </form>

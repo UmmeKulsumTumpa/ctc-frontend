@@ -28,14 +28,14 @@ const WishlistPage: React.FC = () => {
                     <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-xl p-8">
                         <div className="text-center mb-8">
                             <h2 className="text-5xl font-bold text-emerald-900 mb-2">
-                                {editing ? 'Update Your Dream' : 'Create New Dream'}
+                                {editing ? 'Update Your Wishlist' : 'Create New Wishlist'}
                             </h2>
                             <p className="text-xl text-gray-600">Shape your travel aspirations into reality</p>
                         </div>
                         <WishlistForm
                             initialValues={editing || {}}
                             onSubmit={editing ? (v => handleUpdate(v as any)) : (v => handleCreate(v as any))}
-                            submitText={editing ? 'Update Dream' : 'Create Dream'}
+                            submitText={editing ? 'Update Wishlist' : 'Create Wishlist'}
                             onBack={() => { setShowForm(false); setEditing(null); }}
                         />
                     </div>
@@ -51,14 +51,14 @@ const WishlistPage: React.FC = () => {
                 <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
-                            <h2 className="text-5xl font-bold text-emerald-900 mb-2">Dream Collections</h2>
+                            <h2 className="text-5xl font-bold text-emerald-900 mb-2">Wishlists Collections</h2>
                             <p className="text-xl text-gray-600">Inspiring wishlists from fellow dreamers worldwide</p>
                         </div>
                         <button
                             className="px-8 py-4 rounded-2xl bg-sky-600 text-white text-lg font-bold border-4 border-sky-700 shadow-lg hover:bg-sky-700 hover:border-sky-800 transform hover:scale-105 transition-all duration-300"
                             onClick={() => { setShowForm(true); setEditing(null); }}
                         >
-                            Create New Dream
+                            Create New
                         </button>
                     </div>
                 </div>
@@ -69,11 +69,10 @@ const WishlistPage: React.FC = () => {
                     </div>
                 )}
 
-                {/* Wishlists Content - Remove double framing */}
                 <div className="w-full">
                     {loading ? (
                         <div className="text-center text-emerald-600 text-xl font-semibold py-8 bg-emerald-50 border-2 border-emerald-200 rounded-lg">
-                            Loading dream collections...
+                            Loading wishlits collections...
                         </div>
                     ) : allPublicWishlists.length === 0 ? (
                         <div className="text-center text-emerald-700 text-lg py-8 bg-emerald-50 border-2 border-emerald-200 rounded-lg font-bold">

@@ -50,7 +50,7 @@ const ServiceDetailsCard: React.FC<ServiceDetailsCardProps> = ({ service }) => {
 
                 {service.type === 'Transport' && service.transport && (
                     <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                        <div className="text-blue-600 text-sm font-medium mb-3">🚗 Transport Specialization</div>
+                        <div className="text-blue-600 text-sm font-medium mb-3">Transport Specialization</div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div className="bg-white rounded-lg p-3 border border-blue-100">
                                 <div className="text-blue-700 text-xs font-medium">Mode</div>

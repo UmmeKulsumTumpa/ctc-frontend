@@ -77,11 +77,11 @@ const ServiceListPage: React.FC = () => {
                             value={filterInputs.type || ''}
                             onChange={e => setFilterInputs(f => ({ ...f, type: e.target.value as ServiceType || undefined }))}
                         >
-                            <option value="">All Service Types</option>
-                            <option value="Hotel">Hotels & Resorts</option>
-                            <option value="Restaurant">Restaurants & Cafes</option>
-                            <option value="Attraction">Attractions & Tours</option>
-                            <option value="Transport">Transport & Travel</option>
+                            <option value="">All Service</option>
+                            <option value="Hotel">Hotel</option>
+                            <option value="Restaurant">Restaurant</option>
+                            <option value="Attraction">Attraction</option>
+                            <option value="Transport">Transport</option>
                         </select>
 
                         <input
