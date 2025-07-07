@@ -20,6 +20,7 @@ const Dashboard: React.FC = () => {
     const [profile, setProfile] = useState<User | null>(null);
     const [loading, setLoading] = useState(false);
     const [updateLoading, setUpdateLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const [userPosts, setUserPosts] = useState<BlogPost[]>([]);
     const [postsLoading, setPostsLoading] = useState(false);
     const [postFilters, setPostFilters] = useState<{ visibility?: string }>({});
@@ -49,6 +50,11 @@ const Dashboard: React.FC = () => {
         setLoading(true);
         getUser(user.user_id)
             .then(setProfile)
+            .catch((error) => {
+                console.error('Failed to load user profile:', error);
+                // If user fetch fails, set a basic profile from auth context
+                setProfile(user);
+            })
             .finally(() => setLoading(false));
     }, [user]);
 
@@ -69,19 +75,33 @@ const Dashboard: React.FC = () => {
     const handleProfileUpdate = async (data: any) => {
         if (!user?.user_id) return;
         setUpdateLoading(true);
-        await updateUser(user.user_id, data);
-        const updated = await getUser(user.user_id);
-        setProfile(updated);
-        setUpdateLoading(false);
-        setCurrent('profile');
+        setError(null);
+        try {
+            await updateUser(user.user_id, data);
+            const updated = await getUser(user.user_id);
+            setProfile(updated);
+            setCurrent('profile');
+        } catch (error: any) {
+            console.error('Failed to update profile:', error);
+            setError(error.message || 'Failed to update profile');
+        } finally {
+            setUpdateLoading(false);
+        }
     };
 
     const handleChangePassword = async (data: any) => {
         if (!user?.user_id) return;
         setUpdateLoading(true);
-        await changePassword(user.user_id, data);
-        setUpdateLoading(false);
-        setCurrent('profile');
+        setError(null);
+        try {
+            await changePassword(user.user_id, data);
+            setCurrent('profile');
+        } catch (error: any) {
+            console.error('Failed to change password:', error);
+            setError(error.message || 'Failed to change password');
+        } finally {
+            setUpdateLoading(false);
+        }
     };
 
     return (
@@ -118,6 +138,19 @@ const Dashboard: React.FC = () => {
                         </div>
                     </div>
                 </div>
+                
+                {/* Error Message */}
+                {error && (
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+                        <p>{error}</p>
+                        <button 
+                            onClick={() => setError(null)}
+                            className="text-red-500 hover:text-red-700 ml-2 text-sm underline"
+                        >
+                            Dismiss
+                        </button>
+                    </div>
+                )}
 
                 {/* Main Content */}
                 <div className="w-full">

@@ -34,8 +34,11 @@ export const refreshAccessToken = async (refreshToken: string): Promise<{ access
 export const signOut = async () => {
     try {
         const refreshToken = getRefreshToken();
-        await api.post('/users/logout', { refreshToken });
+        if (refreshToken) {
+            await api.post('/users/logout', { refreshToken });
+        }
     } catch (error: any) {
-        throw new Error(error?.response?.data?.message || 'Failed to sign out.');
+        // Don't throw error on logout failure - just log it
+        console.warn('Logout request failed:', error?.response?.data?.message || 'Unknown error');
     }
 };

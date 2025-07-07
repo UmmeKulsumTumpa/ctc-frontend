@@ -7,7 +7,7 @@ const SignUp = () => {
                 <div className="max-w-md mx-auto">
                     <div className="text-center mb-8">
                         <h1 className="text-4xl font-bold text-emerald-900 mb-3">
-                            Join the Adventure Club
+                            Join the Adventure Hub
                         </h1>
                         <p className="text-gray-600 text-lg">
                             Start your journey of a lifetime

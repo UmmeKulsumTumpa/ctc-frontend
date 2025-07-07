@@ -7,7 +7,6 @@ import { PATHS } from '../../constants/path.constants';
 const SignUpForm = () => {
 	const { signUp, loading } = useAuth();
 	const [email, setEmail] = useState('');
-	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const navigate = useNavigate();
@@ -16,7 +15,7 @@ const SignUpForm = () => {
 		e.preventDefault();
 		setError(null);
 		try {
-			await signUp({ email, username, password });
+			await signUp({ email, password });
 			navigate(PATHS.DASHBOARD);
 		} catch (err: any) {
 			setError(err.message || 'Sign up failed');
@@ -46,7 +45,7 @@ const SignUpForm = () => {
 					/>
 				</div>
 				
-				<div>
+				{/* <div>
 					<label className="block font-bold mb-2 text-emerald-900">
 						Username
 					</label>
@@ -58,7 +57,7 @@ const SignUpForm = () => {
 						className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
 						required
 					/>
-				</div>
+				</div> */}
 				
 				<div>
 					<label className="block font-bold mb-2 text-emerald-900">

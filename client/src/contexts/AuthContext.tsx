@@ -124,8 +124,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const handleSignOut = async () => {
         setLoading(true);
         try {
-            await authService.signOut();
-        } catch { }
+            // Only attempt logout if we have valid tokens
+            if (accessToken && !storage.isAccessTokenExpired()) {
+                await authService.signOut();
+            }
+        } catch (error) {
+            // Log error but don't prevent logout
+            console.warn('Logout failed:', error);
+        }
         storage.clearTokens();
         setAccessToken(null);
         setRefreshToken(null);

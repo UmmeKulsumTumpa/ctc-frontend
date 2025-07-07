@@ -39,7 +39,7 @@ const NavBar = () => {
                             </svg>
                         </button>
                         <Link to="/" className="text-2xl font-bold text-emerald-900">
-                            Travel Connect
+                            Cefalo Travel Connect
                         </Link>
                     </div>
 
