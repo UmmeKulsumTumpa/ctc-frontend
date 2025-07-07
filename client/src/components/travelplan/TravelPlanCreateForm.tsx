@@ -8,11 +8,24 @@ import { submitTravelPlanWithSubResources } from './travelPlanSubmitHelper';
 import { cleanPayload } from '../../utils/payload';
 import type { TravelPlan, CreateTravelPlanRequestDto } from '../../types/travelPlan.type';
 
-const TravelPlanCreateForm: React.FC<{ onCreated?: (plan: TravelPlan) => void }> = ({ onCreated }) => {
-    
-    const [places, setPlaces] = useState<any[]>([]);
+interface TravelPlanCreateFormProps {
+    onCreated?: (plan: TravelPlan) => void;
+    prefill?: {
+        place_id?: string;
+        participants?: { user_id: string; role: string }[];
+    };
+}
+
+const TravelPlanCreateForm: React.FC<TravelPlanCreateFormProps> = ({ onCreated, prefill }) => {
+    const [places, setPlaces] = useState<any[]>(
+        prefill?.place_id ? [{ place_id: prefill.place_id }] : []
+    );
     const [services, setServices] = useState<any[]>([]);
-    const [participants, setParticipants] = useState<any[]>([]);
+    const [participants, setParticipants] = useState<any[]>(
+        prefill?.participants
+            ? prefill.participants.map(p => ({ user_id: Number(p.user_id), role_permission: p.role }))
+            : []
+    );
     const [comments, setComments] = useState<any[]>([]);
     const [formErrors, setFormErrors] = useState<{ places: boolean[], services: boolean[], participants: boolean[], comments: boolean[] }>({ places: [], services: [], participants: [], comments: [] });
     const [error, setError] = useState<string | null>(null);

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { WishlistResponseDto } from '../../types/wishlist.type';
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import ConfirmAddToWishlistModal from './ConfirmAddToWishlistModal'
 import UsersInterestedModal from './UsersInterestedModal'
 import AddToWishlistModal from './AddToWishlistModal'
@@ -27,6 +28,7 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ wishlist, onEdit, onDelete,
     const [addLoading, setAddLoading] = useState(false)
     const [addError, setAddError] = useState('')
     const [showShareModal, setShowShareModal] = useState(false)
+    const navigate = useNavigate()
 
     const handleShowInterested = async () => {
         const res = await getAllWishlists({ place_id: wishlist.place_id, public: true })
@@ -117,6 +119,25 @@ const WishlistCard: React.FC<WishlistCardProps> = ({ wishlist, onEdit, onDelete,
                                 disabled={addLoading}
                             >
                                 {addLoading ? 'Adding...' : 'Add to Wishlist'}
+                            </button>
+                        )}
+                        {user && (
+                            <button
+                                className="px-4 py-2 rounded-xl bg-emerald-800 text-white font-bold shadow-lg hover:bg-emerald-900 transition-colors"
+                                onClick={() => {
+                                    const wishlists = showUsersInterested ? interestedWishlists : []
+                                    let participants = wishlists
+                                        .filter(w => String(w.user_id) !== String(user.user_id))
+                                        .map(w => ({ user_id: String(w.user_id), role: 'Editor' }))
+                                    navigate(PATHS.TRAVEL_PLAN_CREATE, {
+                                        state: {
+                                            place_id: wishlist.place_id,
+                                            participants
+                                        }
+                                    })
+                                }}
+                            >
+                                Initiate a Travel Plan
                             </button>
                         )}
                         {addError && <span className="text-red-500 text-sm ml-2">{addError}</span>}
