@@ -38,7 +38,6 @@ export const signOut = async () => {
             await api.post('/users/logout', { refreshToken });
         }
     } catch (error: any) {
-        // Don't throw error on logout failure - just log it
         console.warn('Logout request failed:', error?.response?.data?.message || 'Unknown error');
     }
 };

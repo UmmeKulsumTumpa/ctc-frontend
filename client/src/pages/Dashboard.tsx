@@ -39,7 +39,6 @@ const Dashboard: React.FC = () => {
         setEditing,
     } = useWishlist();
 
-    // Filter wishlists for dashboard section (private/public)
     const filteredUserWishlists = userWishlists.filter(w => {
         if (wishlistFilters.is_public === undefined) return true;
         return w.is_public === wishlistFilters.is_public;
@@ -53,7 +52,6 @@ const Dashboard: React.FC = () => {
             .then(setProfile)
             .catch((error) => {
                 console.error('Failed to load user profile:', error);
-                // If user fetch fails, set a basic profile from auth context
                 setProfile(user);
             })
             .finally(() => setLoading(false));

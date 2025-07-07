@@ -36,7 +36,6 @@ export interface PlannedPlace {
   plan_id: string;
   place_id: string;
   priority?: VisitPriority;
-  // Add other fields as per backend if needed
 }
 
 export interface PlanParticipant {

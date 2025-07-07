@@ -21,7 +21,6 @@ const TravelPlanCard: React.FC<TravelPlanCardProps> = ({ plan }) => {
         ])
             .then(([participants]) => {
                 setParticipants(participants);
-                // We only use participants for the card display
             })
             .catch(() => setError('Failed to load plan details'))
             .finally(() => setLoading(false));

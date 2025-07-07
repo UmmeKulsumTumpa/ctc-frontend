@@ -41,8 +41,6 @@ const BlogDetailCard: React.FC<BlogDetailCardProps> = ({ post, services, images,
         fetchAll();
     }, [services]);
 
-    // Place details rendering (if any)
-    // If post.place_id is available, fetch the place details by id
     const [place, setPlace] = useState<any>(null);
     useEffect(() => {
         if (post.place_id) {

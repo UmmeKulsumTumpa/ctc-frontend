@@ -30,7 +30,7 @@ const NotificationList: React.FC = () => {
             await markNotificationAsRead(notificationId);
             setNotifications(n => n.map(notif => notif.notification_id === notificationId ? { ...notif, read: true } : notif));
         } catch {
-            // Optionally show error
+            
         }
     };
 

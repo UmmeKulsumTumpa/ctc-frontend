@@ -5,7 +5,6 @@ import type { UpdateUserRequest, ChangePasswordRequest } from '../types/user.req
 
 export const getUser = async (userId: number): Promise<User> => {
     try {
-        // Use the getUsers endpoint with id filter since GET /users/:id is not available
         const res = await api.get<ApiResponse<User[]>>('/users', { params: { user_id: userId } });
         if (!res.data.data || res.data.data.length === 0) throw new Error('User not found');
         return res.data.data[0];
@@ -47,7 +46,6 @@ export const changePassword = async (userId: number, data: ChangePasswordRequest
 
 export const getUsers = async (filters: Partial<Pick<User, 'username' | 'email' | 'user_id'>> = {}): Promise<User[]> => {
     try {
-        // Convert user_id to id for backend compatibility
         const backendFilters: any = { ...filters };
         if (backendFilters.user_id) {
             backendFilters.id = backendFilters.user_id;

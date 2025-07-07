@@ -9,5 +9,5 @@ export interface BlogService {
   address?: string;
   description?: string;
   created_at: string;
-  transport?: any | null; // You can define a more specific type if needed
+  transport?: any | null; 
 }
