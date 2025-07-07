@@ -16,6 +16,7 @@ import NearbyServicesPage from '../pages/service/NearbyServicesPage';
 import PlacesPage from '../pages/place/PlacesPage';
 import PlaceCreatePage from '../pages/place/PlaceCreatePage';
 import WishlistPage from '../pages/wishlist/WishlistPage';
+import SingleWishlistPage from '../pages/wishlist/SingleWishlistPage';
 import TravelPlanPage from '../pages/travelplan/TravelPlanPage';
 import TravelPlanCreatePage from '../pages/travelplan/TravelPlanCreatePage';
 import TravelPlanDetails from '../pages/travelplan/TravelPlanDetails';
@@ -39,6 +40,7 @@ const AppRoutes = () => {
             <Route path={PATHS.PLACES} element={<PlacesPage />} />
             <Route path={PATHS.PLACES_CREATE} element={<PlaceCreatePage />} />
             <Route path={PATHS.WISHLISTS} element={<WishlistPage />} />
+            <Route path={PATHS.WISHLIST_SHARE} element={<SingleWishlistPage />} />
             <Route path={PATHS.TRAVEL_PLANS} element={<TravelPlanPage />} />
             <Route path={PATHS.TRAVEL_PLAN_DETAILS} element={<TravelPlanDetails />} />
             <Route path={PATHS.TRAVEL_PLAN_CREATE} element={<TravelPlanCreatePage />} />

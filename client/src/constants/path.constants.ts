@@ -16,6 +16,7 @@ export const PATHS = {
     PLACES: '/places',
     PLACES_CREATE: '/places/create',
     WISHLISTS: '/wishlists',
+    WISHLIST_SHARE: '/wishlist/:id',
     TRAVEL_PLANS: '/travel-plans',
     TRAVEL_PLAN_CREATE: '/travel-plans/create',
     TRAVEL_PLAN_DETAILS: '/travelplan/:planId',

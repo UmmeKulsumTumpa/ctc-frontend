@@ -21,6 +21,19 @@ const WishlistPage: React.FC = () => {
     } = useWishlist();
     const { user } = useAuth();
 
+    const [regionFilter, setRegionFilter] = React.useState('');
+    const [themeFilter, setThemeFilter] = React.useState('');
+
+    const regions = Array.from(new Set(allPublicWishlists.map(w => w.region).filter(Boolean)));
+    const themes = Array.from(new Set(allPublicWishlists.map(w => w.theme).filter(Boolean)));
+
+    const filteredWishlists = allPublicWishlists.filter(w => {
+        return (
+            (!regionFilter || w.region === regionFilter) &&
+            (!themeFilter || w.theme === themeFilter)
+        );
+    });
+
     if (showForm) {
         return (
             <div className="min-h-screen bg-white">
@@ -69,18 +82,56 @@ const WishlistPage: React.FC = () => {
                     </div>
                 )}
 
+                {/* Filter Section */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-6 mb-10 flex flex-col md:flex-row md:items-end gap-4">
+                    <div className="flex-1">
+                        <label className="block text-emerald-900 font-bold mb-2">Region</label>
+                        <select
+                            className="w-full border-2 border-emerald-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none bg-emerald-50 text-emerald-900"
+                            value={regionFilter}
+                            onChange={e => setRegionFilter(e.target.value)}
+                        >
+                            <option value="">All Regions</option>
+                            {regions.map(region => (
+                                <option key={region} value={region}>{region}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="flex-1">
+                        <label className="block text-emerald-900 font-bold mb-2">Theme</label>
+                        <select
+                            className="w-full border-2 border-emerald-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none bg-emerald-50 text-emerald-900"
+                            value={themeFilter}
+                            onChange={e => setThemeFilter(e.target.value)}
+                        >
+                            <option value="">All Themes</option>
+                            {themes.map(theme => (
+                                <option key={theme} value={theme}>{theme}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="flex items-end">
+                        <button
+                            className="px-6 py-3 rounded-xl bg-emerald-600 text-white font-bold border-2 border-emerald-700 shadow-lg hover:bg-emerald-700 hover:border-emerald-800 transition-all"
+                            onClick={() => { setRegionFilter(''); setThemeFilter(''); }}
+                        >
+                            Reset Filters
+                        </button>
+                    </div>
+                </div>
+
                 <div className="w-full">
                     {loading ? (
                         <div className="text-center text-emerald-600 text-xl font-semibold py-8 bg-emerald-50 border-2 border-emerald-200 rounded-lg">
                             Loading wishlits collections...
                         </div>
-                    ) : allPublicWishlists.length === 0 ? (
+                    ) : filteredWishlists.length === 0 ? (
                         <div className="text-center text-emerald-700 text-lg py-8 bg-emerald-50 border-2 border-emerald-200 rounded-lg font-bold">
                             No dreams shared yet. Be the first to inspire others!
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            {allPublicWishlists.map((wishlist) => {
+                            {filteredWishlists.map((wishlist) => {
                                 const isOwner = user && String(user.user_id) === String(wishlist.user_id);
                                 return (
                                     <WishlistCard
