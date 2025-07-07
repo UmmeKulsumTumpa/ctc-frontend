@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import UserProfile from '../components/dashboard/UserProfile';
+import NotificationList from '../components/notification/NotificationList';
 import UpdateProfileForm from '../components/dashboard/UpdateProfileForm';
 import ChangePasswordForm from '../components/dashboard/ChangePasswordForm';
 import BlogList from '../components/blog/BlogList';
@@ -120,6 +121,7 @@ const Dashboard: React.FC = () => {
                                 { key: 'profile', label: 'Profile' },
                                 { key: 'blogs', label: 'My Stories' },
                                 { key: 'wishlists', label: 'Wishlists' },
+                                { key: 'notifications', label: 'Notifications' },
                                 { key: 'update', label: 'Edit Profile' },
                                 { key: 'password', label: 'Security' }
                             ].map(item => (
@@ -162,6 +164,10 @@ const Dashboard: React.FC = () => {
                         </div>
                     ) : (
                         <>
+                            {current === 'notifications' && (
+                                <NotificationList />
+                            )}
+
                             {current === 'profile' && (
                                 <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8">
                                     <UserProfile user={profile} />
