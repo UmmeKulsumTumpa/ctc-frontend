@@ -1,5 +1,3 @@
-import { notifyOnTravelPlanComment } from '../notification/notifyOnTravelPlanComment';
-import { getPlanParticipants } from '../../services/travelPlan.service';
 import React, { useState } from 'react';
 import TravelPlanForm from './TravelPlanForm';
 import TravelPlanPlacesForm from './TravelPlanPlacesForm';
@@ -8,9 +6,8 @@ import TravelPlanParticipantsForm from './TravelPlanParticipantsForm';
 import TravelPlanCommentsForm from './TravelPlanCommentsForm';
 import { submitTravelPlanWithSubResources } from './travelPlanSubmitHelper';
 import { cleanPayload } from '../../utils/payload';
-import type { TravelPlan, CreateTravelPlanRequestDto, PlanParticipant } from '../../types/travelPlan.type';
+import type { TravelPlan, CreateTravelPlanRequestDto } from '../../types/travelPlan.type';
 import { useAuth } from '../../contexts/AuthContext';
-import { notifyOnTravelPlanCreate } from '../notification/notifyOnTravelPlanCreate';
 
 interface TravelPlanCreateFormProps {
     onCreated?: (plan: TravelPlan) => void;
@@ -98,33 +95,10 @@ const TravelPlanCreateForm: React.FC<TravelPlanCreateFormProps> = ({ onCreated, 
                 services: servicesToAdd,
                 participants: participantsToAdd,
                 comments: commentsToAdd,
+                currentUserId: user?.user_id,
             });
             setCreatedPlan(created ?? null);
-
-            if (created && user) {
-                const planId = created.plan_id;
-                const planName = created.name;
-                const notifyParticipantsList: { user_id: number }[] = participantsToAdd.map((p: any) => ({ user_id: Number(p.user_id) }));
-                await notifyOnTravelPlanCreate({
-                    planId,
-                    planName,
-                    participants: notifyParticipantsList,
-                    creatorId: user.user_id
-                });
-            }
             
-            if (created && user && commentsToAdd.length > 0) {
-                const planId = created.plan_id;
-                const planName = created.name;
-                const participantsList = await getPlanParticipants(planId);
-                await notifyOnTravelPlanComment({
-                    planId,
-                    planName,
-                    participants: participantsList,
-                    commenterId: user.user_id,
-                    commenterName: user.username || user.email
-                });
-            }
             if (created && onCreated) onCreated(created);
         } catch (err: any) {
             setError(err?.response?.data?.message || "Failed to create travel plan.");

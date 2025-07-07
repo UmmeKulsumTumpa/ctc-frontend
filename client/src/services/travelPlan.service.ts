@@ -8,6 +8,7 @@ import type {
     TravelPlanServiceUnifiedDTO
 } from '../types/travelPlan.type';
 import { API_ENDPOINTS } from '../constants/path.constants';
+import { notifyParticipantAdded, notifyCommentAdded } from './notification.service';
 
 const TRAVEL_PLANS_BASE_URL = API_ENDPOINTS.TRAVEL_PLANS;
 
@@ -42,7 +43,7 @@ export const getPlanServices = async (plan_id: string): Promise<TravelPlanServic
         const res = await api.get(`${TRAVEL_PLANS_BASE_URL}/${plan_id}/services`);
         return res.data.data;
     } catch (err: any) {
-        if (err.response && err.response.status === 404 && err.response.data?.data === null) {
+        if (err.response && err.response.status === 404) {
             return [];
         }
         throw err;
@@ -87,14 +88,26 @@ export const addPlannedPlace = async (plan_id: string, data: { place_id: string;
     return res.data.data;
 };
 
-export const addPlanParticipant = async (plan_id: string, data: { user_id: number; is_going?: boolean; role_permission: string }): Promise<PlanParticipant> => {
+export const addPlanParticipant = async (plan_id: string, data: { user_id: number; is_going?: boolean; role_permission: string }, currentUserId?: number): Promise<PlanParticipant> => {
     const res = await api.post(`${TRAVEL_PLANS_BASE_URL}/${plan_id}/participants`, data);
-    return res.data.data;
+    const newParticipant = res.data.data;
+    
+    if (currentUserId && data.user_id !== currentUserId) {
+        await notifyParticipantAdded(plan_id, data.user_id, currentUserId);
+    }
+    
+    return newParticipant;
 };
 
-export const addPlanComment = async (plan_id: string, data: { content: string }): Promise<PlanComment> => {
+export const addPlanComment = async (plan_id: string, data: { content: string }, commenterId?: number): Promise<PlanComment> => {
     const res = await api.post(`${TRAVEL_PLANS_BASE_URL}/${plan_id}/comments`, data);
-    return res.data.data;
+    const newComment = res.data.data;
+    
+    if (commenterId) {
+        await notifyCommentAdded(plan_id, commenterId, data.content);
+    }
+    
+    return newComment;
 };
 
 export const addPlanService = async (plan_id: string, data: TravelPlanServiceUnifiedDTO): Promise<TravelPlanServiceUnifiedDTO> => {
@@ -113,9 +126,15 @@ export const updatePlanService = async (plan_id: string, service_id: string, dat
     return res.data.data;
 };
 
-export const updatePlanParticipant = async (plan_id: string, user_id: number, data: Partial<PlanParticipant>): Promise<PlanParticipant> => {
+export const updatePlanParticipant = async (plan_id: string, user_id: number, data: Partial<PlanParticipant>, currentUserId?: number): Promise<PlanParticipant> => {
     const res = await api.patch(`${TRAVEL_PLANS_BASE_URL}/${plan_id}/participants/${user_id}`, data);
-    return res.data.data;
+    const updatedParticipant = res.data.data;
+    
+    if (currentUserId && user_id !== currentUserId && data.role_permission) {
+        await notifyParticipantAdded(plan_id, user_id, currentUserId);
+    }
+    
+    return updatedParticipant;
 };
 
 // all the delete services

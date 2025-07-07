@@ -54,6 +54,14 @@ const NotificationList: React.FC = () => {
                         >
                             <div className="flex-1">
                                 <div className={`font-semibold ${n.read ? 'text-gray-700' : 'text-emerald-900'}`}>{n.message}</div>
+                                {(n.type === 'PARTICIPANT_ADDED' || n.type === 'COMMENT_ADDED') && n.data?.plan_id && (
+                                    <a
+                                        href={`/travelplan/${n.data.plan_id}`}
+                                        className="text-blue-900 underline font-bold hover:text-emerald-700 text-sm mt-1 inline-block"
+                                    >
+                                        View Travel Plan
+                                    </a>
+                                )}
                                 {n.data?.link && (
                                     <a
                                         href={n.data.link}

@@ -32,10 +32,10 @@ const TravelPlanDetails: React.FC = () => {
     };
 
     const handleAddComment = async () => {
-        if (!planId || !commentContent.trim()) return;
+        if (!planId || !commentContent.trim() || !user) return;
         setCommentLoading(true);
         try {
-            const newComment = await addPlanComment(planId, { content: commentContent });
+            const newComment = await addPlanComment(planId, { content: commentContent }, user.user_id);
             setComments(prev => [
                 { ...newComment, user: user || null },
                 ...prev
@@ -190,8 +190,8 @@ const TravelPlanDetails: React.FC = () => {
                         <div className="text-center py-8 text-gray-500">No participants added yet</div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {participants.map((p, idx) => (
-                                <div key={idx} className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 hover:border-blue-300 transition-all">
+                            {participants.map((p) => (
+                                <div key={p.user_id} className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 hover:border-blue-300 transition-all">
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <span className="font-semibold text-blue-700">User {p.user_id}</span>
@@ -224,8 +224,8 @@ const TravelPlanDetails: React.FC = () => {
                         <div className="text-center py-8 text-gray-500">No places added yet</div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {places.map(place => (
-                                <div key={place.place_id}>
+                            {places.map((place, idx) => (
+                                <div key={place.place_id ? place.place_id : idx}>
                                     <PlaceCard place={place} />
                                 </div>
                             ))}
@@ -240,8 +240,8 @@ const TravelPlanDetails: React.FC = () => {
                         <div className="text-center py-8 text-gray-500">No services added yet</div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {services.map(service => (
-                                <div key={service.service_id}>
+                            {services.map((service, idx) => (
+                                <div key={service.service_id ? `${service.service_id}-${idx}` : `service-${idx}`}>
                                     <ServiceCard service={service} />
                                 </div>
                             ))}

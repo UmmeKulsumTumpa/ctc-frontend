@@ -21,9 +21,10 @@ interface SubmitTravelPlanOptions {
     services: Partial<TravelPlanServiceUnifiedDTO>[];
     participants: Partial<PlanParticipant>[];
     comments: Partial<PlanComment>[];
+    currentUserId?: number;
 }
 
-export async function submitTravelPlanWithSubResources({ plan, places, services, participants, comments }: SubmitTravelPlanOptions) {
+export async function submitTravelPlanWithSubResources({ plan, places, services, participants, comments, currentUserId }: SubmitTravelPlanOptions) {
     let created: TravelPlan | null = null;
     try {
         created = await createTravelPlan(plan);
@@ -45,12 +46,12 @@ export async function submitTravelPlanWithSubResources({ plan, places, services,
                     user_id: participant.user_id,
                     is_going: participant.is_going,
                     role_permission: participant.role_permission || 'Editor',
-                });
+                }, currentUserId);
             }
         }
         for (const comment of comments) {
             if (comment.content) {
-                await addPlanComment(plan_id, { content: comment.content });
+                await addPlanComment(plan_id, { content: comment.content }, currentUserId);
             }
         }
         return created;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import type { CreateTravelPlanRequestDto } from "../../types/travelPlan.type";
 
 interface TravelPlanFormProps {
@@ -19,18 +19,48 @@ const initialPlan: CreateTravelPlanRequestDto = {
 
 const TravelPlanForm: React.FC<TravelPlanFormProps> = ({ initialValues = {}, onSubmit, submitLabel = "Create" }) => {
 
-    const [form, setForm] = useState<CreateTravelPlanRequestDto>({
+    const processedInitialValues = useMemo(() => ({
         ...initialPlan,
-        ...initialValues
-    });
+        ...initialValues,
+        
+        start_date: initialValues.start_date ? (
+            /^\d{4}-\d{2}-\d{2}T/.test(initialValues.start_date) ? 
+            initialValues.start_date.split('T')[0] : 
+            initialValues.start_date
+        ) : '',
+        end_date: initialValues.end_date ? (
+            /^\d{4}-\d{2}-\d{2}T/.test(initialValues.end_date) ? 
+            initialValues.end_date.split('T')[0] : 
+            initialValues.end_date
+        ) : ''
+    }), [
+        initialValues.name,
+        initialValues.start_date,
+        initialValues.end_date,
+        initialValues.total_cost,
+        initialValues.total_duration,
+        initialValues.status
+    ]);
+
+    const [form, setForm] = useState<CreateTravelPlanRequestDto>(processedInitialValues);
     const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        setForm(processedInitialValues);
+    }, [processedInitialValues]);
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
+        let newValue = value;
+        if ((name === "start_date" || name === "end_date") && value) {
+            if (/^\d{4}-\d{2}-\d{2}T/.test(value)) {
+                newValue = value.split('T')[0];
+            }
+        }
         setForm(prev => ({
             ...prev,
-            [name]: type === "number" && value !== "" ? Number(value) : value
+            [name]: type === "number" && newValue !== "" ? Number(newValue) : newValue
         }));
     };
 

@@ -22,6 +22,9 @@ const BlogEdit: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [svcLoading, setSvcLoading] = useState(false);
     const [imgLoading, setImgLoading] = useState(false);
+    
+    const [showAddService, setShowAddService] = useState(false);
+    const [showAddImage, setShowAddImage] = useState(false);
 
     useEffect(() => {
         if (!id) return;
@@ -58,6 +61,7 @@ const BlogEdit: React.FC = () => {
         try {
             const svc = await addPostService(data);
             setServices((prev) => [...prev, svc]);
+            setShowAddService(false);
         } catch {
             setError("Failed to add service.");
         } finally {
@@ -80,6 +84,7 @@ const BlogEdit: React.FC = () => {
         try {
             const img = await addPostImage(data);
             setImages((prev) => [...prev, img]);
+            setShowAddImage(false);
         } catch {
             setError("Failed to add image.");
         } finally {
@@ -141,19 +146,61 @@ const BlogEdit: React.FC = () => {
 
                 {/* Services Section */}
                 <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
-                    <h3 className="text-2xl font-bold text-emerald-900 mb-6">Manage Travel Services</h3>
-                    <div className="bg-gray-50 border-2 border-gray-200 rounded-2xl p-6 mb-6">
-                        <BlogServiceForm postId={id!} onSubmit={handleAddService} loading={svcLoading} />
+                    <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-2xl font-bold text-emerald-900">Manage Travel Services</h3>
+                        <button
+                            onClick={() => setShowAddService(true)}
+                            className="px-6 py-3 bg-emerald-600 text-white font-bold rounded-xl shadow-lg hover:bg-emerald-700 transition-colors"
+                        >
+                            Add New Service
+                        </button>
                     </div>
+                    
+                    {showAddService && (
+                        <div className="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-6 mb-6">
+                            <div className="flex items-center justify-between mb-4">
+                                <h4 className="text-lg font-bold text-emerald-800">Add Travel Service</h4>
+                                <button
+                                    onClick={() => setShowAddService(false)}
+                                    className="px-4 py-2 bg-gray-500 text-white font-semibold rounded-lg shadow hover:bg-gray-600 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                            <BlogServiceForm postId={id!} onSubmit={handleAddService} loading={svcLoading} />
+                        </div>
+                    )}
+                    
                     <BlogServiceList services={services} onDelete={handleDeleteService} />
                 </div>
 
                 {/* Images Section */}
                 <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8">
-                    <h3 className="text-2xl font-bold text-blue-900 mb-6">Manage Travel Photos</h3>
-                    <div className="bg-gray-50 border-2 border-gray-200 rounded-2xl p-6 mb-6">
-                        <BlogImageForm postId={id!} onSubmit={handleAddImage} loading={imgLoading} />
+                    <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-2xl font-bold text-blue-900">Manage Travel Photos</h3>
+                        <button
+                            onClick={() => setShowAddImage(true)}
+                            className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl shadow-lg hover:bg-blue-700 transition-colors"
+                        >
+                            Add New Photo
+                        </button>
                     </div>
+                    
+                    {showAddImage && (
+                        <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 mb-6">
+                            <div className="flex items-center justify-between mb-4">
+                                <h4 className="text-lg font-bold text-blue-800">Add Travel Photo</h4>
+                                <button
+                                    onClick={() => setShowAddImage(false)}
+                                    className="px-4 py-2 bg-gray-500 text-white font-semibold rounded-lg shadow hover:bg-gray-600 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                            <BlogImageForm postId={id!} onSubmit={handleAddImage} loading={imgLoading} />
+                        </div>
+                    )}
+                    
                     <BlogImageList images={images} onDelete={handleDeleteImage} />
                 </div>
             </div>
