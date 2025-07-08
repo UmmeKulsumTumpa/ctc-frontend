@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import TravelPlanForm from './TravelPlanForm';
 import TravelPlanPlacesForm from './TravelPlanPlacesForm';
 import TravelPlanServicesForm from './TravelPlanServicesForm';
@@ -46,6 +46,39 @@ const TravelPlanCreateForm: React.FC<TravelPlanCreateFormProps> = ({ onCreated, 
     const handleAddService = () => setServices([...services, {}]);
     const handleAddParticipant = () => setParticipants([...participants, {}]);
     const handleAddComment = () => setComments([...comments, {}]);
+
+    // Stable onChange handlers using useCallback
+    const handlePlaceChange = useCallback((idx: number) => (data: any) => {
+        setPlaces(current => {
+            const updated = [...current];
+            updated[idx] = data;
+            return updated;
+        });
+    }, []);
+
+    const handleServiceChange = useCallback((idx: number) => (data: any) => {
+        setServices(current => {
+            const updated = [...current];
+            updated[idx] = data;
+            return updated;
+        });
+    }, []);
+
+    const handleParticipantChange = useCallback((idx: number) => (data: any) => {
+        setParticipants(current => {
+            const updated = [...current];
+            updated[idx] = data;
+            return updated;
+        });
+    }, []);
+
+    const handleCommentChange = useCallback((idx: number) => (data: any) => {
+        setComments(current => {
+            const updated = [...current];
+            updated[idx] = data;
+            return updated;
+        });
+    }, []);
 
     // Main submit logic
     const handleSubmit = async (data: any) => {
@@ -141,11 +174,7 @@ const TravelPlanCreateForm: React.FC<TravelPlanCreateFormProps> = ({ onCreated, 
                         <div key={idx} className="relative">
                             <TravelPlanPlacesForm
                                 initialData={place}
-                                onChange={data => {
-                                    const updated = [...places];
-                                    updated[idx] = data;
-                                    setPlaces(updated);
-                                }}
+                                onChange={handlePlaceChange(idx)}
                                 formError={formErrors.places[idx]}
                             />
                             {formErrors.places[idx] && (
@@ -179,11 +208,7 @@ const TravelPlanCreateForm: React.FC<TravelPlanCreateFormProps> = ({ onCreated, 
                         <div key={idx} className="relative">
                             <TravelPlanServicesForm
                                 initialData={svc}
-                                onChange={data => {
-                                    const updated = [...services];
-                                    updated[idx] = data;
-                                    setServices(updated);
-                                }}
+                                onChange={handleServiceChange(idx)}
                                 formError={formErrors.services[idx]}
                             />
                             {formErrors.services[idx] && (
@@ -217,11 +242,7 @@ const TravelPlanCreateForm: React.FC<TravelPlanCreateFormProps> = ({ onCreated, 
                         <div key={idx} className="relative">
                             <TravelPlanParticipantsForm
                                 initialData={p}
-                                onChange={data => {
-                                    const updated = [...participants];
-                                    updated[idx] = data;
-                                    setParticipants(updated);
-                                }}
+                                onChange={handleParticipantChange(idx)}
                                 formError={formErrors.participants[idx]}
                             />
                             {formErrors.participants[idx] && (
@@ -255,11 +276,7 @@ const TravelPlanCreateForm: React.FC<TravelPlanCreateFormProps> = ({ onCreated, 
                         <div key={idx} className="relative">
                             <TravelPlanCommentsForm
                                 initialData={c}
-                                onChange={data => {
-                                    const updated = [...comments];
-                                    updated[idx] = data;
-                                    setComments(updated);
-                                }}
+                                onChange={handleCommentChange(idx)}
                                 formError={formErrors.comments[idx]}
                             />
                             {formErrors.comments[idx] && (

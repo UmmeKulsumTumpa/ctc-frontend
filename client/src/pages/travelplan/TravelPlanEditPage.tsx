@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import TravelPlanForm from '../../components/travelplan/TravelPlanForm';
@@ -212,6 +212,15 @@ const TravelPlanEditPage: React.FC = () => {
         }
     };
 
+    // Stable onChange handlers using useCallback
+    const handleServiceChange = useCallback((idx: number, svc: any) => (data: any) => {
+        handleUpdateService(idx, { ...svc, ...data });
+    }, []);
+
+    const handleParticipantChange = useCallback((idx: number, part: any) => (data: any) => {
+        handleUpdateParticipant(idx, { ...part, ...data });
+    }, []);
+
     return (
         <div className="min-h-screen bg-white">
             <div className="max-w-4xl mx-auto px-6 py-16">
@@ -275,7 +284,7 @@ const TravelPlanEditPage: React.FC = () => {
                                 <div key={svc.service_id ? `${svc.service_id}-${idx}` : `service-${idx}`} className="bg-gray-50 border-2 border-gray-200 rounded-lg p-6">
                                     <TravelPlanServicesForm
                                         initialData={svc}
-                                        onChange={data => handleUpdateService(idx, { ...svc, ...data })}
+                                        onChange={handleServiceChange(idx, svc)}
                                     />
                                     <div className="mt-4 flex justify-end">
                                         <button 
@@ -343,7 +352,7 @@ const TravelPlanEditPage: React.FC = () => {
                                 <div key={part.user_id ? `${part.user_id}-${idx}` : `participant-${idx}`} className="bg-gray-50 border-2 border-gray-200 rounded-lg p-6">
                                     <TravelPlanParticipantsForm
                                         initialData={part}
-                                        onChange={data => handleUpdateParticipant(idx, { ...part, ...data })}
+                                        onChange={handleParticipantChange(idx, part)}
                                     />
                                     <div className="mt-4 flex justify-end">
                                         <button 

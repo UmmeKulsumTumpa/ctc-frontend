@@ -16,11 +16,18 @@ const TravelPlanPlacesForm: React.FC<TravelPlanPlacesFormProps> = ({ initialData
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (initialData && initialData.place_id && (!selectedPlace || selectedPlace.place_id !== initialData.place_id)) {
+        if (
+            initialData &&
+            initialData.place_id &&
+            (!selectedPlace || selectedPlace.place_id !== initialData.place_id)
+        ) {
             setSelectedPlace({ place_id: initialData.place_id, name: initialData.place_id });
         }
-        setPriority(initialData.priority || '');
-    }, [initialData]);
+        
+        if (initialData.priority && initialData.priority !== priority) {
+            setPriority(initialData.priority);
+        }
+    }, [initialData.place_id, initialData.priority]);
 
     useEffect(() => {
         const data: Partial<PlannedPlace> = {
@@ -30,7 +37,7 @@ const TravelPlanPlacesForm: React.FC<TravelPlanPlacesFormProps> = ({ initialData
             data.priority = priority as VisitPriority;
         }
         onChange(data);
-    }, [selectedPlace, priority, onChange]);
+    }, [selectedPlace, priority]);
 
     const handlePlaceSelect = (place: any) => {
         setSelectedPlace(place);
