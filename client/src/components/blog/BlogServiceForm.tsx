@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { BlogPostServiceCreate } from "../../types/blog/blog.postservice.type";
+import ServiceAutocompleteField from '../service/ServiceAutocompleteField';
 
 interface BlogServiceFormProps {
     postId: string;
@@ -33,16 +34,12 @@ const BlogServiceForm = ({ postId, onSubmit, loading, initialData }: BlogService
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 bg-white rounded-3xl p-6 border border-blue-200 shadow-lg">
-            <label className="text-sm font-bold text-blue-900">
-                Service ID <span className="text-red-500">*</span>
-                <input
-                    type="text"
-                    value={serviceId}
-                    onChange={e => setServiceId(e.target.value)}
-                    className="border-2 border-blue-200 rounded-xl px-4 py-3 w-full mt-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors"
-                    required
-                />
-            </label>
+            <ServiceAutocompleteField
+                value={serviceId}
+                onChange={id => setServiceId(id)}
+                label={"Service *"}
+                required
+            />
 
             <label className="text-sm font-bold text-emerald-900">
                 Cost (Optional)

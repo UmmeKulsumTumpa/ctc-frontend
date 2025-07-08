@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { PlannedPlace } from '../../types/travelPlan.type';
+import PlaceAutocomplete from '../place/PlaceAutocomplete';
+import type { VisitPriority } from '../../types/travelPlan.type';
 
 export interface TravelPlanPlacesFormProps {
     initialData?: Partial<PlannedPlace>;
@@ -7,39 +9,53 @@ export interface TravelPlanPlacesFormProps {
     formError?: boolean;
 }
 
+
 const TravelPlanPlacesForm: React.FC<TravelPlanPlacesFormProps> = ({ initialData = {}, onChange, formError }) => {
-    const [place, setPlace] = useState<Partial<PlannedPlace>>(initialData);
+    const [selectedPlace, setSelectedPlace] = useState<any>(null);
+    const [priority, setPriority] = useState<string>(initialData.priority || '');
+    const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => { setPlace(initialData); }, [initialData]);
+    useEffect(() => {
+        if (initialData && initialData.place_id && (!selectedPlace || selectedPlace.place_id !== initialData.place_id)) {
+            setSelectedPlace({ place_id: initialData.place_id, name: initialData.place_id });
+        }
+        setPriority(initialData.priority || '');
+    }, [initialData]);
 
-    const handleChange = (field: keyof PlannedPlace, value: any) => {
-        const updated = { ...place, [field]: value };
-        setPlace(updated);
-        onChange(updated);
+    useEffect(() => {
+        const data: Partial<PlannedPlace> = {
+            place_id: selectedPlace?.place_id || ''
+        };
+        if (priority === 'MustVisit' || priority === 'Optional') {
+            data.priority = priority as VisitPriority;
+        }
+        onChange(data);
+    }, [selectedPlace, priority, onChange]);
+
+    const handlePlaceSelect = (place: any) => {
+        setSelectedPlace(place);
+        setError(null);
     };
 
     return (
         <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-xl p-6 space-y-4">
-            <div>
-                <label className="block font-bold mb-2 text-emerald-900">
-                    Place ID <span className="text-red-500">*</span>
-                </label>
-                <input
-                    placeholder="Enter the place identifier"
-                    value={place.place_id || ''}
-                    onChange={e => handleChange('place_id', e.target.value)}
-                    className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
-                    required
-                />
-            </div>
+            <PlaceAutocomplete
+                selectedPlace={selectedPlace}
+                onPlaceSelect={handlePlaceSelect}
+                label="Travel Destination"
+                placeholder="Search for a place to visit..."
+                required={true}
+                error={error}
+                className="mb-4"
+            />
 
             <div>
                 <label className="block font-bold mb-2 text-emerald-900">
                     Visit Priority
                 </label>
                 <select
-                    value={place.priority || ''}
-                    onChange={e => handleChange('priority', e.target.value as any)}
+                    value={priority}
+                    onChange={e => setPriority(e.target.value)}
                     className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
                 >
                     <option value="">Choose priority level</option>

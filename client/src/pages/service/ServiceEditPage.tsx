@@ -6,7 +6,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 const SERVICE_TYPES: ServiceType[] = ['Hotel', 'Restaurant', 'Attraction', 'Transport'];
 
 const ServiceEditPage: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
+    const params = useParams();
+    const id = params.serviceId ?? '';
     const navigate = useNavigate();
     const [form, setForm] = useState<ServiceUpdateRequestDto>({});
     const [loading, setLoading] = useState(false);
@@ -43,7 +44,16 @@ const ServiceEditPage: React.FC = () => {
         setError(null);
         setSuccess(false);
         try {
-            await updateService(id, form);
+            // Clean and prepare payload: convert lat/lng to number, omit undefined/null/empty fields
+            const payload: Partial<ServiceUpdateRequestDto> = {};
+            if (form.name && form.name.trim() !== '') payload.name = form.name.trim();
+            if (form.type) payload.type = form.type;
+            if (form.latitude !== undefined && form.latitude !== null) payload.latitude = Number(form.latitude);
+            if (form.longitude !== undefined && form.longitude !== null) payload.longitude = Number(form.longitude);
+            if (form.address && form.address.trim() !== '') payload.address = form.address.trim();
+            if (form.description && form.description.trim() !== '') payload.description = form.description.trim();
+
+            await updateService(id, payload as ServiceUpdateRequestDto);
             setSuccess(true);
             setTimeout(() => navigate('/services'), 1000);
         } catch (err) {

@@ -19,10 +19,16 @@ const ServiceCreatePage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
 
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setForm(prev => ({ ...prev, [name]: value }));
+        const { name, value, type } = e.target;
+        if (name === 'latitude' || name === 'longitude') {
+            setForm(prev => ({ ...prev, [name]: value === '' ? undefined : Number(value) }));
+        } else {
+            setForm(prev => ({ ...prev, [name]: value }));
+        }
     };
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -30,7 +36,21 @@ const ServiceCreatePage: React.FC = () => {
         setError(null);
         setSuccess(false);
         try {
-            await createService(form);
+            const payload: Partial<ServiceCreateRequestDto> = {};
+            if (form.name && form.name.trim() !== '') payload.name = form.name.trim();
+            if (form.type) payload.type = form.type;
+            if (form.latitude !== undefined && form.latitude !== null) payload.latitude = form.latitude;
+            if (form.longitude !== undefined && form.longitude !== null) payload.longitude = form.longitude;
+            if (form.address && form.address.trim() !== '') payload.address = form.address.trim();
+            if (form.description && form.description.trim() !== '') payload.description = form.description.trim();
+
+            if (!payload.name || !payload.type) {
+                setError('Service name and type are required.');
+                setLoading(false);
+                return;
+            }
+
+            await createService(payload as ServiceCreateRequestDto);
             setSuccess(true);
             setForm(initialState);
         } catch (err) {

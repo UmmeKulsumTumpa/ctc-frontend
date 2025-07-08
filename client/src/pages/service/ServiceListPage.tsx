@@ -12,8 +12,7 @@ const ServiceListPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    // will Replace with real admin check
-    const isAdmin = false;
+    const isAdmin = true;
 
     const fetchServices = () => {
         setLoading(true);
@@ -64,6 +63,17 @@ const ServiceListPage: React.FC = () => {
                             className="px-8 py-4 rounded-2xl bg-sky-600 text-white text-lg font-bold border-4 border-sky-700 shadow-lg hover:bg-sky-700 hover:border-sky-800 transform hover:scale-105 transition-all duration-300"
                         >
                             Find Nearby Services
+                        </button>
+                    </div>
+                </div>
+
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <div className="text-center">
+                        <button
+                            onClick={() => navigate('/services/create')}
+                            className="px-8 py-4 rounded-2xl bg-emerald-600 text-white text-lg font-bold border-4 border-emerald-700 shadow-md hover:bg-emerald-700 hover:border-emerald-800 transform hover:scale-105 transition-all duration-300"
+                        >
+                            Add New Service
                         </button>
                     </div>
                 </div>
@@ -136,19 +146,7 @@ const ServiceListPage: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Services Content - Remove outer container border to avoid double framing */}
                 <div className="w-full">
-                    {isAdmin && (
-                        <div className="mb-8 text-center">
-                            <button 
-                                onClick={() => navigate('/services/create')} 
-                                className="px-8 py-4 rounded-lg bg-emerald-600 text-white text-lg font-semibold shadow-md hover:bg-emerald-700 transition-all"
-                            >
-                                Add New Service
-                            </button>
-                        </div>
-                    )}
-                    
                     {services.length === 0 ? (
                         <div className="text-center py-12 bg-emerald-50 border-2 border-emerald-200 rounded-xl">
                             <div className="text-emerald-700 text-lg font-bold">No services found matching your criteria.</div>
@@ -157,7 +155,15 @@ const ServiceListPage: React.FC = () => {
                     ) : (
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {services.map(service => (
-                                <ServiceDetailsCard key={service.service_id} service={service} />
+                                <div key={service.service_id} className="relative">
+                                    <ServiceDetailsCard service={service} />
+                                    <button
+                                        onClick={() => navigate(`/services/${service.service_id}/edit`)}
+                                        className="absolute top-4 right-4 px-4 py-2 rounded bg-blue-600 text-white text-sm font-semibold shadow hover:bg-blue-700 transition-all"
+                                    >
+                                        Edit
+                                    </button>
+                                </div>
                             ))}
                         </div>
                     )}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { TravelPlanServiceUnifiedDTO } from '../../types/travelPlan.type';
+import ServiceAutocompleteField from '../service/ServiceAutocompleteField';
 
 export interface TravelPlanServicesFormProps {
     initialData?: Partial<TravelPlanServiceUnifiedDTO>;
@@ -20,18 +21,12 @@ const TravelPlanServicesForm: React.FC<TravelPlanServicesFormProps> = ({ initial
 
     return (
         <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-xl p-6 space-y-4">
-            <div>
-                <label className="block font-bold mb-2 text-emerald-900">
-                    Service ID <span className="text-red-500">*</span>
-                </label>
-                <input
-                    placeholder="Enter the service identifier"
-                    value={service.service_id || ''}
-                    onChange={e => handleChange('service_id', e.target.value)}
-                    className="w-full border-2 border-emerald-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
-                    required
-                />
-            </div>
+            <ServiceAutocompleteField
+                value={service.service_id || ''}
+                onChange={id => handleChange('service_id', id)}
+                label={"Service *"}
+                required
+            />
 
             <div>
                 <label className="block font-bold mb-2 text-emerald-900">

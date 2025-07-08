@@ -11,7 +11,7 @@ export const PATHS = {
     SETTINGS: '/settings',
     SERVICES: '/services',
     SERVICE_CREATE: '/services/create',
-    SERVICE_EDIT: '/services/:id/edit',
+    SERVICE_EDIT: '/services/:serviceId/edit',
     SERVICES_NEARBY: '/services/nearby',
     PLACES: '/places',
     PLACES_CREATE: '/places/create',
