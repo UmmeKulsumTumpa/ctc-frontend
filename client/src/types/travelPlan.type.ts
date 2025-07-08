@@ -1,5 +1,5 @@
 export type TravelPlanStatus = 'Draft' | 'Active' | 'Completed' | 'Cancelled';
-export type VisitPriority = 'High' | 'Medium' | 'Low';
+export type VisitPriority = 'MustVisit' | 'Optional';
 export type ParticipantRole = 'Owner' | 'Editor' | 'Viewer';
 
 export interface TravelPlan {

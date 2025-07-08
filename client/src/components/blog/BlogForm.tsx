@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { BlogCreate, BlogUpdate } from "../../types/blog/blog.type";
 import type { EffortLevel, Visibility } from "../../constants/blog.constants";
+import type { PlaceDto } from "../../types/place.type";
+import PlaceAutocomplete from "../place/PlaceAutocomplete";
+import { getPlaceById } from "../../services/place.service";
 
 interface BlogFormProps<T = BlogCreate | BlogUpdate> {
     initialValues?: Partial<T>;
@@ -34,8 +37,31 @@ const BlogForm = <T extends BlogCreate | BlogUpdate = BlogCreate | BlogUpdate>({
         visibility: initialValues.visibility || "Public",
         description: initialValues.description || "",
     });
+    const [selectedPlace, setSelectedPlace] = useState<PlaceDto | null>(null);
     const [categoryInput, setCategoryInput] = useState("");
     const [error, setError] = useState<string | null>(null);
+
+    const handlePlaceSelect = (place: PlaceDto | null) => {
+        setSelectedPlace(place);
+        setForm((prev) => ({
+            ...prev,
+            place_id: place?.place_id || undefined,
+        }));
+    };
+
+    useEffect(() => {
+        const loadInitialPlace = async () => {
+            if (initialValues.place_id && !selectedPlace) {
+                try {
+                    const place = await getPlaceById(initialValues.place_id);
+                    setSelectedPlace(place);
+                } catch (error) {
+                    console.error('Error loading place:', error);
+                }
+            }
+        };
+        loadInitialPlace();
+    }, [initialValues.place_id, selectedPlace]);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -176,20 +202,11 @@ const BlogForm = <T extends BlogCreate | BlogUpdate = BlogCreate | BlogUpdate>({
                 </div>
             </div>
 
-            <div>
-                <label htmlFor="place_id" className="block font-bold mb-2 text-blue-900">
-                    Destination (Place ID)
-                </label>
-                <input
-                    id="place_id"
-                    type="text"
-                    name="place_id"
-                    value={form.place_id || ""}
-                    onChange={handleChange}
-                    placeholder="Enter the place ID for your destination"
-                    className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-colors"
-                />
-            </div>
+            <PlaceAutocomplete
+                selectedPlace={selectedPlace}
+                onPlaceSelect={handlePlaceSelect}
+                placeholder="Search for your travel destination..."
+            />
 
             <div>
                 <label className="block font-bold mb-2 text-emerald-900">
