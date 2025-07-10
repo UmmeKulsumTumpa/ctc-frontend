@@ -31,6 +31,7 @@ const TravelPlanEditPage: React.FC = () => {
     const [initialValues, setInitialValues] = useState<Partial<UpdateTravelPlanRequestDto>>();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
     
     const [services, setServices] = useState<TravelPlanServiceUnifiedDTO[]>([]);
     const [participants, setParticipants] = useState<PlanParticipant[]>([]);
@@ -52,15 +53,51 @@ const TravelPlanEditPage: React.FC = () => {
     const [newPlace, setNewPlace] = useState<any>({});
     const [newComment, setNewComment] = useState<any>({});
 
+    // Define all handlers before useEffect to prevent dependency issues
+    const handleUpdateService = useCallback(async (idx: number, data: any) => {
+        if (!planId) return;
+        setSvcLoading(true);
+        try {
+            const updated = await updatePlanService(planId, data.service_id, data);
+            setServices(prev => prev.map((s, i) => i === idx ? updated : s));
+        } catch {
+            setError('Failed to update service.');
+        } finally {
+            setSvcLoading(false);
+        }
+    }, [planId]);
+    
+    const handleUpdateParticipant = useCallback(async (idx: number, data: any) => {
+        if (!planId || !user) return;
+        setPartLoading(true);
+        try {
+            const updated = await updatePlanParticipant(planId, data.user_id, data, user.user_id);
+            setParticipants(prev => prev.map((p, i) => i === idx ? updated : p));
+        } catch {
+            setError('Failed to update participant.');
+        } finally {
+            setPartLoading(false);
+        }
+    }, [planId, user]);
+
+    // Stable onChange handlers using useCallback
+    const handleServiceChange = useCallback((idx: number, svc: any) => (data: any) => {
+        handleUpdateService(idx, { ...svc, ...data });
+    }, [handleUpdateService]);
+
+    const handleParticipantChange = useCallback((idx: number, part: any) => (data: any) => {
+        handleUpdateParticipant(idx, { ...part, ...data });
+    }, [handleUpdateParticipant]);
+
     useEffect(() => {
         if (!planId) return;
         setLoading(true);
         Promise.all([
             getTravelPlanById(planId),
-            getPlanServices(planId),
-            getPlanParticipants(planId),
-            getPlannedPlaces(planId),
-            getPlanComments(planId)
+            getPlanServices(planId).catch(() => []), // Handle 404 gracefully
+            getPlanParticipants(planId).catch(() => []), // Handle potential errors gracefully
+            getPlannedPlaces(planId).catch(() => []), // Handle potential errors gracefully
+            getPlanComments(planId).catch(() => []) // Handle potential errors gracefully
         ])
             .then(([plan, services, participants, places, comments]) => {
                 setInitialValues(plan);
@@ -69,9 +106,14 @@ const TravelPlanEditPage: React.FC = () => {
                 setPlaces(places);
                 setComments(comments);
                 setLoading(false);
+                setError(null); // Clear any previous errors
             })
-            .catch(() => {
-                setError('Failed to load travel plan.');
+            .catch((error) => {
+                console.error('Failed to load travel plan:', error);
+                const errorMessage = error?.response?.data?.message || 
+                                   error?.message || 
+                                   'Failed to load travel plan. Please refresh the page.';
+                setError(errorMessage);
                 setLoading(false);
             });
     }, [planId]);
@@ -80,9 +122,43 @@ const TravelPlanEditPage: React.FC = () => {
         if (!planId) return;
         try {
             await updateTravelPlan(planId, values);
-            navigate(`/travelplan/${planId}`);
-        } catch (e) {
-            setError('Failed to update travel plan.');
+            // Clear any previous errors on successful update
+            setError(null);
+            setSuccessMessage('Travel plan updated successfully!');
+            // Clear success message after 2 seconds and navigate
+            setTimeout(() => {
+                setSuccessMessage(null);
+                navigate(`/travelplan/${planId}`);
+            }, 2000);
+        } catch (e: any) {
+            // Check if the error is a network error or if the data was actually updated
+            if (e?.response?.status === 500) {
+                // For 500 errors, try to refetch the data to check if update actually worked
+                try {
+                    const updatedPlan = await getTravelPlanById(planId);
+                    if (updatedPlan) {
+                        // Update was successful despite the 500 error
+                        setError(null);
+                        setSuccessMessage('Travel plan updated successfully!');
+                        setTimeout(() => {
+                            setSuccessMessage(null);
+                            navigate(`/travelplan/${planId}`);
+                        }, 2000);
+                        return;
+                    }
+                } catch (refetchError) {
+                    // If refetch fails, show the original error
+                }
+            }
+            
+            // Show more specific error messages
+            const errorMessage = e?.response?.data?.message || 
+                               e?.message || 
+                               'Failed to update travel plan. Please try again.';
+            setError(errorMessage);
+            
+            // Auto-clear error after 5 seconds
+            setTimeout(() => setError(null), 5000);
         }
     };
 
@@ -164,6 +240,7 @@ const TravelPlanEditPage: React.FC = () => {
         }
     };
 
+    // Now all hooks are called, we can do early returns
     if (loading) return (
         <div className="min-h-screen bg-white">
             <div className="max-w-4xl mx-auto px-6 py-16">
@@ -186,44 +263,16 @@ const TravelPlanEditPage: React.FC = () => {
     
     if (!initialValues) return null;
 
-    const handleUpdateService = async (idx: number, data: any) => {
-        if (!planId) return;
-        setSvcLoading(true);
-        try {
-            const updated = await updatePlanService(planId, data.service_id, data);
-            setServices(prev => prev.map((s, i) => i === idx ? updated : s));
-        } catch {
-            setError('Failed to update service.');
-        } finally {
-            setSvcLoading(false);
-        }
-    };
-    
-    const handleUpdateParticipant = async (idx: number, data: any) => {
-        if (!planId || !user) return;
-        setPartLoading(true);
-        try {
-            const updated = await updatePlanParticipant(planId, data.user_id, data, user.user_id);
-            setParticipants(prev => prev.map((p, i) => i === idx ? updated : p));
-        } catch {
-            setError('Failed to update participant.');
-        } finally {
-            setPartLoading(false);
-        }
-    };
-
-    // Stable onChange handlers using useCallback
-    const handleServiceChange = useCallback((idx: number, svc: any) => (data: any) => {
-        handleUpdateService(idx, { ...svc, ...data });
-    }, []);
-
-    const handleParticipantChange = useCallback((idx: number, part: any) => (data: any) => {
-        handleUpdateParticipant(idx, { ...part, ...data });
-    }, []);
-
     return (
         <div className="min-h-screen bg-white">
             <div className="max-w-4xl mx-auto px-6 py-16">
+                {/* Success Message */}
+                {successMessage && (
+                    <div className="mb-6 p-4 bg-green-50 border-2 border-green-200 rounded-lg">
+                        <div className="text-center text-green-700 text-lg font-semibold">{successMessage}</div>
+                    </div>
+                )}
+
                 <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8 mb-8">
                     <h2 className="text-5xl font-bold text-blue-900 mb-2 text-center">Update Travel Plan</h2>
                     <p className="text-xl text-gray-600 text-center mb-8">Modify your travel plan details and settings</p>

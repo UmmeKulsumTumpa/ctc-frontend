@@ -1,2 +1,13 @@
 @import "tailwindcss";
 
+/* Leaflet Map Styles */
+.leaflet-container {
+    height: 100%;
+    width: 100%;
+}
+
+/* Ensure map modal appears above everything */
+.map-modal {
+    z-index: 1000;
+}
+

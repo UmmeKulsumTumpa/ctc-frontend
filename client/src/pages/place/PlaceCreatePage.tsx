@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createPlace } from '../../services/place.service';
 import type { PlaceDto } from '../../types/place.type';
+import { PlaceSearchModal, PlaceDisplayModal } from '../../components/common/modals';
 
 const initialState: Omit<PlaceDto, 'place_id' | 'created_at'> = {
     name: '',
@@ -15,11 +16,23 @@ const PlaceCreatePage: React.FC = () => {
     const [form, setForm] = useState(initialState);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const [showMap, setShowMap] = useState(false);
+    const [showLocationPreview, setShowLocationPreview] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setForm(f => ({ ...f, [name]: name === 'latitude' || name === 'longitude' ? Number(value) : value }));
+    };
+
+    const handleLocationSelect = (location: { lat: number; lng: number; name: string; address: string }) => {
+        setForm(f => ({
+            ...f,
+            latitude: location.lat,
+            longitude: location.lng,
+            name: location.name || f.name,
+            address: location.address || f.address
+        }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -106,6 +119,41 @@ const PlaceCreatePage: React.FC = () => {
                             </div>
                         </div>
 
+                        {/* Map Search Button */}
+                        <div className="flex justify-center">
+                            <button
+                                type="button"
+                                onClick={() => setShowMap(true)}
+                                className="px-6 py-3 bg-blue-600 text-white rounded-xl border-2 border-blue-700 shadow-sm hover:bg-blue-700 transition-all font-bold text-lg"
+                            >
+                                🗺️ Search on Map
+                            </button>
+                        </div>
+
+                        {/* Location Preview */}
+                        {(form.latitude !== 0 || form.longitude !== 0) && (
+                            <div className="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-4">
+                                <div className="flex justify-between items-start">
+                                    <div className="flex-1">
+                                        <h4 className="font-bold text-emerald-800 mb-2">📍 Selected Location</h4>
+                                        <div className="text-sm space-y-1">
+                                            <p><span className="font-medium">Coordinates:</span> {form.latitude.toFixed(6)}, {form.longitude.toFixed(6)}</p>
+                                            {form.address && (
+                                                <p><span className="font-medium">Address:</span> {form.address}</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowLocationPreview(true)}
+                                        className="px-3 py-1 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm font-medium"
+                                    >
+                                        View on Map
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
                         <div>
                             <label className="block text-lg font-bold text-blue-900 mb-2">Address</label>
                             <input
@@ -149,6 +197,27 @@ const PlaceCreatePage: React.FC = () => {
                         </div>
                     </form>
                 </div>
+
+                {/* Map Modal */}
+                <PlaceSearchModal
+                    isOpen={showMap}
+                    onClose={() => setShowMap(false)}
+                    onLocationConfirm={handleLocationSelect}
+                    title="Select Location on Map"
+                    description="Search for a place or click on the map to select a location. This will automatically fill in the coordinates, name, and address."
+                    defaultCenter={[27.7172, 85.3240]}
+                />
+
+                {/* Location Preview Modal */}
+                <PlaceDisplayModal
+                    isOpen={showLocationPreview}
+                    onClose={() => setShowLocationPreview(false)}
+                    latitude={form.latitude}
+                    longitude={form.longitude}
+                    placeName={form.name}
+                    address={form.address}
+                    title="Preview Location"
+                />
             </div>
         </div>
     );
