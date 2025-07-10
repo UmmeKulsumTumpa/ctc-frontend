@@ -1,5 +1,6 @@
 import React from 'react';
 import WishlistCard from '../../components/wishlist/WishlistCard';
+import { WishlistIcons } from '../../components/icons/wishlistIcons';
 import WishlistForm from '../../components/wishlist/WishlistForm';
 import { useWishlist } from '../../contexts/WishlistContext';
 import { useAuth } from '../../contexts/AuthContext';
@@ -63,15 +64,20 @@ const WishlistPage: React.FC = () => {
                 {/* Header Section */}
                 <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <div>
-                            <h2 className="text-5xl font-bold text-emerald-900 mb-2">Wishlists Collections</h2>
-                            <p className="text-xl text-gray-600">Inspiring wishlists from fellow dreamers worldwide</p>
+                        <div className="flex items-center gap-4">
+                            <div>
+                                <h2 className="text-5xl font-bold text-emerald-900 mb-2 flex items-center gap-2">
+                                    Wishlists Collections
+                                </h2>
+                                <p className="text-xl text-gray-600">Inspiring wishlists from fellow dreamers worldwide</p>
+                            </div>
                         </div>
                         <button
-                            className="px-8 py-4 rounded-2xl bg-sky-600 text-white text-lg font-bold border-4 border-sky-700 shadow-lg hover:bg-sky-700 hover:border-sky-800 transform hover:scale-105 transition-all duration-300"
+                            className="px-8 py-4 rounded-2xl bg-sky-600 text-white text-lg font-bold border-4 border-sky-700 shadow-lg hover:bg-sky-700 hover:border-sky-800 transform hover:scale-105 transition-all duration-300 flex items-center gap-2"
                             onClick={() => { setShowForm(true); setEditing(null); }}
                         >
-                            Create New
+                            <WishlistIcons.Add size={28} className="mr-1" />
+                            Create
                         </button>
                     </div>
                 </div>
@@ -85,7 +91,10 @@ const WishlistPage: React.FC = () => {
                 {/* Filter Section */}
                 <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-6 mb-10 flex flex-col md:flex-row md:items-end gap-4">
                     <div className="flex-1">
-                        <label className="block text-emerald-900 font-bold mb-2">Region</label>
+                        <label className="block text-emerald-900 font-bold mb-2 flex items-center gap-2">
+                            <WishlistIcons.Location size={18} className="text-emerald-500" />
+                            Region
+                        </label>
                         <select
                             className="w-full border-2 border-emerald-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none bg-emerald-50 text-emerald-900"
                             value={regionFilter}
@@ -98,7 +107,10 @@ const WishlistPage: React.FC = () => {
                         </select>
                     </div>
                     <div className="flex-1">
-                        <label className="block text-emerald-900 font-bold mb-2">Theme</label>
+                        <label className="block text-emerald-900 font-bold mb-2 flex items-center gap-2">
+                            <WishlistIcons.Star size={18} className="text-yellow-400" />
+                            Theme
+                        </label>
                         <select
                             className="w-full border-2 border-emerald-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none bg-emerald-50 text-emerald-900"
                             value={themeFilter}
@@ -112,10 +124,10 @@ const WishlistPage: React.FC = () => {
                     </div>
                     <div className="flex items-end">
                         <button
-                            className="px-6 py-3 rounded-xl bg-emerald-600 text-white font-bold border-2 border-emerald-700 shadow-lg hover:bg-emerald-700 hover:border-emerald-800 transition-all"
+                            className="px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold border-2 border-emerald-700 shadow-lg hover:bg-emerald-700 hover:border-emerald-800 transition-all flex items-center gap-2"
                             onClick={() => { setRegionFilter(''); setThemeFilter(''); }}
                         >
-                            Reset Filters
+                            <WishlistIcons.Reset size={18} />
                         </button>
                     </div>
                 </div>

@@ -1,12 +1,20 @@
 @import "tailwindcss";
 
-/* Leaflet Map Styles */
+.bg-navy-50 { background-color: #f1f5f9; }
+.bg-navy-100 { background-color: #e2e8f0; }
+.bg-navy-500 { background-color: #334155; }
+.bg-navy-600 { background-color: #1e293b; }
+.bg-navy-700 { background-color: #0f172a; }
+.text-navy-600 { color: #475569; }
+.text-navy-800 { color: #1e293b; }
+.text-navy-900 { color: #0f172a; }
+.border-navy-300 { border-color: #cbd5e1; }
+
 .leaflet-container {
     height: 100%;
     width: 100%;
 }
 
-/* Ensure map modal appears above everything */
 .map-modal {
     z-index: 1000;
 }
