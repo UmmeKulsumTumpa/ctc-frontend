@@ -5,7 +5,7 @@ import { getTravelPlanById, getPlanParticipants, getPlanComments, getPlannedPlac
 import { getUser } from '../../services/user.service';
 import { getPlaceById } from '../../services/place.service';
 import { getServiceById } from '../../services/service.service';
-import ServiceCard from '../../components/service/ServiceCard';
+import ServiceDetailsCard from '../../components/service/ServiceDetailsCard';
 import PlaceCard from '../../components/place/PlaceCard';
 import type { TravelPlan, PlanParticipant, PlanComment } from '../../types/travelPlan.type';
 import type { PlaceDto } from '../../types/place.type';
@@ -242,7 +242,7 @@ const TravelPlanDetails: React.FC = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {services.map((service, idx) => (
                                 <div key={service.service_id ? `${service.service_id}-${idx}` : `service-${idx}`}>
-                                    <ServiceCard service={service} />
+                                    <ServiceDetailsCard service={service} />
                                 </div>
                             ))}
                         </div>
