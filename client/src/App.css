@@ -1,0 +1,43 @@
+
+html, body, #root {
+  height: 100%;
+  min-height: 100vh;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-content {
+  flex: 1 0 auto;
+  min-height: 80vh;
+  padding: 2rem;
+  padding-top: 6rem; /* Account for fixed top navbar */
+  padding-bottom: 6rem; /* Add space for footer */
+}
+
+.footer-bottom {
+  margin-top: auto;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  background: white; /* Ensure footer has background */
+  z-index: 55; /* Ensure footer is above sidebar but below top bar */
+}
+
+@media (max-width: 768px) {
+  .app-content {
+    padding: 1rem;
+    padding-top: 5rem; /* Account for mobile top navbar */
+    padding-bottom: 6rem;
+  }
+}
+
+@media (max-height: 700px) {
+  .footer-bottom {
+    position: static;
+    margin-top: 2rem;
+  }
+}
