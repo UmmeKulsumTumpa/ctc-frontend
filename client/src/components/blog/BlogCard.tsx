@@ -1,4 +1,6 @@
 import type { BlogPost } from "../../types/blog/blog.type";
+import { ActionIcons } from '../icons/actionIcons';
+import { BlogIcons } from '../icons/commonIcons';
 
 interface BlogCardProps {
     post: BlogPost;
@@ -56,28 +58,36 @@ const BlogCard: React.FC<BlogCardProps> = ({ post, userId, onView, onEdit, onDel
                     )}
                 </div>
 
-                <div className="flex gap-2">
-                    <button
-                        onClick={onView}
-                        className="px-6 py-2 rounded-xl bg-blue-600 text-white text-sm font-bold shadow-lg hover:bg-blue-700 transition-colors"
-                    >
-                        Read Story
-                    </button>
+                <div className="flex space-x-2 items-center">
                     {isOwner && (
                         <>
-                            <button
-                                onClick={onEdit}
-                                className="px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-bold shadow-lg hover:bg-emerald-700 transition-colors"
-                            >
-                                Edit
-                            </button>
-                            <button
-                                onClick={onDelete}
-                                className="px-4 py-2 rounded-xl bg-red-500 text-white text-sm font-bold shadow-lg hover:bg-red-600 transition-colors"
-                            >
-                                Delete
-                            </button>
+                            {onEdit && (
+                                <ActionIcons.Edit
+                                    onClick={onEdit}
+                                    className="text-emerald-600 hover:text-emerald-800 cursor-pointer"
+                                    title="Edit Blog"
+                                    size={21}
+                                />
+                            )}
+                            {onDelete && (
+                                <ActionIcons.Delete
+                                    onClick={onDelete}
+                                    className="text-red-500 hover:text-red-700 cursor-pointer"
+                                    title="Delete Blog"
+                                    size={21}
+                                />
+                            )}
                         </>
+                    )}
+
+                    {onView && (
+                        <button
+                            onClick={onView}
+                            className="text-blue-600 hover:text-blue-800 cursor-pointer"
+                            title="Read Story"
+                        >
+                            <BlogIcons.Read size={24} />
+                        </button>
                     )}
                 </div>
             </div>

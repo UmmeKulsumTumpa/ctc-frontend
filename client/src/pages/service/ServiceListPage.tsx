@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getAllServices } from '../../services/service.service';
 import type { ServiceResponseDto, ServiceType } from '../../types/service.type';
 import ServiceDetailsCard from '../../components/service/ServiceDetailsCard';
+import { ActionIcons } from '../../components/icons/actionIcons';
 import { useNavigate } from 'react-router-dom';
 
 const ServiceListPage: React.FC = () => {
@@ -35,7 +36,7 @@ const ServiceListPage: React.FC = () => {
             </div>
         </div>
     );
-    
+
     if (error) return (
         <div className="min-h-screen bg-white">
             <div className="max-w-6xl mx-auto px-6 py-16">
@@ -157,12 +158,23 @@ const ServiceListPage: React.FC = () => {
                             {services.map(service => (
                                 <div key={service.service_id} className="relative">
                                     <ServiceDetailsCard service={service} />
-                                    <button
-                                        onClick={() => navigate(`/services/${service.service_id}/edit`)}
-                                        className="absolute top-4 right-4 px-4 py-2 rounded bg-blue-600 text-white text-sm font-semibold shadow hover:bg-blue-700 transition-all"
-                                    >
-                                        Edit
-                                    </button>
+                                    <div className="flex space-x-1 items-center absolute top-9 right-4 z-10">
+                                        <ActionIcons.Edit
+                                            onClick={() => navigate(`/services/${service.service_id}/edit`)}
+                                            className="text-emerald-600 hover:text-emerald-800 cursor-pointer"
+                                            title="Edit Service"
+                                            size={24}
+                                        />
+                                        <ActionIcons.Delete
+                                            onClick={() => {
+                                                // TODO: Implement delete functionality
+                                                alert('Delete functionality coming soon! Service ID: ' + service.service_id);
+                                            }}
+                                            className="text-red-500 hover:text-red-700 cursor-pointer"
+                                            title="Delete Service"
+                                            size={24}
+                                        />
+                                    </div>
                                 </div>
                             ))}
                         </div>

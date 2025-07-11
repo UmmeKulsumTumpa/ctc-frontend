@@ -1,4 +1,4 @@
-import { FaShareAlt, FaUsers, FaSuitcaseRolling, FaGlobeAmericas, FaMapMarkerAlt, FaStar, FaPlusCircle, FaRedo, FaTimesCircle, FaCheckCircle } from 'react-icons/fa';
+import { FaShareAlt, FaUsers, FaSuitcaseRolling, FaGlobeAmericas, FaMapMarkerAlt, FaStar, FaPlusCircle, FaRedo, FaTimesCircle, FaCheckCircle, FaBookOpen } from 'react-icons/fa';
 
 export const WishlistIcons = {
 	Share: FaShareAlt,
@@ -11,4 +11,8 @@ export const WishlistIcons = {
 	Reset: FaRedo,
 	Cancel: FaTimesCircle,
 	Create: FaCheckCircle,
+};
+
+export const BlogIcons = {
+	Read: FaBookOpen,
 };

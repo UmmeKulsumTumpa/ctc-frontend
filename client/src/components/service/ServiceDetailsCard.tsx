@@ -14,14 +14,14 @@ const ServiceDetailsCard: React.FC<ServiceDetailsCardProps> = ({ service }) => {
     return (
         <>
             <div className="bg-white border-2 border-emerald-400 shadow-lg rounded-2xl p-7 relative">
-                <button
-                    onClick={() => setShowMap(true)}
-                    aria-label="View location"
-                    className="absolute top-4 right-4 bg-emerald-600 hover:bg-emerald-700 p-3 rounded-full shadow-md transition-colors text-white flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-emerald-400"
-                >
-                    <MapPinIcon size={24} />
-                </button>
                 <div className="flex items-center gap-4 mb-4">
+                    <button
+                        onClick={() => setShowMap(true)}
+                        aria-label="View location"
+                        className="bg-emerald-600 hover:bg-emerald-700 p-3 rounded-full shadow-md transition-colors text-white flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                    >
+                        <MapPinIcon size={24} />
+                    </button>
                     <h3 className="text-2xl font-bold text-emerald-900">{service.name}</h3>
                     <span className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm font-bold border border-emerald-200">
                         {service.type}
