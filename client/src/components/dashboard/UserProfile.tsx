@@ -1,13 +1,23 @@
 import React from 'react';
 import type { User } from '../../types/user.type';
+import { UserRoleIcons } from '../icons/commonIcons';
 
 interface UserProfileProps {
     user: User;
 }
 
 const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
+    const validRoles = ['admin', 'user', 'explorer'] as const;
+    const userRole = user.role && validRoles.includes(user.role as any) ? user.role as keyof typeof UserRoleIcons : 'user';
+    const RoleIcon = UserRoleIcons[userRole];
+    
     return (
-        <div className="w-full max-w-2xl mx-auto">
+        <div className="w-full max-w-2xl mx-auto relative">
+            <div className="absolute flex items-center gap-2 bg-white rounded-full shadow px-4 py-2 border border-emerald-200 z-10">
+                <RoleIcon className="text-emerald-600 w-6 h-6" />
+                <span className="text-emerald-900 font-bold capitalize">{user.role || 'User'}</span>
+            </div>
+
             <div className="text-center mb-8">
                 <h3 className="text-3xl font-bold text-emerald-900 mb-2">Travel Profile</h3>
                 <p className="text-gray-600 text-lg">Your adventure identity</p>

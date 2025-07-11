@@ -9,6 +9,8 @@ import BlogEdit from "../pages/blog/BlogEdit";
 import SignIn from "../pages/Signin";
 import SignUp from "../pages/Signup";
 import Dashboard from '../pages/Dashboard';
+import AdminDashboard from '../pages/AdminDashboard';
+import UserManagement from '../pages/UserManagement';
 import ServiceListPage from '../pages/service/ServiceListPage';
 import ServiceCreatePage from '../pages/service/ServiceCreatePage';
 import ServiceEditPage from '../pages/service/ServiceEditPage';
@@ -45,6 +47,10 @@ const AppRoutes = () => {
             <Route path={PATHS.TRAVEL_PLAN_DETAILS} element={<TravelPlanDetails />} />
             <Route path={PATHS.TRAVEL_PLAN_CREATE} element={<TravelPlanCreatePage />} />
             <Route path="/travelplan/:planId/edit" element={<TravelPlanEditPage />} />
+            
+            {/* Admin Routes */}
+            <Route path={PATHS.ADMIN_DASHBOARD} element={<AdminDashboard />} />
+            <Route path={PATHS.ADMIN_USERS} element={<UserManagement />} />
         </Routes>
     );
 }

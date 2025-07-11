@@ -5,7 +5,7 @@ import type { UpdateUserRequest, ChangePasswordRequest } from '../types/user.req
 
 export const getUser = async (userId: number): Promise<User> => {
     try {
-        const res = await api.get<ApiResponse<User[]>>('/users', { params: { user_id: userId } });
+        const res = await api.get<ApiResponse<User[]>>('/users', { params: { id: userId } });
         if (!res.data.data || res.data.data.length === 0) throw new Error('User not found');
         return res.data.data[0];
     } catch (error: any) {
@@ -56,5 +56,25 @@ export const getUsers = async (filters: Partial<Pick<User, 'username' | 'email' 
     } catch (error: any) {
         console.error('Failed to get users:', error);
         throw new Error(error?.response?.data?.message || 'Failed to fetch users');
+    }
+};
+
+export const updateUserRole = async (userId: number, role: string): Promise<boolean> => {
+    try {
+        const res = await api.patch<ApiResponse<{ success: boolean }>>(`/users/${userId}/role`, { role });
+        return res.data.data.success;
+    } catch (error: any) {
+        console.error('Failed to update user role:', error);
+        throw new Error(error?.response?.data?.message || 'Failed to update user role');
+    }
+};
+
+export const deleteUser = async (userId: number): Promise<boolean> => {
+    try {
+        const res = await api.delete<ApiResponse<{ success: boolean }>>(`/users/${userId}`);
+        return res.data.data.success;
+    } catch (error: any) {
+        console.error('Failed to delete user:', error);
+        throw new Error(error?.response?.data?.message || 'Failed to delete user');
     }
 };

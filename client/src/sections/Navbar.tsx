@@ -1,10 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import UserInfo from '../components/user/UserInfo';
 import { useAuth } from '../contexts/AuthContext';
+import { useAdminAuth } from '../contexts/AdminAuthContext';
+import { PATHS } from '../constants/path.constants';
 import { useState } from 'react';
 
 const NavBar = () => {
     const { isAuthenticated } = useAuth();
+    const { canViewAdminDashboard } = useAdminAuth();
     const location = useLocation();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     
@@ -20,6 +23,7 @@ const NavBar = () => {
     const authLinks = [
         { to: "/blogs/create", label: "Write Story" },
         { to: "/dashboard", label: "Dashboard" },
+        ...(canViewAdminDashboard ? [{ to: PATHS.ADMIN_DASHBOARD, label: "Admin Dashboard" }] : []),
     ];
 
     const closeSidebar = () => setIsSidebarOpen(false);

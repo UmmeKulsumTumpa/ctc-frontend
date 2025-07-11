@@ -16,3 +16,10 @@ export const WishlistIcons = {
 export const BlogIcons = {
 	Read: FaBookOpen,
 };
+
+export const UserRoleIcons = {
+	admin: FaUsers,
+	user: FaGlobeAmericas,
+	explorer: FaMapMarkerAlt,
+	planner: FaSuitcaseRolling,
+};

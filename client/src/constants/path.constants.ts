@@ -20,6 +20,12 @@ export const PATHS = {
     TRAVEL_PLANS: '/travel-plans',
     TRAVEL_PLAN_CREATE: '/travel-plans/create',
     TRAVEL_PLAN_DETAILS: '/travelplan/:planId',
+    
+    // Admin paths
+    ADMIN_DASHBOARD: '/admin',
+    ADMIN_USERS: '/admin/users',
+    ADMIN_SERVICES: '/admin/services',
+    ADMIN_POSTS: '/admin/posts',
 };
 
 
