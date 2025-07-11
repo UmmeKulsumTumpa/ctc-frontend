@@ -20,7 +20,9 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const adminAuthValue = useMemo(() => {
         const userRole = user?.role as RoleType | undefined;
         const isValidRole = userRole && Object.values(UserRole).includes(userRole);
-        const permissions = isValidRole && userRole ? ROLE_PERMISSIONS[userRole as keyof typeof ROLE_PERMISSIONS] : ROLE_PERMISSIONS[UserRole.USER];
+        // fallback to 'traveler' if role is missing or invalid
+        const fallbackRole: RoleType = 'traveler';
+        const permissions = isValidRole && userRole ? ROLE_PERMISSIONS[userRole as keyof typeof ROLE_PERMISSIONS] : ROLE_PERMISSIONS[fallbackRole];
 
         return {
             isAdmin: userRole === UserRole.ADMIN,

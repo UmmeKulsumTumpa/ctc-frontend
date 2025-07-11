@@ -1,8 +1,8 @@
+
 export const UserRole = {
     ADMIN: 'admin',
-    USER: 'user',
     EXPLORER: 'explorer',
-    PLANNER: 'planner'
+    TRAVELER: 'traveler'
 } as const;
 
 export type RoleType = typeof UserRole[keyof typeof UserRole];
@@ -14,19 +14,13 @@ export const ROLE_PERMISSIONS = {
         canManagePosts: true,
         canViewAdminDashboard: true
     },
-    [UserRole.USER]: {
-        canManageUsers: false,
-        canManageServices: false,
-        canManagePosts: false,
-        canViewAdminDashboard: false
-    },
     [UserRole.EXPLORER]: {
         canManageUsers: false,
         canManageServices: false,
         canManagePosts: false,
         canViewAdminDashboard: false
     },
-    [UserRole.PLANNER]: {
+    [UserRole.TRAVELER]: {
         canManageUsers: false,
         canManageServices: false,
         canManagePosts: false,

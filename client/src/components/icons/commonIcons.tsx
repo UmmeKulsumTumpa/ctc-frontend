@@ -19,7 +19,6 @@ export const BlogIcons = {
 
 export const UserRoleIcons = {
 	admin: FaUsers,
-	user: FaGlobeAmericas,
 	explorer: FaMapMarkerAlt,
-	planner: FaSuitcaseRolling,
+	traveler: FaSuitcaseRolling,
 };

@@ -107,9 +107,8 @@ const UserManagement: React.FC = () => {
                         >
                             <option value="">All Roles</option>
                             <option value="admin">Admin</option>
-                            <option value="user">User</option>
                             <option value="explorer">Explorer</option>
-                            <option value="planner">Planner</option>
+                            <option value="traveler">Traveler</option>
                         </select>
                         <button
                             onClick={() => {

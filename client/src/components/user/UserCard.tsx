@@ -20,8 +20,8 @@ const UserCard: React.FC<UserCardProps> = ({
     loading = false,
     className = ""
 }) => {
-    const validRoles = ['admin', 'user', 'explorer', 'planner'] as const;
-    const userRole = user.role && validRoles.includes(user.role as any) ? user.role as keyof typeof UserRoleIcons : 'user';
+    const validRoles = ['admin', 'explorer', 'traveler'] as const;
+    const userRole = user.role && validRoles.includes(user.role as any) ? user.role as keyof typeof UserRoleIcons : 'traveler';
     const RoleIcon = UserRoleIcons[userRole];
 
     const handleRoleChange = (newRole: string) => {
@@ -86,7 +86,7 @@ const UserCard: React.FC<UserCardProps> = ({
                 {showActions && (
                     <div className="flex flex-col gap-3 ml-4">
                         <select
-                            value={user.role || UserRole.USER}
+                            value={user.role || UserRole.TRAVELER}
                             onChange={(e) => handleRoleChange(e.target.value)}
                             disabled={loading}
                             className="border-2 border-emerald-300 rounded-lg px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none bg-white"
