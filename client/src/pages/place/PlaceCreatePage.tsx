@@ -1,8 +1,12 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createPlace } from '../../services/place.service';
 import type { PlaceDto } from '../../types/place.type';
 import { PlaceSearchModal, PlaceDisplayModal } from '../../components/common/modals';
+import { WishlistIcons } from '../../components/icons/commonIcons';
+import { ActionIcons } from '../../components/icons/actionIcons';
+import { PlaceIcon } from '../../components/icons/TravelIcons';
 
 const initialState: Omit<PlaceDto, 'place_id' | 'created_at'> = {
     name: '',
@@ -54,40 +58,58 @@ const PlaceCreatePage: React.FC = () => {
         <div className="min-h-[85vh] bg-white">
             <div className="max-w-6xl mx-auto px-6 py-16">
                 {/* Header Section */}
-                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
-                    <div className="text-center">
-                        <h2 className="text-5xl font-bold text-emerald-900 mb-2">Add New Place</h2>
-                        <p className="text-xl text-gray-600">Share a beautiful destination with fellow travelers</p>
+                <div className="flex flex-col items-center bg-white border border-emerald-400 shadow-xl rounded-3xl p-8 mb-10">
+                    <div className="flex items-center gap-4 mb-2">
+                        <span className="text-emerald-700 text-4xl"><PlaceIcon size={38} /></span>
+                        <h2 className="text-4xl font-extrabold text-emerald-900 tracking-tight">Add New Place</h2>
                     </div>
+                    <p className="text-lg text-gray-600">Share a beautiful destination with fellow travelers</p>
                 </div>
 
                 {/* Error Message */}
                 {error && (
-                    <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-2xl px-6 py-4 mb-8 text-lg font-medium">
-                        ❌ {error}
+                    <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-6 py-3 mb-8 text-base font-medium flex items-center gap-2">
+                        <span className="text-xl"><ActionIcons.Cancel /></span> {error}
                     </div>
                 )}
 
                 {/* Main Form Container */}
-                <div className="bg-white border-2 border-blue-200 shadow-lg rounded-3xl p-8">
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div>
-                            <label className="block text-lg font-bold text-blue-900 mb-2">
-                                Place Name <span className="text-red-500">*</span>
-                            </label>
-                            <input
-                                name="name"
-                                value={form.name}
-                                onChange={handleChange}
-                                required
-                                className="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none shadow-sm"
-                                placeholder="Enter the name of this amazing place..."
-                            />
+                <div className="bg-white border border-blue-200 shadow-lg rounded-2xl p-8">
+                    <form onSubmit={handleSubmit} className="space-y-7">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="flex flex-col gap-2">
+                                <label className="flex items-center gap-2 text-base font-semibold text-blue-900">
+                                    <span className="text-blue-700"><PlaceIcon size={20} /></span>
+                                    Place Name <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    name="name"
+                                    value={form.name}
+                                    onChange={handleChange}
+                                    required
+                                    className="border border-gray-300 rounded-lg px-4 py-2 text-base focus:border-emerald-500 focus:outline-none shadow-sm"
+                                    placeholder="Enter the name of this amazing place..."
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label className="flex items-center gap-2 text-base font-semibold text-blue-900">
+                                    <span className="text-blue-700"><WishlistIcons.Location /></span>
+                                    Address
+                                </label>
+                                <input
+                                    name="address"
+                                    value={form.address}
+                                    onChange={handleChange}
+                                    className="border border-gray-300 rounded-lg px-4 py-2 text-base focus:border-emerald-500 focus:outline-none shadow-sm"
+                                    placeholder="Street address or general location..."
+                                />
+                            </div>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label className="block text-lg font-bold text-blue-900 mb-2">
+                            <div className="flex flex-col gap-2">
+                                <label className="flex items-center gap-2 text-base font-semibold text-blue-900">
+                                    <span className="text-blue-700"><WishlistIcons.Globe /></span>
                                     Latitude <span className="text-red-500">*</span>
                                 </label>
                                 <input
@@ -97,13 +119,13 @@ const PlaceCreatePage: React.FC = () => {
                                     value={form.latitude}
                                     onChange={handleChange}
                                     required
-                                    className="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none shadow-sm"
+                                    className="border border-gray-300 rounded-lg px-4 py-2 text-base focus:border-emerald-500 focus:outline-none shadow-sm"
                                     placeholder="e.g., 40.7128"
                                 />
                             </div>
-
-                            <div>
-                                <label className="block text-lg font-bold text-blue-900 mb-2">
+                            <div className="flex flex-col gap-2">
+                                <label className="flex items-center gap-2 text-base font-semibold text-blue-900">
+                                    <span className="text-blue-700"><WishlistIcons.Globe /></span>
                                     Longitude <span className="text-red-500">*</span>
                                 </label>
                                 <input
@@ -113,29 +135,51 @@ const PlaceCreatePage: React.FC = () => {
                                     value={form.longitude}
                                     onChange={handleChange}
                                     required
-                                    className="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none shadow-sm"
+                                    className="border border-gray-300 rounded-lg px-4 py-2 text-base focus:border-emerald-500 focus:outline-none shadow-sm"
                                     placeholder="e.g., -74.0060"
                                 />
                             </div>
                         </div>
 
-                        {/* Map Search Button */}
-                        <div className="flex justify-center">
+                        <div className="flex flex-col gap-2">
+                            <label className="flex items-center gap-2 text-base font-semibold text-blue-900">
+                                <span className="text-blue-700"><WishlistIcons.Star /></span>
+                                Travel Notes
+                            </label>
+                            <textarea
+                                name="notes"
+                                value={form.notes}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded-lg px-4 py-2 text-base focus:border-emerald-500 focus:outline-none shadow-sm"
+                                rows={4}
+                                placeholder="Share what makes this place special, travel tips, or memorable experiences..."
+                            />
+                        </div>
+
+                        <div className="flex flex-col md:flex-row md:items-center gap-4 pt-2">
                             <button
                                 type="button"
                                 onClick={() => setShowMap(true)}
-                                className="px-6 py-3 bg-blue-600 text-white rounded-xl border-2 border-blue-700 shadow-sm hover:bg-blue-700 transition-all font-bold text-lg"
+                                className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white rounded-lg border border-blue-700 shadow-sm hover:bg-blue-700 transition-all font-semibold text-base"
                             >
-                                🗺️ Search on Map
+                                <span><ActionIcons.Map /></span> Search on Map
                             </button>
+                            {(form.latitude !== 0 || form.longitude !== 0) && (
+                                <button
+                                    type="button"
+                                    onClick={() => setShowLocationPreview(true)}
+                                    className="flex items-center gap-2 px-5 py-2 bg-emerald-600 text-white rounded-lg border border-emerald-700 shadow-sm hover:bg-emerald-700 transition-all font-semibold text-base"
+                                >
+                                    <span><WishlistIcons.Location /></span> View on Map
+                                </button>
+                            )}
                         </div>
 
-                        {/* Location Preview */}
                         {(form.latitude !== 0 || form.longitude !== 0) && (
-                            <div className="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-4">
-                                <div className="flex justify-between items-start">
+                            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mt-2">
+                                <div className="flex flex-col md:flex-row md:items-center gap-2">
                                     <div className="flex-1">
-                                        <h4 className="font-bold text-emerald-800 mb-2">📍 Selected Location</h4>
+                                        <h4 className="font-bold text-emerald-800 mb-1 flex items-center gap-1"><WishlistIcons.Location /> Selected Location</h4>
                                         <div className="text-sm space-y-1">
                                             <p><span className="font-medium">Coordinates:</span> {form.latitude.toFixed(6)}, {form.longitude.toFixed(6)}</p>
                                             {form.address && (
@@ -143,56 +187,26 @@ const PlaceCreatePage: React.FC = () => {
                                             )}
                                         </div>
                                     </div>
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowLocationPreview(true)}
-                                        className="px-3 py-1 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm font-medium"
-                                    >
-                                        View on Map
-                                    </button>
                                 </div>
                             </div>
                         )}
 
-                        <div>
-                            <label className="block text-lg font-bold text-blue-900 mb-2">Address</label>
-                            <input
-                                name="address"
-                                value={form.address}
-                                onChange={handleChange}
-                                className="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none shadow-sm"
-                                placeholder="Street address or general location..."
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-lg font-bold text-blue-900 mb-2">Travel Notes</label>
-                            <textarea
-                                name="notes"
-                                value={form.notes}
-                                onChange={handleChange}
-                                className="w-full border-2 border-gray-300 rounded-xl px-4 py-3 text-lg focus:border-emerald-500 focus:outline-none shadow-sm"
-                                rows={4}
-                                placeholder="Share what makes this place special, travel tips, or memorable experiences..."
-                            />
-                        </div>
-
-                        <div className="flex justify-center gap-4 pt-6">
+                        <div className="flex justify-center gap-4 pt-8">
                             <button
                                 type="button"
-                                className="px-8 py-4 rounded-xl bg-gray-200 text-gray-800 text-lg font-bold border-2 border-gray-300 shadow-sm hover:bg-gray-300 transition-all"
+                                className="flex items-center gap-2 px-8 py-3 rounded-lg bg-red-600 text-white text-base font-bold border border-red-700 shadow-sm hover:bg-red-700 transition-all"
                                 onClick={() => navigate('/places')}
                                 disabled={loading}
                             >
-                                Cancel
+                                <ActionIcons.Cancel /> Cancel
                             </button>
 
                             <button
                                 type="submit"
-                                className="px-8 py-4 rounded-xl bg-emerald-600 text-white text-lg font-bold border-2 border-emerald-700 shadow-sm hover:bg-emerald-700 transition-all"
+                                className="flex items-center gap-2 px-8 py-3 rounded-lg bg-emerald-600 text-white text-base font-bold border border-emerald-700 shadow-sm hover:bg-emerald-700 transition-all"
                                 disabled={loading}
                             >
-                                {loading ? 'Adding Place...' : 'Add Place'}
+                                <ActionIcons.Confirm /> {loading ? 'Adding Place...' : 'Add Place'}
                             </button>
                         </div>
                     </form>

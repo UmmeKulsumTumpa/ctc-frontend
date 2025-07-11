@@ -1,6 +1,6 @@
 import React from 'react'
 import type { WishlistResponseDto } from '../../types/wishlist.type'
-import { WishlistIcons } from '../icons/wishlistIcons'
+import { WishlistIcons } from '../icons/commonIcons'
 
 interface UsersInterestedListProps {
     wishlists: WishlistResponseDto[]

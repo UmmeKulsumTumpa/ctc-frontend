@@ -3,7 +3,7 @@ import type { CreateWishlistRequestDto, UpdateWishlistRequestDto } from '../../t
 import PlaceAutocomplete from '../place/PlaceAutocomplete';
 import type { PlaceDto } from '../../types/place.type';
 // import { ActionIcons } from '../icons/actionIcons';
-import { WishlistIcons } from '../icons/wishlistIcons';
+import { WishlistIcons } from '../icons/commonIcons';
 
 type WishlistFormMode = 'create' | 'edit';
 

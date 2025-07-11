@@ -2,7 +2,7 @@ import React from 'react'
 import type { WishlistResponseDto } from '../../types/wishlist.type'
 import { useAuth } from '../../contexts/AuthContext'
 import { ActionIcons } from '../icons/actionIcons'
-import { WishlistIcons } from '../icons/wishlistIcons'
+import { WishlistIcons } from '../icons/commonIcons'
 
 interface UsersInterestedModalProps {
     wishlists: WishlistResponseDto[]

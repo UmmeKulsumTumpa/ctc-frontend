@@ -1,6 +1,6 @@
 import React from 'react';
 import WishlistCard from '../../components/wishlist/WishlistCard';
-import { WishlistIcons } from '../../components/icons/wishlistIcons';
+import { WishlistIcons } from '../../components/icons/commonIcons';
 import WishlistForm from '../../components/wishlist/WishlistForm';
 import { useWishlist } from '../../contexts/WishlistContext';
 import { useAuth } from '../../contexts/AuthContext';

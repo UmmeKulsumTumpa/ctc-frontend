@@ -10,7 +10,7 @@ import ConfirmAddToWishlistModal from './ConfirmAddToWishlistModal';
 import UsersInterestedModal from './UsersInterestedModal';
 import ShareWishlistModal from './ShareWishlistModal';
 import PlaceDisplayModal from '../common/modals/PlaceDisplayModal';
-import { WishlistIcons } from '../icons/wishlistIcons';
+import { WishlistIcons } from '../icons/commonIcons';
 import { ActionIcons } from '../icons/actionIcons';
 
 interface WishlistCardProps {
