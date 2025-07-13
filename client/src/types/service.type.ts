@@ -1,19 +1,20 @@
 export type ServiceType = 'Hotel' | 'Restaurant' | 'Attraction' | 'Transport';
+export type TransportMode = 'Flight' | 'Car' | 'Rental' | 'Bus' | 'Train' | 'Boat';
 
 export interface TransportCreateDto {
     service_id: string;
-    mode: string;
+    mode: TransportMode;
     operator?: string;
 }
 
 export interface TransportUpdateDto {
-    mode?: string;
+    mode?: TransportMode;
     operator?: string;
 }
 
 export interface Transport {
     service_id: string;
-    mode: string;
+    mode: TransportMode;
     operator?: string;
     created_at: string;
 }

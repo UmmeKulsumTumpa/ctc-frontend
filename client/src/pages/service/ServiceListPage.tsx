@@ -154,7 +154,7 @@ const ServiceListPage: React.FC = () => {
                             <p className="text-emerald-600 mt-2">Try adjusting your filters or search terms.</p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                             {services.map(service => (
                                 <div key={service.service_id} className="relative">
                                     <ServiceDetailsCard service={service} />

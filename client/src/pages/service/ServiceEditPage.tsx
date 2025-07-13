@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { updateService, getServiceById } from '../../services/service.service';
-import type { ServiceUpdateRequestDto, ServiceResponseDto, ServiceType } from '../../types/service.type';
+import { getServiceById, updateService } from '../../services/service.service';
+import type { ServiceUpdateRequestDto, ServiceType } from '../../types/service.type';
 import { useNavigate, useParams } from 'react-router-dom';
+import TransportForm from '../../components/service/TransportForm';
+import { useTransportForm } from '../../hooks/useTransportForm';
 
 const SERVICE_TYPES: ServiceType[] = ['Hotel', 'Restaurant', 'Attraction', 'Transport'];
 
@@ -14,11 +16,21 @@ const ServiceEditPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
     const [fetched, setFetched] = useState(false);
+    
+    const { 
+        transportData, 
+        updateTransportData, 
+        resetTransportData, 
+        getTransportPayload 
+    } = useTransportForm();
 
     React.useEffect(() => {
         if (!id) return;
-        getServiceById(id)
-            .then((service: ServiceResponseDto) => {
+        
+        const fetchService = async () => {
+            try {
+                const service = await getServiceById(id);
+                
                 setForm({
                     name: service.name,
                     type: service.type,
@@ -27,15 +39,33 @@ const ServiceEditPage: React.FC = () => {
                     address: service.address,
                     description: service.description,
                 });
+                
+                if (service.transport) {
+                    updateTransportData({
+                        mode: service.transport.mode,
+                        operator: service.transport.operator || ''
+                    });
+                }
+                
                 setFetched(true);
-            })
-            .catch(() => setError('Failed to fetch service'));
-    }, [id]);
+            } catch (err) {
+                setError('Failed to fetch service');
+            }
+        };
+        
+        fetchService();
+    }, [id, updateTransportData]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
+        
+        if (name === 'type' && value !== 'Transport') {
+            resetTransportData();
+        }
     };
+
+    const handleTransportChange = updateTransportData;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -44,7 +74,6 @@ const ServiceEditPage: React.FC = () => {
         setError(null);
         setSuccess(false);
         try {
-            // Clean and prepare payload: convert lat/lng to number, omit undefined/null/empty fields
             const payload: Partial<ServiceUpdateRequestDto> = {};
             if (form.name && form.name.trim() !== '') payload.name = form.name.trim();
             if (form.type) payload.type = form.type;
@@ -52,6 +81,16 @@ const ServiceEditPage: React.FC = () => {
             if (form.longitude !== undefined && form.longitude !== null) payload.longitude = Number(form.longitude);
             if (form.address && form.address.trim() !== '') payload.address = form.address.trim();
             if (form.description && form.description.trim() !== '') payload.description = form.description.trim();
+
+            if (form.type === 'Transport') {
+                const transportPayload = getTransportPayload();
+                if (transportPayload) {
+                    payload.transport = {
+                        mode: transportPayload.mode,
+                        operator: transportPayload.operator
+                    };
+                }
+            }
 
             await updateService(id, payload as ServiceUpdateRequestDto);
             setSuccess(true);
@@ -110,6 +149,13 @@ const ServiceEditPage: React.FC = () => {
                                 </select>
                             </div>
                         </div>
+
+                        {form.type === 'Transport' && (
+                            <TransportForm 
+                                data={transportData} 
+                                onChange={handleTransportChange} 
+                            />
+                        )}
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>

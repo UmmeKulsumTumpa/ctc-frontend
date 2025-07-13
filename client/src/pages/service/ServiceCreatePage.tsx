@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { createService } from '../../services/service.service';
 import type { ServiceCreateRequestDto, ServiceType } from '../../types/service.type';
+import { useNavigate } from 'react-router-dom';
+import TransportForm from '../../components/service/TransportForm';
+import { useTransportForm } from '../../hooks/useTransportForm';
 
 const SERVICE_TYPES: ServiceType[] = ['Hotel', 'Restaurant', 'Attraction', 'Transport'];
 
@@ -18,16 +21,31 @@ const ServiceCreatePage: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
+    const navigate = useNavigate();
+    
+    const { 
+        transportData, 
+        updateTransportData, 
+        resetTransportData, 
+        isTransportDataValid, 
+        getTransportPayload 
+    } = useTransportForm();
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        const { name, value, type } = e.target;
+        const { name, value } = e.target;
         if (name === 'latitude' || name === 'longitude') {
             setForm(prev => ({ ...prev, [name]: value === '' ? undefined : Number(value) }));
         } else {
             setForm(prev => ({ ...prev, [name]: value }));
         }
+        
+        if (name === 'type' && value !== 'Transport') {
+            resetTransportData();
+        }
     };
+
+    const handleTransportChange = updateTransportData;
 
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -44,8 +62,21 @@ const ServiceCreatePage: React.FC = () => {
             if (form.address && form.address.trim() !== '') payload.address = form.address.trim();
             if (form.description && form.description.trim() !== '') payload.description = form.description.trim();
 
+            if (form.type === 'Transport') {
+                const transportPayload = getTransportPayload();
+                if (transportPayload) {
+                    payload.transport = transportPayload;
+                }
+            }
+
             if (!payload.name || !payload.type) {
                 setError('Service name and type are required.');
+                setLoading(false);
+                return;
+            }
+
+            if (form.type === 'Transport' && !isTransportDataValid()) {
+                setError('Transport mode is required for transport services.');
                 setLoading(false);
                 return;
             }
@@ -53,6 +84,8 @@ const ServiceCreatePage: React.FC = () => {
             await createService(payload as ServiceCreateRequestDto);
             setSuccess(true);
             setForm(initialState);
+            resetTransportData();
+            setTimeout(() => navigate('/services'), 1500);
         } catch (err) {
             setError('Failed to create service');
         } finally {
@@ -114,6 +147,13 @@ const ServiceCreatePage: React.FC = () => {
                                 ))}
                             </select>
                         </div>
+
+                        {form.type === 'Transport' && (
+                            <TransportForm 
+                                data={transportData} 
+                                onChange={handleTransportChange} 
+                            />
+                        )}
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>

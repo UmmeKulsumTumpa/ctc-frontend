@@ -20,7 +20,7 @@ const defaultValues: CreateWishlistRequestDto = {
     name: '',
     region: '',
     theme: '',
-    is_public: false,
+    is_public: true,
 };
 
 const WishlistForm: React.FC<WishlistFormProps> = ({ initialValues = {}, onSubmit, submitText = 'Save', onBack }) => {
