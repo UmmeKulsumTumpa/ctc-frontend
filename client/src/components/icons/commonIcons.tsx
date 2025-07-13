@@ -1,4 +1,4 @@
-import { FaShareAlt, FaUsers, FaSuitcaseRolling, FaGlobeAmericas, FaMapMarkerAlt, FaStar, FaPlusCircle, FaRedo, FaTimesCircle, FaCheckCircle, FaBookOpen } from 'react-icons/fa';
+import { FaShareAlt, FaUsers, FaSuitcaseRolling, FaGlobeAmericas, FaMapMarkerAlt, FaStar, FaPlusCircle, FaRedo, FaTimesCircle, FaCheckCircle, FaBookOpen, FaUser } from 'react-icons/fa';
 
 export const WishlistIcons = {
 	Share: FaShareAlt,
@@ -21,4 +21,5 @@ export const UserRoleIcons = {
 	admin: FaUsers,
 	explorer: FaMapMarkerAlt,
 	traveler: FaSuitcaseRolling,
+	user: FaUser,
 };
