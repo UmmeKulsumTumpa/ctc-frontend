@@ -11,12 +11,16 @@ const TravelPlanPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
+    const fetchPlans = () => {
         setLoading(true);
+        setError(null);
         getAllTravelPlans()
             .then(setPlans)
             .catch(() => setError('Failed to load travel plans'))
             .finally(() => setLoading(false));
+    };
+    useEffect(() => {
+        fetchPlans();
     }, []);
 
     return (
@@ -38,13 +42,6 @@ const TravelPlanPage: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Error State */}
-                {error && (
-                    <div className="bg-red-50 border-2 border-red-200 rounded-lg p-6 mb-8">
-                        <div className="text-red-700 font-semibold text-center">{error}</div>
-                    </div>
-                )}
-
                 {/* Loading State */}
                 {loading ? (
                     <div className="bg-sky-50 border-2 border-sky-200 rounded-lg p-12 text-center">
@@ -57,6 +54,22 @@ const TravelPlanPage: React.FC = () => {
                         <TravelPlanList plans={plans} />
                     </div>
                 )}
+
+                {/* Error State */}
+                {error && (
+                    <div className="p-6 mb-8">
+                        <div className="text-red-500 font-semibold text-center">{error}</div>
+                        <div className="flex justify-center mt-4">
+                            <button
+                                onClick={fetchPlans}
+                                className="px-6 py-2 rounded-xl bg-emerald-600 text-white font-semibold shadow hover:bg-emerald-700 transition-all"
+                            >
+                                Retry
+                            </button>
+                        </div>
+                    </div>
+                )}
+
             </div>
         </div>
     );

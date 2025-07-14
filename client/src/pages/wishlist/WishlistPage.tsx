@@ -58,6 +58,13 @@ const WishlistPage: React.FC = () => {
         );
     }
 
+    const fetchWishlists = () => {
+        if (typeof (window as any).fetchWishlists === 'function') {
+            (window as any).fetchWishlists();
+        } else {
+            window.location.reload();
+        }
+    };
     return (
         <div className="min-h-screen bg-white">
             <div className="max-w-6xl mx-auto px-6 py-16">
@@ -81,12 +88,6 @@ const WishlistPage: React.FC = () => {
                         </button>
                     </div>
                 </div>
-
-                {error && (
-                    <div className="bg-red-50 border-2 border-red-200 text-red-700 rounded-lg px-6 py-4 mb-8 font-semibold">
-                        {error}
-                    </div>
-                )}
 
                 {/* Filter Section */}
                 <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-6 mb-10 flex flex-col md:flex-row md:items-end gap-4">
@@ -158,6 +159,23 @@ const WishlistPage: React.FC = () => {
                         </div>
                     )}
                 </div>
+
+                {error && (
+                    <div className="px-6 py-4 mb-8">
+                        <div className="text-center text-red-500 text-lg font-semibold mb-8">
+                            {error}
+                        </div>
+                        <div className="flex justify-center mt-4">
+                            <button
+                                onClick={fetchWishlists}
+                                className="px-6 py-2 rounded-xl bg-emerald-600 text-white font-semibold shadow hover:bg-emerald-700 transition-all"
+                            >
+                                Retry
+                            </button>
+                        </div>
+                    </div>
+                )}
+                
             </div>
         </div>
     );

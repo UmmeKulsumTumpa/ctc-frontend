@@ -17,9 +17,16 @@ const ServiceListPage: React.FC = () => {
 
     const fetchServices = () => {
         setLoading(true);
+        setError(null);
         getAllServices(filters)
             .then(setServices)
-            .catch(() => setError('Failed to load services'))
+            .catch((err) => {
+                if (err?.message?.includes('Network')) {
+                    setError('Cannot connect to server. Please check your connection and try again.');
+                } else {
+                    setError('Failed to load services');
+                }
+            })
             .finally(() => setLoading(false));
     };
 
@@ -40,9 +47,42 @@ const ServiceListPage: React.FC = () => {
     if (error) return (
         <div className="min-h-screen bg-white">
             <div className="max-w-6xl mx-auto px-6 py-16">
-                <div className="bg-red-50 border-2 border-red-200 rounded-lg p-6">
-                    <div className="text-center text-red-700 text-lg font-semibold">
+                {/* Header Section */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div>
+                            <h2 className="text-5xl font-bold text-emerald-900 mb-2">Travel Services Hub</h2>
+                            <p className="text-xl text-gray-600">Discover all the essential services for your perfect journey</p>
+                        </div>
+                        <button
+                            onClick={() => navigate('/services/nearby')}
+                            className="px-8 py-4 rounded-2xl bg-sky-600 text-white text-lg font-bold border-4 border-sky-700 shadow-lg hover:bg-sky-700 hover:border-sky-800 transform hover:scale-105 transition-all duration-300"
+                        >
+                            Find Nearby Services
+                        </button>
+                    </div>
+                </div>
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <div className="text-center">
+                        <button
+                            onClick={() => navigate('/services/create')}
+                            className="px-8 py-4 rounded-2xl bg-emerald-600 text-white text-lg font-bold border-4 border-emerald-700 shadow-md hover:bg-emerald-700 hover:border-emerald-800 transform hover:scale-105 transition-all duration-300"
+                        >
+                            Add New Service
+                        </button>
+                    </div>
+                </div>
+                <div className="p-6 mb-8">
+                    <div className="text-center text-red-500 text-lg font-semibold">
                         {error}
+                    </div>
+                    <div className="flex justify-center mt-4">
+                        <button
+                            onClick={fetchServices}
+                            className="px-6 py-2 rounded-xl bg-emerald-600 text-white font-semibold shadow hover:bg-emerald-700 transition-all"
+                        >
+                            Retry
+                        </button>
                     </div>
                 </div>
             </div>

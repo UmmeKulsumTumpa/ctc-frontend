@@ -13,12 +13,16 @@ const PlacesPage: React.FC = () => {
     const [filterInputs, setFilterInputs] = useState<PlaceFilters>({});
     const navigate = useNavigate();
 
-    useEffect(() => {
+    const fetchPlaces = () => {
         setLoading(true);
+        setError(null);
         getAllPlaces(filters)
             .then(setPlaces)
             .catch(() => setError('Failed to load places'))
             .finally(() => setLoading(false));
+    };
+    useEffect(() => {
+        fetchPlaces();
     }, [filters]);
 
     return (
@@ -128,8 +132,16 @@ const PlacesPage: React.FC = () => {
                             Loading amazing places...
                         </div>
                     ) : error ? (
-                        <div className="bg-red-50 border-2 border-red-200 rounded-lg p-6">
-                            <div className="text-center text-red-700 text-lg font-semibold">{error}</div>
+                        <div className="p-6">
+                            <div className="text-center text-red-500 text-lg font-semibold">{error}</div>
+                            <div className="flex justify-center mt-4">
+                                <button
+                                    onClick={fetchPlaces}
+                                    className="px-6 py-2 rounded-xl bg-emerald-600 text-white font-semibold shadow hover:bg-emerald-700 transition-all"
+                                >
+                                    Retry
+                                </button>
+                            </div>
                         </div>
                     ) : places.length === 0 ? (
                         <div className="text-center py-12 bg-emerald-50 border-2 border-emerald-200 rounded-lg">

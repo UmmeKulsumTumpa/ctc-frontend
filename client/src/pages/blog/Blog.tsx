@@ -33,12 +33,22 @@ const Blog = () => {
         }
     };
 
-    useEffect(() => {
+    const fetchBlogs = () => {
         setLoading(true);
+        setError(null);
         getAllBlogs(filters)
             .then(setBlogs)
-            .catch((err) => setError(err.message))
+            .catch((err) => {
+                if (err?.message?.includes('Network')) {
+                    setError('Cannot connect to server. Please check your connection and try again.');
+                } else {
+                    setError(err?.message || 'Failed to load blogs.');
+                }
+            })
             .finally(() => setLoading(false));
+    };
+    useEffect(() => {
+        fetchBlogs();
     }, [filters]);
 
     if (loading) return (
@@ -54,8 +64,31 @@ const Blog = () => {
     if (error) return (
         <div className="min-h-[85vh] bg-white">
             <div className="max-w-6xl mx-auto px-6 py-16">
-                <div className="text-center text-red-500 text-lg font-semibold">
+                {/* Header Section */}
+                <div className="bg-white border-2 border-emerald-200 shadow-lg rounded-3xl p-8 mb-10">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h2 className="text-5xl font-bold text-emerald-900 mb-2">Travel Stories</h2>
+                            <p className="text-xl text-gray-600">Share your adventures with fellow travelers</p>
+                        </div>
+                        <button
+                            onClick={() => navigate(PATHS.BLOG_CREATE)}
+                            className="px-8 py-4 rounded-2xl bg-emerald-600 text-white text-lg font-bold border-4 border-emerald-700 shadow-lg hover:bg-emerald-700 hover:border-emerald-800 transform hover:scale-105 transition-all duration-300"
+                        >
+                            Write Your Story
+                        </button>
+                    </div>
+                </div>
+                <div className="text-center text-red-500 text-lg font-semibold mb-8">
                     {error}
+                </div>
+                <div className="flex justify-center">
+                    <button
+                        onClick={fetchBlogs}
+                        className="px-6 py-2 rounded-xl bg-emerald-600 text-white font-semibold shadow hover:bg-emerald-700 transition-all"
+                    >
+                        Retry
+                    </button>
                 </div>
             </div>
         </div>
